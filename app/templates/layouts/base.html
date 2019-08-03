@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>EMOS Monitoring</title>
+    <title>EMOS Live</title>
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/app.css') }}">
     <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" rel="stylesheet">
@@ -12,11 +14,10 @@
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
     <script type=text/javascript>
       $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-
     </script>
 </head>
 <body>
-    {% include 'layouts/partials/_nav.html'%}
+    {% include 'layouts/partials/_header.html'%}
     {% block body %}{% endblock %}
 
 </body>

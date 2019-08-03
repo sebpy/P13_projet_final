@@ -2,20 +2,40 @@
 {% block body %}
     <!--The menu is handled with a list of the pages-->
     <div class="container-fluid">
-    <!-- Shoutbox-->
-    <div id="shoutbox" class="list_rigs">
-        <div class="row">
-            <div id="msg" class="col-lg-offset-3 col-lg-6">
-                <div class="row" id="row" >
-
-                        <div id="nom_rig" ></div>
-                        <div id="hash_rig" ></div>
-                        <div id="pw_rig" ></div>
-
+    <!-- Liste rigs-->
+        <section class="row row-sm mg-b-30">
+            <div class="col-lg-2">
+              <legend>Global</legend>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    RIG:
+                    <span class="badge badge-primary badge-pill" id="tt_rig"></span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    GPUs
+                    <span class="badge badge-primary badge-pill" id="tt_gpu"></span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Conso:
+                    <span class="badge badge-danger badge-pill" id="tt_pw"></span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Uptime:
+                    <span class="badge badge-success badge-pill" id="up_rig">99.2%</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Hors ligne:
+                    <span class="badge badge-success badge-pill" id="hl_rig"></span>
+                  </li>
+                </ul>
+            </div>
+            <div class="col-lg-10">
+                <div class="row row-sm">
+                    <legend>Status</legend>
+                    <div class="row" id="row" ></div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
     </div>
 
 {% endblock %}

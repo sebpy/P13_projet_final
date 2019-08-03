@@ -1,66 +1,3 @@
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-  padding-top: 100px;
-}
-
-
-.header{
-  width: 100%;
-  text-align: center;
-  position: absolute;
-  top: 0;
-}
-
-.logo{
-  width: 15%;
-}
-
-.logo img{
-  position: absolute;
-  width: 2%;
-  top: 47%;
-  left: 39%;
-}
-
-@media screen and (max-width:680px) {
-  .titre {
-      font-size: 25px !important;
-      top: 20px !important;
-  }
-
-  .ss_titre {
-  font-size: 12px !important;
-  top: 5px !important;
-  }
-
-  .navbar ul {
-    margin-top: 55px !important;  
-  } 
-}
-
-.titre, h1 {
-    margin-bottom: 0px;
-    margin-top: 0px;
-    color: white;
-}
-
-.ss_titre, h1 {
-    margin-bottom: 0px;
-    margin-top: 10px;
-    color: white;
-    font-size: 20px;
-}
-
-.list_rigs{
-
-}
-
 .footer {
     position: fixed;
     bottom: 0;
@@ -74,19 +11,10 @@ body {
     text-align: center;
 }
 
-.message {
-    border: 2px solid #dedede;
-    background-color: #f1f1f1;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px 25px 10px 25px;
-    text-align: left;
-}
-
 .footer_block{
     display: inline-flex;
     width: 100%;
-    padding: 22px;  
+    padding: 22px;
 }
 
 /* Custom CSS */
@@ -95,45 +23,135 @@ body {
 }
 
 .navbar ul {
-  margin-top: 45px;  
+  margin-top: 45px;
 }
 
 .container-fluid {
     margin-top: 15px;
 }
 
-.container-fluid-nav {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-.input-group {
-    padding-left: 11px;
-    padding-right: 11px;
-}
-
 .row {
-    padding-left: 20px;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.col-sm-6, col-xl-3 {
+    padding-right: 2px !important;
+    padding-left: 2px !important;
+}
+
+.col-sx-3 {
+    padding-right: 2px !important;
+    padding-left: 2px !important;
+    font-size: 98.2%;
+}
+
+.col-lg-10 {
+    border-left: solid 1px #e1e1e1;
+}
+
+@media screen and (max-width: 768px) {
+  .col-sx-2 {
+      font-size: 80% !important;
+  }
+
+  .col-sm-6, col-xl-3 {
+      width: 50% !important;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .col-sx-2 {
+      font-size: 95.4% !important;
+  }
+
+  .col-sm-6, col-xl-3 {
+      width: 50% !important;
+  }
 }
 
 .rig_card_on {
-    width: 225px;
-    background-color: green;
+    /*width: 225px;*/
+    background-color: rgb(116, 184, 89);
     color: white;
     padding: 10px;
     display: inline-block;
     margin-bottom: 4px;
-    margin-right: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .rig_card_off {
-    width: 225px;
+    /*width: 225px;*/
     background-color: red;
     color: white;
     padding: 10px;
     display: inline-block;
     margin-bottom: 4px;
-    margin-right: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+ /* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  background-color: #424242;
+  color: #444;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  color: white;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: #626262;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+
+.collapsible:after {
+  content: '\02795'; /* Unicode character for "plus" sign (+) */
+  font-size: 13px;
+  color: white;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2796"; /* Unicode character for "minus" sign (-) */
+  color: white;
+}
+
+.total{
+    background-color: grey;
+    color: white;
+    padding: 10px;
+    display: inline-block;
+    margin-bottom: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    font-weight: bold;
+}
+
+.pd-sm-25 {
+    padding: 25px;
+}
+.pd-20 {
+    padding: 20px;
+}
+.mg-t-20 {
+    margin-top: 20px;
+}
+.mg-l-20 {
+  margin-left: 20px;
+}
+.mg-b-30 {
+  margin-bottom: 30px;
 }
