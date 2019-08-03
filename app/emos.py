@@ -8,7 +8,7 @@ import requests
 import datetime
 import config as cfg
 
-from app.models import Rigs, db
+from app.models import *
 
 
 class Statistics:
@@ -82,6 +82,11 @@ class Statistics:
                     #print('Record was successfully added')
             else:
                 pass
+
+    def read_conf(self):
+        """ Lis la table conf_block pour afficher les infos ou les cacher """
+        conf = ConfBlock.query.all()
+        return conf
 
 
 if __name__ == '__main__':
