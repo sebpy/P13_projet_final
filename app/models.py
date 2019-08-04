@@ -7,9 +7,9 @@ from app.views import app
 db = SQLAlchemy(app)
 
 
-class ShowItems(enum.Enum):
-    hidden = 0
-    show = 1
+#class ShowItems(enum.Enum):
+#    hidden = 0
+#    show = 1
 
 
 class Rigs(db.Model):
@@ -36,19 +36,15 @@ class Rigs(db.Model):
 
 class ConfBlock(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    show_nom = db.Column(db.Enum(ShowItems), nullable=False)
-    show_nbGpu = db.Column(db.Enum(ShowItems), nullable=False)
-    show_gpuType = db.Column(db.Enum(ShowItems), nullable=False)
-    show_hashTotal = db.Column(db.Enum(ShowItems), nullable=False)
-    show_totalpw = db.Column(db.Enum(ShowItems), nullable=False)
-    show_uptime = db.Column(db.Enum(ShowItems), nullable=False)
-    show_mineTime = db.Column(db.Enum(ShowItems), nullable=False)
+    show_nbGpu = db.Column(db.Enum('0', '1'), nullable=False)
+    show_hashTotal = db.Column(db.Enum('0', '1'), nullable=False)
+    show_totalpw = db.Column(db.Enum('0', '1'), nullable=False)
+    show_uptime = db.Column(db.Enum('0', '1'), nullable=False)
+    show_mineTime = db.Column(db.Enum('0', '1'), nullable=False)
 
-    def __init__(self, show_nom, show_nbGpu, show_gpuType, show_hashTotal, show_totalpw,
+    def __init__(self, show_nbGpu, show_hashTotal, show_totalpw,
                  show_uptime, show_mineTime):
-        self.show_nom = show_nom
         self.show_nbGpu = show_nbGpu
-        self.show_gpuType = show_gpuType
         self.show_hashTotal = show_hashTotal
         self.show_totalpw = show_totalpw
         self.show_uptime = show_uptime
@@ -58,8 +54,8 @@ class ConfBlock(db.Model):
 def init_db():
     db.drop_all()
     db.create_all()
-    db.session.add(ConfBlock(ShowItems['show'], ShowItems['show'], ShowItems['show'],
-                             ShowItems['show'], ShowItems['show'], ShowItems['show'], ShowItems['show']))
+    db.session.add(ConfBlock('1', '1', '1', '1', '0'))
+    db.session.add(Rigs("EM-1060", "xxxxxxxx", "6", "NV", "123.2", "688", "6j22h30m", "6j22h30m"))
     db.session.commit()
     lg.warning('Database initialized!')
 

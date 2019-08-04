@@ -15,13 +15,15 @@ from app.emos import Statistics
 @app.route('/index')
 def index():
     stat = Statistics()
-    info = stat.get_status()
-    rig_nb = stat.count_rig(info)
-    pw_total = stat.total_power(info)
-    hs_total = stat.total_hs(info)
+    cfg_block = stat.read_conf()
+    info = stat.get_status(cfg_block)
+    #rig_nb = stat.count_rig(info)
+    #pw_total = stat.total_power(info)
+    #hs_total = stat.total_hs(info)
+    stat.read_conf()
     #rig = stat.list_rigs()
 
-    return render_template('pages/index.html', nb_rig=rig_nb, pw_total=pw_total, hs_total=hs_total)
+    return render_template('pages/index.html')
 
 
 @app.route('/error')
@@ -37,7 +39,8 @@ def about():
 @app.route('/_answer', methods=['GET'])
 def answer():
     api_answer = Statistics()
-    api_resp = api_answer.get_status()
+    cfg_block = api_answer.read_conf()
+    api_resp = api_answer.get_status(cfg_block)
     api_answer.list_rigs(api_resp)
     #api_answer.count_rig(api_answer.get_stats)
     #api_resp = api_answer.select_infos(api_answer.get_stats)

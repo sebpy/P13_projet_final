@@ -155,3 +155,7 @@
 .mg-b-30 {
   margin-bottom: 30px;
 }
+
+.hidden_block {
+    display: none;
+}
