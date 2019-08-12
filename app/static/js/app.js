@@ -17,18 +17,21 @@ $( document ).ready(function() {
 
             var stats = api_resp.stats;
             var cfgBlock = api_resp.cfg;
+            var load = api_resp.availability;
             var nb_rig = Object.keys(stats).length;
             var tt_pw = parseFloat(0);
             var tt_gpu = parseInt(0);
             var hl_rig = parseInt(0);
+            var availability = load;
 
-            if(cfgBlock[0].cfg_nbGpu == 0){
+
+            if(cfgBlock[0].cfg_nb_gpu == 0){
                 show_nbgpu = "hidden_block";
             }
-            if(cfgBlock[0].cfg_hashTotal == 0){
+            if(cfgBlock[0].cfg_total_hash == 0){
                 show_hash = "hidden_block";
             }
-            if(cfgBlock[0].cfg_totalpw == 0){
+            if(cfgBlock[0].cfg_total_pw == 0){
                 show_pw = "hidden_block";
             }
             if(cfgBlock[0].cfg_uptime == 0){
@@ -39,7 +42,7 @@ $( document ).ready(function() {
             }
 
             $.each( stats, function( key, value ) {
-                if ( value.enLigne == "1") {
+                if ( value.online == "1") {
                     rig_card = "rig_card_on";
                     uptime_rig = "En ligne";
                 } else {
@@ -51,19 +54,19 @@ $( document ).ready(function() {
                 $('#row').append(
                       '<div class="col-sx-3 col-md-2">' +
                           '<div class="'+ rig_card +' col-lg-12">' +
-                              '<strong>'+ value.NomRig +'</strong><br>' +
-                              '<span class="'+show_nbgpu+'">GPUs: <strong>'+ value.nbGpu +' '+ value.typeGpu +'</strong><br></span>' +
+                              '<strong>'+ value.nom_rig +'</strong><br>' +
+                              '<span class="'+show_nbgpu+'">GPUs: <strong>'+ value.nb_gpu +' '+ value.type_gpu +'</strong><br></span>' +
                               '<span class="'+show_uptime+'">'+uptime_rig +': <strong>'+ value.uptime.substring(0,10) +'</strong><br></span>' +
-                              '<span class="'+show_minetime+'">Miner up: <strong>'+ value.mineTime +'</strong><br></span>' +
-                              '<span class="'+show_hash+'">Hashrate: <strong>'+ value.HashTotal +' '+ value.hashUnit +'</strong></span><br>' +
-                              '<span class="'+show_pw+'">Consommation: <strong>'+ value.totalpw +'W</strong><br></span>' +
+                              '<span class="'+show_minetime+'">Miner up: <strong>'+ value.mine_time +'</strong><br></span>' +
+                              '<span class="'+show_hash+'">Hashrate: <strong>'+ value.total_hash +' '+ value.hash_unit +'</strong></span><br>' +
+                              '<span class="'+show_pw+'">Consommation: <strong>'+ value.total_pw +'W</strong><br></span>' +
                           '</div>' +
                       '</div>'
                 );
 
 
-                tt_pw += parseFloat(value.totalpw)
-                tt_gpu += parseInt(value.nbGpu)
+                tt_pw += parseFloat(value.total_pw)
+                tt_gpu += parseInt(value.nb_gpu)
 
             });
 
@@ -71,6 +74,7 @@ $( document ).ready(function() {
             $('#tt_pw').text(tt_pw.toFixed(2) + 'W');
             $('#tt_gpu').text(tt_gpu);
             $('#hl_rig').text(hl_rig);
+            $('#availability').text(availability + '%');
         }
    );
 });
@@ -85,18 +89,20 @@ setInterval(function(){
 
             var stats = api_resp.stats;
             var cfgBlock = api_resp.cfg;
+            var load = api_resp.availability;
             var nb_rig = Object.keys(stats).length;
             var tt_pw = parseFloat(0);
             var tt_gpu = parseInt(0);
             var hl_rig = parseInt(0);
+            var availability = load;
 
-            if(cfgBlock[0].cfg_nbGpu == 0){
+            if(cfgBlock[0].cfg_nb_gpu == 0){
                 show_nbgpu = "hidden_block";
             }
-            if(cfgBlock[0].cfg_hashTotal == 0){
+            if(cfgBlock[0].cfg_total_hash == 0){
                 show_hash = "hidden_block";
             }
-            if(cfgBlock[0].cfg_totalpw == 0){
+            if(cfgBlock[0].cfg_total_pw == 0){
                 show_pw = "hidden_block";
             }
             if(cfgBlock[0].cfg_uptime == 0){
@@ -107,7 +113,7 @@ setInterval(function(){
             }
 
             $.each( stats, function( key, value ) {
-                if ( value.enLigne == "1") {
+                if ( value.online == "1") {
                     rig_card = "rig_card_on";
                     uptime_rig = "En ligne";
                 } else {
@@ -119,19 +125,19 @@ setInterval(function(){
                 $('#row').append(
                       '<div class="col-sx-3 col-md-2">' +
                           '<div class="'+ rig_card +' col-lg-12">' +
-                              '<strong>'+ value.NomRig +'</strong><br>' +
-                              '<span class="'+show_nbgpu+'">GPUs: <strong>'+ value.nbGpu +' '+ value.typeGpu +'</strong><br></span>' +
+                              '<strong>'+ value.nom_rig +'</strong><br>' +
+                              '<span class="'+show_nbgpu+'">GPUs: <strong>'+ value.nb_gpu +' '+ value.type_gpu +'</strong><br></span>' +
                               '<span class="'+show_uptime+'">'+uptime_rig +': <strong>'+ value.uptime.substring(0,10) +'</strong><br></span>' +
-                              '<span class="'+show_minetime+'">Miner up: <strong>'+ value.mineTime +'</strong><br></span>' +
-                              '<span class="'+show_hash+'">Hashrate: <strong>'+ value.HashTotal +' '+ value.hashUnit +'</strong></span><br>' +
-                              '<span class="'+show_pw+'">Consommation: <strong>'+ value.totalpw +'W</strong><br></span>' +
+                              '<span class="'+show_minetime+'">Miner up: <strong>'+ value.mine_time +'</strong><br></span>' +
+                              '<span class="'+show_hash+'">Hashrate: <strong>'+ value.total_hash +' '+ value.hash_unit +'</strong></span><br>' +
+                              '<span class="'+show_pw+'">Consommation: <strong>'+ value.total_pw +'W</strong><br></span>' +
                           '</div>' +
                       '</div>'
                 );
 
 
-                tt_pw += parseFloat(value.totalpw)
-                tt_gpu += parseInt(value.nbGpu)
+                tt_pw += parseFloat(value.total_pw)
+                tt_gpu += parseInt(value.nb_gpu)
 
             });
 
@@ -139,23 +145,8 @@ setInterval(function(){
             $('#tt_pw').text(tt_pw.toFixed(2) + 'W');
             $('#tt_gpu').text(tt_gpu);
             $('#hl_rig').text(hl_rig);
+            $('#availability').text(availability + '%');
         }
    );
 }, 30000); //30 secondes
-
-
-var coll = document.getElementsByClassName("collapsible");
-var i;
-
-for (i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.display === "block") {
-      content.style.display = "none";
-    } else {
-      content.style.display = "block";
-    }
-  });
-}
 

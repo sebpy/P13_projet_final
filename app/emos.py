@@ -5,8 +5,8 @@
 
 import json
 import requests
-import datetime
 import config as cfg
+import datetime
 
 from app.models import *
 
@@ -17,14 +17,14 @@ class Statistics:
     def __init__(self):
         self.get_stats = ""
         self.annee = "2019"
-        self.nb_rigs = "0"
         self.cfg_block = ""
         self.json = ""
+        self.show_nbgpu = "1"
 
         if cfg.API_KEY_EMOS != "":
             pass
 
-    def read_conf(self):
+    def read_conf_block(self):
         """ Lis la table conf_block pour afficher les infos ou les cacher """
 
         conf = ConfBlock.query.all()
@@ -38,7 +38,33 @@ class Statistics:
                           })
 
         self.cfg_block = items
+
         return self.cfg_block
+
+    def availability_total(self):
+        """ Calculation of the availability rate """
+
+        nb_rigs = Rigs.query.count()
+        minutes = 43200  # 30 jours
+        total_time = (minutes * nb_rigs)
+        real_time = StatsRigs.query.count()
+        availability = ((real_time / total_time) * 100)
+
+        return availability
+
+    @staticmethod
+    def read_conf():
+        """ Read block configuration """
+        conf = ConfBlock.query.all()
+
+        return conf
+
+    @staticmethod
+    def read_stats():
+        """ Read rigs statistiques """
+        stats_gpu = StatsRigs.query.all()
+
+        return stats_gpu
 
     def get_status(self, cfg_block):
         """ Récupére les statistique de l'api EMOS """
@@ -55,58 +81,55 @@ class Statistics:
             #    self.get_stats = result[0]['NomRig']
             #except KeyError:
             #    return "Pas de rigs existant"
-            self.json = {'stats': self.get_stats, 'cfg': cfg_block}
+            self.json = {'stats': self.get_stats, 'cfg': cfg_block, 'availability': round(self.availability_total(),2)}
 
             return self.json
 
         else:
             return 'Pas de rigs existant'
 
-    #def count_rig(self, infos):
-    #    """ Calcule le nombre de rigs présent """
-    #    count_nb_rig = len(infos.items())
-    #    self.nb_rigs = count_nb_rig
-
-    #    return self.nb_rigs
-
-    #def total_power(self, data):
-    #    """ Additionne la puissance consomé total """
-    #    pwt = 0
-    #    for (k, v) in data.items():
-    #        pwt += float(v['totalpw'])
-
-    #   return round(pwt, 2)
-
-    #def total_hs(self, data):
-    #    """ Additionne la puissance consomé total """
-    #    hs = 0
-    #    for (k, v) in data.items():
-    #        if v['enLigne'] == "0":
-    #            hs += int(v['enLigne'])
-
-    #    return hs
-
-    def list_rigs(self, data):
+    @staticmethod
+    def list_rigs(data):
         """ Verifie si l'id du rig est deja en base de donnée et l'ajoute s'il n'existe pas """
+
         contents = Rigs.query.all()
         for (k, v) in data['stats'].items():
-            mac_rig = v['macAdresse'][5:].replace(':', '')
+            mac_rig = v['mac'][5:].replace(':', '')
             idrig_exist = Rigs.query.filter(Rigs.idRig == mac_rig).count()
             if idrig_exist == 0:
                 for ruche in contents:
-                    rig = Rigs(v['NomRig'], mac_rig, v['nbGpu'], v['typeGpu'],
-                               v['HashTotal'], v['totalpw'], v['uptime'], v['mineTime'])
+                    rig = Rigs(v['nom_rig'], mac_rig, v['nb_gpu'], v['type_gpu'],
+                               v['total_hash'], v['total_pw'], v['uptime'], v['mine_time'])
 
                     db.session.add(rig)
                     db.session.commit()
-                    #print('Record was successfully added')
+                    print('Record was successfully added')
             else:
-                pass
+                i = 0
+                for stat in contents:
+                    while i < int(v['nb_gpu']):
+                        gpu = str(i)
+                        stats = StatsRigs(mac_rig, v['model_gpu'][gpu], v['hashrate'][gpu], v['temperature'][gpu],
+                                          v['fans'][gpu], v['pw'][gpu], v['pw'][gpu], v['oc_mem'][gpu],
+                                          v['oc_core'][gpu], v['undervolt'][gpu], v['mem_freq'][gpu],
+                                          v['core_freq'][gpu], round(datetime.datetime.now().timestamp()))
+
+                        db.session.add(stats)
+                        db.session.commit()
+                        i += 1
+                        if i == v['nb_gpu']:
+                            i = 0
+
+    def delete_old_stats(self):
+        """ Delete stats after 30 days """
+        date = int(round(datetime.datetime.now().timestamp()))
+        StatsRigs.query.filter(StatsRigs.date_time + 259200 < date).delete()  # 259200 // 30 jours
+        db.session.commit()
+        #stat_gpu = StatsRigs.query.filter(StatsRigs.date_time + 7200 < date).count()
+        #print(stat_gpu)
 
 
 if __name__ == '__main__':
     st = Statistics()
-    cfg_block = st.read_conf()
-    st.get_status(cfg_block)
-    print(st.nb_rigs)
+
 

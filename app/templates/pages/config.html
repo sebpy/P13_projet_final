@@ -1,0 +1,60 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Configuration{% endblock %}
+{% block body %}
+    <!--The menu is handled with a list of the pages-->
+    <div class="container-fluid">
+    <!-- Liste rigs-->
+        <form action="/_save_conf" method="post">
+            <section class="row row-sm mg-b-30">
+                <div class="col-lg-10">
+                    <legend>Configuration</legend>
+                    {% if error %}
+                        <p class="error"><strong>Erreur : </strong>{{ error }}</p>
+                    {% endif %}
+                    <div class="form-group">
+                      <label for="api_key">Clé API : </label>
+                      <input id="api_key" name="api_key" type="text" class="form-control" value="{{ API_KEY }}" placeholder="Clé API EMOS..." required>
+                    </div>
+                    <div class="form-group">
+                      <label for="type">Affichage index : </label>
+                      <select id="type" name="type" class="form-control">
+                        <option value="0">Blocks</option>
+                        <option value="1" {{ type }}>Liste</option>
+                      </select>
+                    </div>
+                </div>
+                <div class="col-lg-2 cfg_show_block">
+                  <legend>Affichage blocks</legend>
+                     <div class="custom-control custom-checkbox">
+                       <input type="checkbox" class="custom-control-input" id="nbgpu" name="nbgpu" {{ nbgpu }} >
+                       <label class="custom-control-label" for="nbgpu">Afficher le block nombre de GPUs</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                       <input type="checkbox" class="custom-control-input" id="uptime" name="uptime" {{ uptime }}>
+                       <label class="custom-control-label" for="uptime">Afficher le block Uptime</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                       <input type="checkbox" class="custom-control-input" id="minetime" name="minetime" {{ minetime }}>
+                       <label class="custom-control-label" for="minetime">Afficher le block temps miner</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                       <input type="checkbox" class="custom-control-input" id="hashtotal" name="hashtotal" {{ hashtotal }}>
+                       <label class="custom-control-label" for="hashtotal">Afficher le block hash total</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                       <input type="checkbox" class="custom-control-input" id="pwtotal" name="pwtotal" {{ pwtotal }}>
+                       <label class="custom-control-label" for="pwtotal">Afficher le block conso total</label>
+                    </div>
+                </div>
+            </section>
+            <section class="row row-sm mg-b-30">
+                <div class="col-lg-10">
+                    <input type="submit" class="btn btn-primary btn-conf" value="Enregistrer"><br>
+                </div>
+                <div class="col-lg-2 cfg_show_block">
+                </div>
+            </section>
+    </form>
+    </div>
+
+{% endblock %}

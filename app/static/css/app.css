@@ -1,3 +1,14 @@
+.header {
+  background-color: #424242;
+  color: #444;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  font-size: 15px;
+  color: white;
+  height:40px;
+}
+
 .footer {
     position: fixed;
     bottom: 0;
@@ -18,12 +29,34 @@
 }
 
 /* Custom CSS */
-.navbar-fixed-top {
-    height: 100px;
+.menu {
+    color: white;
+    text-align:right;
 }
 
-.navbar ul {
-  margin-top: 45px;
+.menu a {
+    text-decoration: none;
+    color: white;
+}
+
+.menu a:hover {
+    text-decoration: none;
+    color: grey;
+}
+
+.title {
+    width:50%;
+    font-weight:bold;
+}
+
+.title a {
+    text-decoration: none;
+    color: white;
+}
+
+.title a:hover {
+    text-decoration: none;
+    color: white;
 }
 
 .container-fluid {
@@ -46,8 +79,12 @@
     font-size: 98.2%;
 }
 
-.col-lg-10 {
+.blocks_left {
     border-left: solid 1px #e1e1e1;
+}
+
+.hidden_block{
+    display:none;
 }
 
 @media screen and (max-width: 768px) {
@@ -88,20 +125,6 @@
     display: inline-block;
     margin-bottom: 4px;
     border: 1px solid rgba(0, 0, 0, 0.125);
-}
-
- /* Style the button that is used to open and close the collapsible content */
-.collapsible {
-  background-color: #424242;
-  color: #444;
-  cursor: pointer;
-  padding: 10px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-  color: white;
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
@@ -156,6 +179,12 @@
   margin-bottom: 30px;
 }
 
-.hidden_block {
-    display: none;
+.cfg_show_block {
+    border-left: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 10px;
+}
+
+.btn-conf {
+    position: absolute;
+    right: 0;
 }
