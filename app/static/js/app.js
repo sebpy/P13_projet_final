@@ -75,6 +75,24 @@ $( document ).ready(function() {
             $('#tt_gpu').text(tt_gpu);
             $('#hl_rig').text(hl_rig);
             $('#availability').text(availability + '%');
+
+            if(hl_rig > 0){
+                $( '#hl_rig' ).removeClass( "badge-success" ).addClass( "badge-danger" );
+            }
+            else {
+                $( '#hl_rig' ).removeClass( "badge-danger" ).addClass( "badge-success" );
+            }
+
+            if(availability.toFixed(2) < 70) {
+                $( '.average' ).removeClass( "badge-success" ).addClass( "badge-danger" );
+            }
+            else if(availability.toFixed(2) >= 70 && availability.toFixed(2) < 90) {
+                $( '.average' ).removeClass( "badge-danger" ).addClass( "badge-warning" );
+            }
+            else {
+                $( '.average' ).removeClass( "badge-warning" ).addClass( "badge-success" );
+            }
+
         }
    );
 });
@@ -146,7 +164,31 @@ setInterval(function(){
             $('#tt_gpu').text(tt_gpu);
             $('#hl_rig').text(hl_rig);
             $('#availability').text(availability + '%');
+
+            if(hl_rig > 0){
+                $( '#hl_rig' ).removeClass( "badge-success" ).addClass( "badge-danger" );
+            }
+            else {
+                $( '#hl_rig' ).removeClass( "badge-danger" ).addClass( "badge-success" );
+            }
+
+            if(availability.toFixed(2) < 70) {
+                $( '.average' ).removeClass( "badge-success" ).addClass( "badge-danger" );
+            }
+            else if(availability.toFixed(2) >= 70 && availability.toFixed(2) < 90) {
+                $( '.average' ).removeClass( "badge-danger" ).addClass( "badge-warning" );
+            }
+            else {
+                $( '.average' ).removeClass( "badge-warning" ).addClass( "badge-success" );
+            }
+
         }
    );
 }, 30000); //30 secondes
 
+// Hidden message after 4 sec
+window.setTimeout(function() {
+    $(".save-conf").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove();
+    });
+}, 4000);

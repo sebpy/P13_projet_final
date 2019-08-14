@@ -75,9 +75,12 @@ class ConfBlock(db.Model):
     show_mineTime = db.Column(db.Enum('0', '1'), nullable=False)
     emos_api_key = db.Column(db.String(100), nullable=False)
     show_type = db.Column(db.Enum('0', '1'), nullable=False)
+    show_range = db.Column(db.String(6), nullable=False)
+
+    first = db.Column(db.Enum('0', '1'), nullable=False)
 
     def __init__(self, show_nbGpu, show_hashTotal, show_totalpw,
-                 show_uptime, show_mineTime, emos_api_key, show_type):
+                 show_uptime, show_mineTime, emos_api_key, show_type, show_range, first):
         self.show_nbGpu = show_nbGpu
         self.show_hashTotal = show_hashTotal
         self.show_totalpw = show_totalpw
@@ -85,13 +88,16 @@ class ConfBlock(db.Model):
         self.show_mineTime = show_mineTime
         self.emos_api_key = emos_api_key
         self.show_type = show_type
+        self.show_range = show_range
+
+        self.first = first  # First connexion => Config page
 
 
 def init_db():
     db.drop_all()
     db.create_all()
-    db.session.add(ConfBlock('1', '1', '1', '1', '0', "YOUR API KEY", '0'))
-    db.session.add(Rigs("EM-1060", "xxxxxxxx", "6", "NV", "123.2", "688", "6j22h30m", "6j22h30m"))
+    db.session.add(ConfBlock('1', '1', '1', '1', '0', "YOUR API KEY", '0', '10080', '0'))
+    #db.session.add(Rigs("EM-1060", "xxxxxxxx", "6", "NV", "123.2", "688", "6j22h30m", "6j22h30m"))
     db.session.commit()
     lg.warning('Database initialized!')
 

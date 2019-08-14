@@ -11,6 +11,18 @@
                     {% if error %}
                         <p class="error"><strong>Erreur : </strong>{{ error }}</p>
                     {% endif %}
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success alert-dismissible fade show save-conf" role="alert">
+                              <strong>Sauvegardé!</strong> {{ message }}
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
                     <div class="form-group">
                       <label for="api_key">Clé API : </label>
                       <input id="api_key" name="api_key" type="text" class="form-control" value="{{ API_KEY }}" placeholder="Clé API EMOS..." required>

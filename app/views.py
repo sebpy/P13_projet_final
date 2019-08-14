@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, jsonify, redirect, url_for
+from flask import Flask, render_template, jsonify, redirect, url_for, flash
 from flask_moment import Moment
 
 app = Flask(__name__)
@@ -16,7 +16,10 @@ from app.save_config import SaveConfig
 @app.route('/index')
 def index():
     stat = Statistics()
-    stat.read_conf()
+    read = stat.read_full_conf()
+
+    #if read[0]['first'] == "0":
+    #    flash('Pour activer EMOS LIVE, veuillez entré votre clé privé dans la page de configuration.')
 
     return render_template('pages/index.html')
 
@@ -34,7 +37,7 @@ def about():
 @app.route('/config')
 def config():
     stat = Statistics()
-    show_cfg = stat.read_conf()
+    show_cfg = stat.read_full_conf()
     nbgpu = ""
     minetime = ""
     uptime = ""
@@ -44,20 +47,20 @@ def config():
     type = ""
 
     for cfgs in show_cfg:
-        if cfgs.show_nbGpu == "1":
+        if cfgs["cfg_nbGpu"] == "1":
             nbgpu = "checked"
-        if cfgs.show_mineTime == "1":
+        if cfgs["cfg_mineTime"] == "1":
             minetime = "checked"
-        if cfgs.show_uptime == "1":
+        if cfgs["cfg_uptime"] == "1":
             uptime = "checked"
-        if cfgs.show_totalpw == "1":
+        if cfgs["cfg_totalpw"] == "1":
             pwtotal = "checked"
-        if cfgs.show_hashTotal == "1":
+        if cfgs["cfg_hashTotal"] == "1":
             hashtotal = "checked"
-        if cfgs.show_type == "1":
+        if cfgs["cfg_type"] == "1":
             type = "selected"
 
-        api_key = cfgs.emos_api_key
+        api_key = cfgs["cfg_api_key"]
 
     return render_template('pages/config.html',
                            nbgpu=nbgpu,
@@ -72,8 +75,8 @@ def config():
 @app.route('/_answer', methods=['GET'])
 def answer():
     api_answer = Statistics()
-    cfg_block = api_answer.read_conf_block()
-    api_resp = api_answer.get_status(cfg_block)
+    cfg_full = api_answer.read_full_conf()
+    api_resp = api_answer.get_status(cfg_full)
 
     return jsonify(api_resp)
 
@@ -83,5 +86,6 @@ def save_conf():
 
     save = SaveConfig()
     save.save_conf()
+    flash('Paramètres enregistré avec succès.')
 
-    return redirect(url_for('config_save'))
+    return redirect(url_for('config'))
