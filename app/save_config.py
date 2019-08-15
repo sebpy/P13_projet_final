@@ -18,6 +18,7 @@ class SaveConfig:
         self.show_mine_time = "0"
         self.emos_api_key = ""
         self.show_type = "0"
+        self.show_range = "42300"
         self.error = ""
 
     def nb_gpu_chk(self):
@@ -106,6 +107,7 @@ class SaveConfig:
                 self.error = "Vous devez entrer votre clé API..."
 
             self.show_type = request.form['type']
+            self.show_range = request.form['range']
 
         update_cfg = {'show_nbGpu': self.show_nb_gpu,
                       'show_hashTotal': self.show_hash,
@@ -114,6 +116,7 @@ class SaveConfig:
                       'show_mineTime': self.show_mine_time,
                       'emos_api_key': self.emos_api_key,
                       'show_type': self.show_type,
+                      'show_range': self.show_range,
                       }
 
         db.session.query(ConfBlock).update(update_cfg)

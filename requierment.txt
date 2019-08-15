@@ -2,4 +2,4 @@ flask
 request
 flask_moment
 flask_sqlalchemy
-python-crontab
+Flask-WTF

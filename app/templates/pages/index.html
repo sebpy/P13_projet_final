@@ -32,7 +32,45 @@
             <div class="blocks_left col-lg-10">
                 <div class="row row-sm">
                     <legend>Status</legend>
-                    <div class="row" id="row" ></div>
+                    {% if type == '0' %}
+                        <div class="row" id="row" ></div>
+                    {% else %}
+                    <div class="col-lg-6">
+                      <table class="table">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th>Nom rig</th>
+                            <th>Nombre Gpu</th>
+                            <th>Uptime</th>
+                            <th>Hash</th>
+                            <th>conso</th>
+                          </tr>
+                        </thead>
+                        <tbody id="rigs"></tbody>
+                      </table>
+                    </div>
+                    <div class="col-lg-6">
+                      <table class="table">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th>#ID</th>
+                            <th>Nom rig</th>
+                            <th>Evénements</th>
+                          </tr>
+                        </thead>
+                        <tbody id="events"></tbody>
+                      </table>
+                    </div>
+                    </div>
+                    <div class="row row-sm">
+                        <div class="col-lg-6">
+                            graph hash
+                        </div>
+                        <div class="col-lg-6">
+                            graph pw
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </section>

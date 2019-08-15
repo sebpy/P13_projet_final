@@ -17,11 +17,12 @@ from app.save_config import SaveConfig
 def index():
     stat = Statistics()
     read = stat.read_full_conf()
+    type = read[0]["cfg_type"]
 
     #if read[0]['first'] == "0":
     #    flash('Pour activer EMOS LIVE, veuillez entré votre clé privé dans la page de configuration.')
 
-    return render_template('pages/index.html')
+    return render_template('pages/index.html', type=type)
 
 
 @app.route('/error')
@@ -45,6 +46,7 @@ def config():
     hashtotal = ""
     api_key = ""
     type = ""
+    day = ""
 
     for cfgs in show_cfg:
         if cfgs["cfg_nbGpu"] == "1":
@@ -57,10 +59,10 @@ def config():
             pwtotal = "checked"
         if cfgs["cfg_hashTotal"] == "1":
             hashtotal = "checked"
-        if cfgs["cfg_type"] == "1":
-            type = "selected"
 
+        type = cfgs["cfg_type"]
         api_key = cfgs["cfg_api_key"]
+        day = cfgs["cfg_range"]
 
     return render_template('pages/config.html',
                            nbgpu=nbgpu,
@@ -69,7 +71,8 @@ def config():
                            pwtotal=pwtotal,
                            hashtotal=hashtotal,
                            API_KEY=api_key,
-                           type=type)
+                           type=type,
+                           day=day)
 
 
 @app.route('/_answer', methods=['GET'])

@@ -30,10 +30,23 @@
                     <div class="form-group">
                       <label for="type">Affichage index : </label>
                       <select id="type" name="type" class="form-control">
-                        <option value="0">Blocks</option>
-                        <option value="1" {{ type }}>Liste</option>
+                        <option value="0" {% if type=="0" %} selected="selected"{% endif %}>Blocks</option>
+                        <option value="1" {% if type=="1" %} selected="selected"{% endif %}>Liste</option>
                       </select>
                     </div>
+
+                    <div class="form-group">
+                        <label for="type">Durée rétention statistiques:
+                            <i class="fas fa-question-circle"></i>
+                            <span>Définis le temps pour le calcul de disponibinité</span>
+                        </label>
+                      <select id="range" name="range" class="form-control">
+                        <option value="10080" {% if day=='10080' %} selected="selected"{% endif %}>7 jours </option>
+                        <option value="20160" {% if day=='20160' %} selected="selected"{% endif %}>14 jours</option>
+                        <option value="42300" {% if day=='42300' %} selected="selected"{% endif %}>30 jours</option>
+                      </select>
+                    </div>
+
                 </div>
                 <div class="col-lg-2 cfg_show_block">
                   <legend>Affichage blocks</legend>

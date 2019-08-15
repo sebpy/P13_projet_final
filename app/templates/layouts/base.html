@@ -24,5 +24,10 @@
     {% include 'layouts/partials/_footer.html'%}
 
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% if type == '0' %}
+        <script src="{{ url_for('static', filename='js/app-bloc.js') }}"></script>
+    {% else %}
+        <script src="{{ url_for('static', filename='js/app-list.js') }}"></script>
+    {% endif %}
 </html>

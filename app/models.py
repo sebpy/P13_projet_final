@@ -6,11 +6,6 @@ from app.views import app
 db = SQLAlchemy(app)
 
 
-#class ShowItems(enum.Enum):
-#    hidden = 0
-#    show = 1
-
-
 class Rigs(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     NomRig = db.Column(db.String(20))

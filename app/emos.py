@@ -47,8 +47,9 @@ class Statistics:
 
         nb_rigs = Rigs.query.count()
         minutes = int(self.conf_full[0]['cfg_range'])  # 30 jours
-        total_time = (minutes * nb_rigs)
-        real_time = StatsRigs.query.count()
+        total_time = (minutes * nb_rigs)  # total minutes for 100%
+        real_time = round(StatsRigs.query.count() / nb_rigs, 2)  # total minutes in db
+
         if not real_time:
             availability = 0
         else:
@@ -78,6 +79,7 @@ class Statistics:
                           'cfg_totalpw': cfg["cfg_totalpw"],
                           'cfg_uptime': cfg["cfg_uptime"],
                           'cfg_mineTime': cfg["cfg_mineTime"],
+                          'cfg_type': cfg["cfg_type"],
                           })
 
         self.get_stats = result
@@ -118,7 +120,7 @@ class Statistics:
 
                         db.session.add(rig)
                         db.session.commit()
-                        print('Record was successfully added')
+                        #print('Record was successfully added')
                 else:
                     i = 0
                     for stat in contents:
@@ -137,11 +139,12 @@ class Statistics:
 
     def delete_old_stats(self):
         """ Delete stats after 30 days """
+        secondes = int(self.conf_full[0]['cfg_range']) * 60
         date = int(round(datetime.datetime.now().timestamp()))
-        StatsRigs.query.filter(StatsRigs.date_time + 259200 < date).delete()  # 259200 // 30 jours
+        StatsRigs.query.filter(StatsRigs.date_time + secondes < date).delete()  # 259200 // 30 jours
         db.session.commit()
         #stat_gpu = StatsRigs.query.filter(StatsRigs.date_time + 7200 < date).count()
-        #print(stat_gpu)
+        #print(secondes)
 
 
 if __name__ == '__main__':
