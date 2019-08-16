@@ -27,11 +27,11 @@ class Statistics:
         conf = ConfBlock.query.all()
         items = []
         for cfg in conf:
-            items.append({'cfg_nbGpu': cfg.show_nbGpu,
-                          'cfg_hashTotal': cfg.show_hashTotal,
-                          'cfg_totalpw': cfg.show_totalpw,
+            items.append({'cfg_nb_gpu': cfg.show_nb_gpu,
+                          'cfg_total_hash': cfg.show_total_hash,
+                          'cfg_total_pw': cfg.show_total_pw,
                           'cfg_uptime': cfg.show_uptime,
-                          'cfg_mineTime': cfg.show_mineTime,
+                          'cfg_mine_time': cfg.show_mine_time,
                           'cfg_api_key': cfg.emos_api_key,
                           'cfg_type': cfg.show_type,
                           'cfg_range': cfg.show_range,
@@ -46,15 +46,17 @@ class Statistics:
         """ Calculation of the availability rate """
 
         nb_rigs = Rigs.query.count()
-        minutes = int(self.conf_full[0]['cfg_range'])  # 30 jours
-        total_time = (minutes * nb_rigs)  # total minutes for 100%
-        real_time = round(StatsRigs.query.count() / nb_rigs, 2)  # total minutes in db
+        if not nb_rigs:
+            availability = 0.00
 
-        if not real_time:
-            availability = 0
         else:
-            availability = round(((real_time / total_time) * 100), 2)
-
+            minutes = int(self.conf_full[0]['cfg_range'])  # 30 jours
+            total_time = (minutes * nb_rigs)  # total minutes for 100%
+            real_time = round(StatsRigs.query.count() / nb_rigs, 2)  # total minutes in db
+            if not real_time:
+                availability = 0.00
+            else:
+                availability = round(((real_time / total_time) * 100), 2)
         return availability
 
     @staticmethod
@@ -74,11 +76,11 @@ class Statistics:
 
         items = []
         for cfg in datas:
-            items.append({'cfg_nbGpu': cfg["cfg_nbGpu"],
-                          'cfg_hashTotal': cfg["cfg_hashTotal"],
-                          'cfg_totalpw': cfg["cfg_totalpw"],
+            items.append({'cfg_nb_gpu': cfg["cfg_nb_gpu"],
+                          'cfg_total_hash': cfg["cfg_total_hash"],
+                          'cfg_totalpw': cfg["cfg_total_pw"],
                           'cfg_uptime': cfg["cfg_uptime"],
-                          'cfg_mineTime': cfg["cfg_mineTime"],
+                          'cfg_mine_time': cfg["cfg_mine_time"],
                           'cfg_type': cfg["cfg_type"],
                           })
 
@@ -112,7 +114,7 @@ class Statistics:
                 #print('Record was successfully added')
 
             else:
-                idrig_exist = Rigs.query.filter(Rigs.idRig == mac_rig).count()
+                idrig_exist = Rigs.query.filter(Rigs.id_rig == mac_rig).count()
                 if not idrig_exist:
                     for ruche in contents:
                         rig = Rigs(v['nom_rig'], mac_rig, v['nb_gpu'], v['type_gpu'],
@@ -129,10 +131,11 @@ class Statistics:
                             stats = StatsRigs(mac_rig, v['model_gpu'][gpu], v['hashrate'][gpu], v['temperature'][gpu],
                                               v['fans'][gpu], v['pw'][gpu], v['pw'][gpu], v['oc_mem'][gpu],
                                               v['oc_core'][gpu], v['undervolt'][gpu], v['mem_freq'][gpu],
-                                              v['core_freq'][gpu], round(datetime.datetime.now().timestamp()))
+                                              v['core_freq'][gpu], datetime.datetime.now().timestamp())
 
                             db.session.add(stats)
                             db.session.commit()
+                            #print('Record was successfully added')
                             i += 1
                             if i == v['nb_gpu']:
                                 i = 0

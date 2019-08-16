@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 import logging as lg
+import datetime
 
 from app.views import app
 # Create database connection object
@@ -8,24 +9,24 @@ db = SQLAlchemy(app)
 
 class Rigs(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    NomRig = db.Column(db.String(20))
-    idRig = db.Column(db.String(8))
-    nbGpu = db.Column(db.Integer)
-    gpuType = db.Column(db.String(3))
-    hashTotal = db.Column(db.String(8))
-    totalpw = db.Column(db.String(8))
+    nom_rig = db.Column(db.String(20))
+    id_rig = db.Column(db.String(8))
+    nb_gpu = db.Column(db.Integer)
+    gpu_type = db.Column(db.String(3))
+    total_hash = db.Column(db.String(8))
+    total_pw = db.Column(db.String(8))
     uptime = db.Column(db.String(30))
-    mineTime = db.Column(db.String(30))
+    mine_time = db.Column(db.String(30))
 
-    def __init__(self, NomRig, idRig, nbGpu, gpuType, hashTotal, totalpw, uptime, mineTime):
-        self.NomRig = NomRig
-        self.idRig = idRig
-        self.nbGpu = nbGpu
-        self.gpuType = gpuType
-        self.hashTotal = hashTotal
-        self.totalpw = totalpw
+    def __init__(self, nom_rig, id_rig, nb_gpu, gpu_type, total_hash, total_pw, uptime, mine_time):
+        self.nom_rig = nom_rig
+        self.id_rig = id_rig
+        self.nb_gpu = nb_gpu
+        self.gpu_type = gpu_type
+        self.total_hash = total_hash
+        self.total_pw = total_pw
         self.uptime = uptime
-        self.mineTime = mineTime
+        self.mine_time = mine_time
 
 
 class StatsRigs(db.Model):
@@ -63,24 +64,24 @@ class StatsRigs(db.Model):
 
 class ConfBlock(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    show_nbGpu = db.Column(db.Enum('0', '1'), nullable=False)
-    show_hashTotal = db.Column(db.Enum('0', '1'), nullable=False)
-    show_totalpw = db.Column(db.Enum('0', '1'), nullable=False)
+    show_nb_gpu = db.Column(db.Enum('0', '1'), nullable=False)
+    show_total_hash = db.Column(db.Enum('0', '1'), nullable=False)
+    show_total_pw = db.Column(db.Enum('0', '1'), nullable=False)
     show_uptime = db.Column(db.Enum('0', '1'), nullable=False)
-    show_mineTime = db.Column(db.Enum('0', '1'), nullable=False)
+    show_mine_time = db.Column(db.Enum('0', '1'), nullable=False)
     emos_api_key = db.Column(db.String(100), nullable=False)
     show_type = db.Column(db.Enum('0', '1'), nullable=False)
     show_range = db.Column(db.String(6), nullable=False)
 
     first = db.Column(db.Enum('0', '1'), nullable=False)
 
-    def __init__(self, show_nbGpu, show_hashTotal, show_totalpw,
-                 show_uptime, show_mineTime, emos_api_key, show_type, show_range, first):
-        self.show_nbGpu = show_nbGpu
-        self.show_hashTotal = show_hashTotal
-        self.show_totalpw = show_totalpw
+    def __init__(self, show_nb_gpu, show_total_hash, show_total_pw,
+                 show_uptime, show_mine_time, emos_api_key, show_type, show_range, first):
+        self.show_nb_gpu = show_nb_gpu
+        self.show_total_hash = show_total_hash
+        self.show_total_pw = show_total_pw
         self.show_uptime = show_uptime
-        self.show_mineTime = show_mineTime
+        self.show_mine_time = show_mine_time
         self.emos_api_key = emos_api_key
         self.show_type = show_type
         self.show_range = show_range
@@ -88,10 +89,20 @@ class ConfBlock(db.Model):
         self.first = first  # First connexion => Config page
 
 
+class notifications(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nom_rig = db.Column(db.String(20))
+    created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+    def __init__(self, nom_rig, create_at):
+        self.nom_rig = nom_rig
+        self.create_at = create_at
+
+
 def init_db():
     db.drop_all()
     db.create_all()
-    db.session.add(ConfBlock('1', '1', '1', '1', '0', "YOUR API KEY", '0', '10080', '0'))
+    db.session.add(ConfBlock('1', '1', '1', '1', '0', "", '0', '10080', '0'))
     #db.session.add(Rigs("EM-1060", "xxxxxxxx", "6", "NV", "123.2", "688", "6j22h30m", "6j22h30m"))
     db.session.commit()
     lg.warning('Database initialized!')

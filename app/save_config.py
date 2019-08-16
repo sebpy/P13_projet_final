@@ -103,17 +103,17 @@ class SaveConfig:
 
             self.emos_api_key = request.form['api_key']
 
-            if self.emos_api_key == "YOUR API KEY":
+            if self.emos_api_key == "":
                 self.error = "Vous devez entrer votre clé API..."
 
             self.show_type = request.form['type']
             self.show_range = request.form['range']
 
-        update_cfg = {'show_nbGpu': self.show_nb_gpu,
-                      'show_hashTotal': self.show_hash,
-                      'show_totalpw': self.show_pw,
+        update_cfg = {'show_nb_gpu': self.show_nb_gpu,
+                      'show_total_hash': self.show_hash,
+                      'show_total_pw': self.show_pw,
                       'show_uptime': self.show_uptime,
-                      'show_mineTime': self.show_mine_time,
+                      'show_mine_time': self.show_mine_time,
                       'emos_api_key': self.emos_api_key,
                       'show_type': self.show_type,
                       'show_range': self.show_range,

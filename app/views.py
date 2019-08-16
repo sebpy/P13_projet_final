@@ -49,15 +49,15 @@ def config():
     day = ""
 
     for cfgs in show_cfg:
-        if cfgs["cfg_nbGpu"] == "1":
+        if cfgs["cfg_nb_gpu"] == "1":
             nbgpu = "checked"
-        if cfgs["cfg_mineTime"] == "1":
+        if cfgs["cfg_mine_time"] == "1":
             minetime = "checked"
         if cfgs["cfg_uptime"] == "1":
             uptime = "checked"
-        if cfgs["cfg_totalpw"] == "1":
+        if cfgs["cfg_total_pw"] == "1":
             pwtotal = "checked"
-        if cfgs["cfg_hashTotal"] == "1":
+        if cfgs["cfg_total_hash"] == "1":
             hashtotal = "checked"
 
         type = cfgs["cfg_type"]
