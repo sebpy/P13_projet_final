@@ -25,13 +25,15 @@ $( document ).ready(function() {
 
                 // display table
                 $('#rigs').append(
-                    '<tr class="table-success">' +
-                        '<td>' + value.nom_rig +'</td>' +
-                        '<td>' + value.nb_gpu + value.type_gpu + '</td>' +
-                        '<td>' + value.mine_time + '</td>' +
-                        '<td>' + value.total_hash +' '+ value.hash_unit +'</td>' +
-                        '<td>' + value.total_pw + 'W</td>' +
-                    '</tr>'
+                    '<a href="'+ value.id_rig +'" alt="">' +
+                        '<tr class="'+online_class+'">' +
+                            '<td><strong>' + value.nom_rig +'</strong></td>' +
+                            '<td>' + value.nb_gpu + value.type_gpu + '</td>' +
+                            '<td>' + value.mine_time + '</td>' +
+                            '<td>' + value.total_hash +' '+ value.hash_unit +'</td>' +
+                            '<td>' + value.total_pw + 'W</td>' +
+                        '</tr>' +
+                    '</a>'
                 );
 
                 tt_pw += parseFloat(value.total_pw)
@@ -61,7 +63,7 @@ $( document ).ready(function() {
             else {
                 $( '.average' ).removeClass( "badge-warning" ).addClass( "badge-success" );
             }
-
+        }
    );
 });
 
@@ -93,13 +95,15 @@ setInterval(function(){
 
                 // display table
                 $('#rigs').append(
-                    '<tr class="table-success">' +
-                        '<td>' + value.nom_rig +'</td>' +
-                        '<td>' + value.nb_gpu + value.type_gpu + '</td>' +
-                        '<td>' + value.mine_time + '</td>' +
-                        '<td>' + value.total_hash +' '+ value.hash_unit +'</td>' +
-                        '<td>' + value.total_pw + 'W</td>' +
-                    '</tr>'
+                    '<a href="'+ value.id_rig +'" alt="">' +
+                        '<tr class="'+online_class+'">' +
+                            '<td><strong>' + value.nom_rig +'</strong></td>' +
+                            '<td>' + value.nb_gpu + value.type_gpu + '</td>' +
+                            '<td>' + value.mine_time + '</td>' +
+                            '<td>' + value.total_hash +' '+ value.hash_unit +'</td>' +
+                            '<td>' + value.total_pw + 'W</td>' +
+                        '</tr>' +
+                    '</a>'
                 );
 
                 tt_pw += parseFloat(value.total_pw)

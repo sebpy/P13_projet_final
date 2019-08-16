@@ -190,6 +190,26 @@
     right: 0;
 }
 
-.rigs-table {
-    font-size:15px;
+.table-index, th, td {
+    padding: 5px !important;
+}
+
+.graph-hash {
+    padding: 10px;
+    border: solid 2px blueviolet;
+}
+
+.graph-pw {
+    padding: 10px;
+    border: solid 2px blueviolet;
+}
+
+.list-rig {
+    max-height: 580px;
+    overflow: hidden;
+}
+
+.events {
+    max-height: 580px;
+    overflow: hidden;
 }

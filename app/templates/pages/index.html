@@ -31,13 +31,14 @@
             </div>
             <div class="blocks_left col-lg-10">
                 <div class="row row-sm">
-                    <legend>Status</legend>
                     {% if type == '0' %}
+                    <legend>Status</legend>
                         <div class="row" id="row" ></div>
                     {% else %}
-                    <div class="col-lg-6">
-                      <table class="table">
-                        <thead class="thead-dark">
+                    <div class="col-lg-6 list-rigs">
+                      <legend>Status</legend>
+                      <table class="table table-index">
+                        <thead class="thead-light">
                           <tr>
                             <th>Nom rig</th>
                             <th>Nombre Gpu</th>
@@ -49,9 +50,10 @@
                         <tbody id="rigs"></tbody>
                       </table>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 events">
+                      <legend>Événement </legend>
                       <table class="table">
-                        <thead class="thead-dark">
+                        <thead class="thead-light">
                           <tr>
                             <th>#ID</th>
                             <th>Nom rig</th>
@@ -61,15 +63,20 @@
                         <tbody id="events"></tbody>
                       </table>
                     </div>
-                    </div>
-                    <div class="row row-sm">
-                        <div class="col-lg-6">
+                </div>
+                <div class="row row-sm">
+                    <div class="col-lg-6">
+                        <div class="col-lg-12 graph-hash">
                             graph hash
                         </div>
-                        <div class="col-lg-6">
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="col-lg-12 graph-pw">
                             graph pw
                         </div>
                     </div>
+                </div>
                     {% endif %}
                 </div>
             </div>
