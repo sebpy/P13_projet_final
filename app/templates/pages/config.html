@@ -24,11 +24,15 @@
                       {% endif %}
                     {% endwith %}
                     <div class="form-group">
-                      <label for="api_key">Clé API : </label>
+                      <label for="api_key">Clé API :
+                          <a data-toggle="tooltip" data-placement="bottom" title="Entrer la clé API fournis dans les paramétres de compte du Rigcenter"><i class="fas fa-question-circle"></i></a>
+                      </label>
                       <input id="api_key" name="api_key" type="text" class="form-control" value="{{ API_KEY }}" placeholder="Clé API EMOS..." required>
                     </div>
                     <div class="form-group">
-                      <label for="type">Affichage index : </label>
+                      <label for="type">Affichage index :
+                          <a data-toggle="tooltip" data-placement="bottom" title="Sélectionnez le mode d'affichage de la page principale"><i class="fas fa-question-circle"></i></a>
+                      </label>
                       <select id="type" name="type" class="form-control">
                         <option value="0" {% if type=="0" %} selected="selected"{% endif %}>Blocks</option>
                         <option value="1" {% if type=="1" %} selected="selected"{% endif %}>Liste</option>
@@ -37,8 +41,7 @@
 
                     <div class="form-group">
                         <label for="type">Durée rétention statistiques:
-                            <i class="fas fa-question-circle"></i>
-                            <span>Définis le temps pour le calcul de disponibinité</span>
+                            <a data-toggle="tooltip" data-placement="bottom" title="Définis le temps pour le calcul de disponibinité"><i class="fas fa-question-circle"></i></a>
                         </label>
                       <select id="range" name="range" class="form-control">
                         <option value="10080" {% if day=='10080' %} selected="selected"{% endif %}>7 jours </option>
@@ -49,7 +52,9 @@
 
                 </div>
                 <div class="col-lg-2 cfg_show_block">
-                  <legend>Affichage blocks</legend>
+                  <legend>Affichage blocks
+                      <a data-toggle="tooltip" data-placement="bottom" title="Sélectionnez les block à afficher sur la page principale"><i class="fas fa-question-circle"></i></a>
+                  </legend>
                      <div class="custom-control custom-checkbox">
                        <input type="checkbox" class="custom-control-input" id="nbgpu" name="nbgpu" {{ nbgpu }} >
                        <label class="custom-control-label" for="nbgpu">Afficher le block nombre de GPUs</label>

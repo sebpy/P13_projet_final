@@ -196,12 +196,12 @@
 
 .graph-hash {
     padding: 10px;
-    border: solid 2px blueviolet;
+    border: 2px solid rgba(0, 0, 0, 0.125)
 }
 
 .graph-pw {
     padding: 10px;
-    border: solid 2px blueviolet;
+    border: 2px solid rgba(0, 0, 0, 0.125)
 }
 
 .list-rig {

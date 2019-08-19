@@ -36,17 +36,18 @@ class StatsRigs(db.Model):
     model_gpu = db.Column(db.String(200))
     temp_gpu = db.Column(db.String(8))
     fan_gpu = db.Column(db.String(8))
-    hash_gpu = db.Column(db.String(8))
-    pw_gpu = db.Column(db.String(8))
+    hash_gpu = db.Column(db.DECIMAL(5, 2))
+    pw_gpu = db.Column(db.DECIMAL(5, 2))
     oc_mem = db.Column(db.String(5))
     oc_core = db.Column(db.String(5))
     vddc = db.Column(db.String(5))
     mem_freq = db.Column(db.String(5))
     core_freq = db.Column(db.String(5))
+    created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     date_time = db.Column(db.Integer, nullable=False)
 
     def __init__(self, id_rig, id_gpu, model_gpu, temp_gpu, fan_gpu, hash_gpu, pw_gpu, oc_mem,
-                 oc_core, vddc, mem_freq, core_freq, date_time):
+                 oc_core, vddc, mem_freq, core_freq, created_date, date_time):
         self.id_rig = id_rig
         self.id_gpu = id_gpu
         self.model_gpu = model_gpu
@@ -59,6 +60,7 @@ class StatsRigs(db.Model):
         self.vddc = vddc
         self.mem_freq = mem_freq
         self.core_freq = core_freq
+        self.created_date = created_date
         self.date_time = date_time
 
 
@@ -89,7 +91,7 @@ class ConfBlock(db.Model):
         self.first = first  # First connexion => Config page
 
 
-class notifications(db.Model):
+class Notifications(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nom_rig = db.Column(db.String(20))
     created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)

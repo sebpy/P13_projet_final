@@ -5,7 +5,8 @@
 
 import json
 import requests
-import datetime
+from sqlalchemy.sql import func, desc
+from datetime import datetime as dt
 
 from app.models import *
 
@@ -128,10 +129,11 @@ class Statistics:
                     for stat in contents:
                         while i < int(v['nb_gpu']):
                             gpu = str(i)
-                            stats = StatsRigs(mac_rig, v['model_gpu'][gpu], v['hashrate'][gpu], v['temperature'][gpu],
-                                              v['fans'][gpu], v['pw'][gpu], v['pw'][gpu], v['oc_mem'][gpu],
+                            stats = StatsRigs(mac_rig, i, v['model_gpu'][gpu], v['hashrate'][gpu], v['temperature'][gpu],
+                                              v['fans'][gpu], v['pw'][gpu], v['oc_mem'][gpu],
                                               v['oc_core'][gpu], v['undervolt'][gpu], v['mem_freq'][gpu],
-                                              v['core_freq'][gpu], datetime.datetime.now().timestamp())
+                                              v['core_freq'][gpu], datetime.datetime.now(),
+                                              datetime.datetime.now().timestamp())
 
                             db.session.add(stats)
                             db.session.commit()
@@ -139,6 +141,18 @@ class Statistics:
                             i += 1
                             if i == v['nb_gpu']:
                                 i = 0
+
+    def graph_pw(self):
+        """ Get stats for graph pw and power """
+
+        qry = db.session.query(func.sum(StatsRigs.pw_gpu).label('total_pw'), StatsRigs.created_date)
+        qry = qry.group_by(func.strftime("%Y-%m-%d %H-%m-%s", StatsRigs.created_date))
+        items = []
+        for res in qry.all():
+            items.append({'date': str(res.created_date.replace(microsecond=0)),
+                          'total_pw': str(res.total_pw),
+                          })
+        return items
 
     def delete_old_stats(self):
         """ Delete stats after 30 days """

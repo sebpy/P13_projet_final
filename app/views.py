@@ -84,6 +84,14 @@ def answer():
     return jsonify(api_resp)
 
 
+@app.route('/_graph', methods=['GET'])
+def graph():
+    stats = Statistics()
+    stats_pw = stats.graph_pw()
+
+    return jsonify(stats_pw)
+
+
 @app.route("/_save_conf", methods=["GET", "POST"])
 def save_conf():
 

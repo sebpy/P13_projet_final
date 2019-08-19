@@ -36,7 +36,7 @@ $( document ).ready(function() {
             if(cfgBlock[0].cfg_uptime == 0){
                 show_uptime = "hidden_block";
             }
-            if(cfgBlock[0].cfg_mineTime == 0){
+            if(cfgBlock[0].cfg_mine_time == 0){
                 show_minetime = "hidden_block";
             }
 
@@ -125,7 +125,7 @@ setInterval(function(){
             if(cfgBlock[0].cfg_uptime == 0){
                 show_uptime = "hidden_block";
             }
-            if(cfgBlock[0].cfg_mineTime == 0){
+            if(cfgBlock[0].cfg_mine_time == 0){
                 show_minetime = "hidden_block";
             }
 
