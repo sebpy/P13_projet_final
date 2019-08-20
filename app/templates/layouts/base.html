@@ -22,13 +22,14 @@
 
 </body>
     {% include 'layouts/partials/_footer.html'%}
-       <script src="https://www.amcharts.com/lib/4/core.js"></script>
-       <script src="https://www.amcharts.com/lib/4/charts.js"></script>
-       <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
         {% if type == '0' %}
             <script src="{{ url_for('static', filename='js/app-block.js') }}"></script>
         {% else %}
+            <script src="https://www.amcharts.com/lib/4/core.js"></script>
+            <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+            <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
             <script src="{{ url_for('static', filename='js/app-list.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/charts_pw.js') }}"></script>
     {% endif %}
 </html>

@@ -21,6 +21,8 @@ class Statistics:
         self.conf_full = ""
         self.json = ""
         self.show_nbgpu = "1"
+        self.valid_json = ""
+        self.stats_gpu = ""
 
     def read_full_conf(self):
         """ Read configuration """
@@ -43,6 +45,93 @@ class Statistics:
 
         return self.conf_full
 
+    def get_status(self, datas):
+        """ Récupére les statistique de l'api EMOS """
+
+        get_stats = "https://rigcenter.easy-mining-os.com/api/" + datas[0]["cfg_api_key"]
+        response = requests.get(get_stats)
+        result = json.loads(response.text)
+
+        if result != "":
+            try:
+                self.valid_json = result['0']['nom_rig']
+            except KeyError:
+                return "Pas de rigs existant"
+
+            self.get_stats = result
+
+            return self.get_stats
+
+        else:
+            return 'Pas de rigs existant'
+
+    def list_rigs(self, data):
+        """ Verifie si l'id du rig est deja en base de donnée et l'ajoute s'il n'existe pas """
+
+        contents = Rigs.query.all()
+        for (k, v) in data.items():
+            mac_rig = v['mac'][5:].replace(':', '')  # generate rig_id
+            if not contents:
+                rig = Rigs(v['nom_rig'], mac_rig, v['nb_gpu'], v['type_gpu'],
+                           v['total_hash'], v['total_pw'], v['uptime'], v['mine_time'], v['hash_unit'],
+                           v['online'])
+
+                db.session.add(rig)
+                db.session.commit()
+                #print('Record was successfully added')
+
+            else:
+                idrig_exist = Rigs.query.filter(Rigs.id_rig == mac_rig).count()
+                if not idrig_exist:
+                    for ruche in contents:
+                        rig = Rigs(v['nom_rig'], mac_rig, v['nb_gpu'], v['type_gpu'],
+                                   v['total_hash'], v['total_pw'], v['uptime'], v['mine_time'], v['hash_unit'],
+                                   v['online'])
+
+                        db.session.add(rig)
+                        db.session.commit()
+                        #print('Record was successfully added')
+                else:
+                    i = 0
+                    for stat in contents:
+                        while i < int(v['nb_gpu']):
+                            gpu = str(i)
+                            stats = StatsRigs(mac_rig, i, v['model_gpu'][gpu], v['hashrate'][gpu], v['hash_unit'][gpu],
+                                              v['temperature'][gpu], v['fans'][gpu], v['pw'][gpu], v['oc_mem'][gpu],
+                                              v['oc_core'][gpu], v['undervolt'][gpu], v['mem_freq'][gpu],
+                                              v['core_freq'][gpu], v['online'][gpu], datetime.datetime.now(),
+                                              datetime.datetime.now().timestamp())
+
+                            db.session.add(stats)
+                            db.session.commit()
+                            #print('Record was successfully added')
+                            i += 1
+                            if i == v['nb_gpu']:
+                                i = 0
+
+    def read_stats(self):
+        """ Read rigs statistiques """
+        self.stats_gpu = StatsRigs.query.all()
+        return self.stats_gpu
+
+    def show_all_rigs_stats(self, cfg_data):
+        list_of_rig = Rigs.query.all()
+        items = []
+        for rig in list_of_rig:
+            items.append({'nom_rig': rig.nom_rig,
+                          'nb_gpu': rig.nb_gpu,
+                          'gpu_type': rig.gpu_type,
+                          'total_hash': rig.total_hash,
+                          'total_pw': rig.total_pw,
+                          'uptime': rig.uptime,
+                          'mine_time': rig.mine_time,
+                          'hash_unit': rig.hash_unit,
+                          'online': rig.online,
+                          })
+
+        self.json = {'stats': items, 'cfg': cfg_data[0]["cfg_type"], 'availability': self.availability_total()}
+        return self.json
+
     def availability_total(self):
         """ Calculation of the availability rate """
 
@@ -59,88 +148,6 @@ class Statistics:
             else:
                 availability = round(((real_time / total_time) * 100), 2)
         return availability
-
-    @staticmethod
-    def read_stats():
-        """ Read rigs statistiques """
-        stats_gpu = StatsRigs.query.all()
-        return stats_gpu
-
-    def get_status(self, datas):
-        """ Récupére les statistique de l'api EMOS """
-
-        date = datetime.datetime.now()
-        self.annee = date.year
-        get_stats = "https://rigcenter.easy-mining-os.com/api/" + datas[0]["cfg_api_key"]
-        response = requests.get(get_stats)
-        result = json.loads(response.text)
-
-        items = []
-        for cfg in datas:
-            items.append({'cfg_nb_gpu': cfg["cfg_nb_gpu"],
-                          'cfg_total_hash': cfg["cfg_total_hash"],
-                          'cfg_totalpw': cfg["cfg_total_pw"],
-                          'cfg_uptime': cfg["cfg_uptime"],
-                          'cfg_mine_time': cfg["cfg_mine_time"],
-                          'cfg_type': cfg["cfg_type"],
-                          })
-
-        self.get_stats = result
-        if self.get_stats != "":
-
-            #try:
-            #    self.get_stats = result[0]['NomRig']
-            #except KeyError:
-            #    return "Pas de rigs existant"
-            self.json = {'stats': self.get_stats, 'cfg': items, 'availability': self.availability_total()}
-
-            return self.json
-
-        else:
-            return 'Pas de rigs existant'
-
-    @staticmethod
-    def list_rigs(data):
-        """ Verifie si l'id du rig est deja en base de donnée et l'ajoute s'il n'existe pas """
-
-        contents = Rigs.query.all()
-        for (k, v) in data['stats'].items():
-            mac_rig = v['mac'][5:].replace(':', '')  # generate rig_id
-            if not contents:
-                rig = Rigs(v['nom_rig'], mac_rig, v['nb_gpu'], v['type_gpu'],
-                           v['total_hash'], v['total_pw'], v['uptime'], v['mine_time'])
-
-                db.session.add(rig)
-                db.session.commit()
-                #print('Record was successfully added')
-
-            else:
-                idrig_exist = Rigs.query.filter(Rigs.id_rig == mac_rig).count()
-                if not idrig_exist:
-                    for ruche in contents:
-                        rig = Rigs(v['nom_rig'], mac_rig, v['nb_gpu'], v['type_gpu'],
-                                   v['total_hash'], v['total_pw'], v['uptime'], v['mine_time'])
-
-                        db.session.add(rig)
-                        db.session.commit()
-                        #print('Record was successfully added')
-                else:
-                    i = 0
-                    for stat in contents:
-                        while i < int(v['nb_gpu']):
-                            gpu = str(i)
-                            stats = StatsRigs(mac_rig, i, v['model_gpu'][gpu], v['hashrate'][gpu], v['temperature'][gpu],
-                                              v['fans'][gpu], v['pw'][gpu], v['oc_mem'][gpu],
-                                              v['oc_core'][gpu], v['undervolt'][gpu], v['mem_freq'][gpu],
-                                              v['core_freq'][gpu], datetime.datetime.now(),
-                                              datetime.datetime.now().timestamp())
-
-                            db.session.add(stats)
-                            db.session.commit()
-                            #print('Record was successfully added')
-                            i += 1
-                            if i == v['nb_gpu']:
-                                i = 0
 
     def graph_pw(self):
         """ Get stats for graph pw and power """

@@ -79,7 +79,7 @@ def config():
 def answer():
     api_answer = Statistics()
     cfg_full = api_answer.read_full_conf()
-    api_resp = api_answer.get_status(cfg_full)
+    api_resp = api_answer.show_all_rigs_stats(cfg_full)
 
     return jsonify(api_resp)
 

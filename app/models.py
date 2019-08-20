@@ -17,8 +17,10 @@ class Rigs(db.Model):
     total_pw = db.Column(db.String(8))
     uptime = db.Column(db.String(30))
     mine_time = db.Column(db.String(30))
+    hash_unit = db.Column(db.String(10))
+    online = db.Column(db.Enum('0', '1'), nullable=False)
 
-    def __init__(self, nom_rig, id_rig, nb_gpu, gpu_type, total_hash, total_pw, uptime, mine_time):
+    def __init__(self, nom_rig, id_rig, nb_gpu, gpu_type, total_hash, total_pw, uptime, mine_time, hash_unit, online):
         self.nom_rig = nom_rig
         self.id_rig = id_rig
         self.nb_gpu = nb_gpu
@@ -27,6 +29,8 @@ class Rigs(db.Model):
         self.total_pw = total_pw
         self.uptime = uptime
         self.mine_time = mine_time
+        self.hash_unit = hash_unit
+        self.online = online
 
 
 class StatsRigs(db.Model):
@@ -37,29 +41,33 @@ class StatsRigs(db.Model):
     temp_gpu = db.Column(db.String(8))
     fan_gpu = db.Column(db.String(8))
     hash_gpu = db.Column(db.DECIMAL(5, 2))
+    hash_unit = db.Column(db.String(10))
     pw_gpu = db.Column(db.DECIMAL(5, 2))
     oc_mem = db.Column(db.String(5))
     oc_core = db.Column(db.String(5))
     vddc = db.Column(db.String(5))
     mem_freq = db.Column(db.String(5))
     core_freq = db.Column(db.String(5))
+    online = db.Column(db.Enum('0', '1'), nullable=False)
     created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     date_time = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, id_rig, id_gpu, model_gpu, temp_gpu, fan_gpu, hash_gpu, pw_gpu, oc_mem,
-                 oc_core, vddc, mem_freq, core_freq, created_date, date_time):
+    def __init__(self, id_rig, id_gpu, model_gpu, temp_gpu, fan_gpu, hash_gpu, hash_unit, pw_gpu, oc_mem,
+                 oc_core, vddc, mem_freq, core_freq, online, created_date, date_time):
         self.id_rig = id_rig
         self.id_gpu = id_gpu
         self.model_gpu = model_gpu
         self.temp_gpu = temp_gpu
         self.fan_gpu = fan_gpu
         self.hash_gpu = hash_gpu
+        self.hash_unit = hash_unit
         self.pw_gpu = pw_gpu
         self.oc_mem = oc_mem
         self.oc_core = oc_core
         self.vddc = vddc
         self.mem_freq = mem_freq
         self.core_freq = core_freq
+        self.online = online
         self.created_date = created_date
         self.date_time = date_time
 
