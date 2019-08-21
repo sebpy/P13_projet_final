@@ -23,6 +23,7 @@ class Statistics:
         self.show_nbgpu = "1"
         self.valid_json = ""
         self.stats_gpu = ""
+        self.now = datetime.datetime.now()
 
     def read_full_conf(self):
         """ Read configuration """
@@ -92,14 +93,15 @@ class Statistics:
                         db.session.commit()
                         #print('Record was successfully added')
                 else:
+
                     i = 0
                     for stat in contents:
                         while i < int(v['nb_gpu']):
                             gpu = str(i)
-                            stats = StatsRigs(mac_rig, i, v['model_gpu'][gpu], v['hashrate'][gpu], v['hash_unit'][gpu],
+                            stats = StatsRigs(mac_rig, i, v['model_gpu'][gpu], v['hashrate'][gpu],
                                               v['temperature'][gpu], v['fans'][gpu], v['pw'][gpu], v['oc_mem'][gpu],
                                               v['oc_core'][gpu], v['undervolt'][gpu], v['mem_freq'][gpu],
-                                              v['core_freq'][gpu], v['online'][gpu], datetime.datetime.now(),
+                                              v['core_freq'][gpu], self.now,
                                               datetime.datetime.now().timestamp())
 
                             db.session.add(stats)
@@ -108,6 +110,23 @@ class Statistics:
                             i += 1
                             if i == v['nb_gpu']:
                                 i = 0
+
+    def update_stats_rig(self, data):
+        """ Update status rigs """
+        for (k, v) in data.items():
+            mac_rig = v['mac'][5:].replace(':', '')  # generate rig_id
+            rig = Rigs.query.filter_by(id_rig=mac_rig).first()
+            rig.nom_rig = v['nom_rig']
+            rig.nb_gpu = v['nb_gpu']
+            rig.type_gpu = v['type_gpu']
+            rig.total_hash = v['total_hash']
+            rig.total_px = v['total_pw']
+            rig.uptime = v['uptime']
+            rig.mine_time = v['mine_time']
+            rig.hash_unit = v['hash_unit']
+            rig.online = str(v['online'])
+
+            db.session.commit()
 
     def read_stats(self):
         """ Read rigs statistiques """
@@ -140,7 +159,7 @@ class Statistics:
             availability = 0.00
 
         else:
-            minutes = int(self.conf_full[0]['cfg_range'])  # 30 jours
+            minutes = int(self.conf_full[0]['cfg_range'])  # 30 day
             total_time = (minutes * nb_rigs)  # total minutes for 100%
             real_time = round(StatsRigs.query.count() / nb_rigs, 2)  # total minutes in db
             if not real_time:
@@ -160,6 +179,15 @@ class Statistics:
                           'total_pw': str(res.total_pw),
                           })
         return items
+
+    def events(self, data_json):
+        """ Insert in Notifications all events """
+        for (k, v) in data_json.items():
+            if v['online'] == '0':
+                event = Notifications(v['nom_rig'], v['id_rig'], self.now)
+
+                db.session.add(event)
+                db.session.commit()
 
     def delete_old_stats(self):
         """ Delete stats after 30 days """
