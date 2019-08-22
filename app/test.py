@@ -3,6 +3,6 @@
 
 from app.models import *
 
-
-nb_rigs = Notifications.query.count()
-print(nb_rigs)
+nb_rigs = Rigs.query.all()
+for on in nb_rigs:
+    print(on.online)

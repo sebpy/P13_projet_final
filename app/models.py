@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 import logging as lg
-import datetime
+import datetime, enum
 
 from app.views import app
 # Create database connection object
@@ -18,7 +18,7 @@ class Rigs(db.Model):
     uptime = db.Column(db.String(30))
     mine_time = db.Column(db.String(30))
     hash_unit = db.Column(db.String(10))
-    online = db.Column(db.Enum('0', '1'), nullable=False)
+    online = db.Column(db.String(1), nullable=False)
 
     def __init__(self, nom_rig, id_rig, nb_gpu, gpu_type, total_hash, total_pw, uptime, mine_time, hash_unit, online):
         self.nom_rig = nom_rig
@@ -101,10 +101,10 @@ class Notifications(db.Model):
     id_rig = db.Column(db.String(8))
     created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
-    def __init__(self, nom_rig, create_at, id_rig):
+    def __init__(self, nom_rig, id_rig, created_date):
         self.nom_rig = nom_rig
         self.id_rig = id_rig
-        self.create_at = create_at
+        self.created_date = created_date
 
 
 def init_db():

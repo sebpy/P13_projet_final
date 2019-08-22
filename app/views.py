@@ -92,6 +92,14 @@ def graph():
     return jsonify(stats_pw)
 
 
+@app.route('/_events', methods=['GET'])
+def events():
+    stats = Statistics()
+    events = stats.events_read()
+
+    return jsonify(events)
+
+
 @app.route("/_save_conf", methods=["GET", "POST"])
 def save_conf():
 

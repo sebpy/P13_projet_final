@@ -23,6 +23,7 @@ class Statistics:
         self.show_nbgpu = "1"
         self.valid_json = ""
         self.stats_gpu = ""
+        self.events = ""
         self.now = datetime.datetime.now()
 
     def read_full_conf(self):
@@ -120,11 +121,11 @@ class Statistics:
             rig.nb_gpu = v['nb_gpu']
             rig.type_gpu = v['type_gpu']
             rig.total_hash = v['total_hash']
-            rig.total_px = v['total_pw']
+            rig.total_pw = v['total_pw']
             rig.uptime = v['uptime']
             rig.mine_time = v['mine_time']
             rig.hash_unit = v['hash_unit']
-            rig.online = str(v['online'])
+            rig.online = v['online']
 
             db.session.commit()
 
@@ -148,7 +149,7 @@ class Statistics:
                           'online': rig.online,
                           })
 
-        self.json = {'stats': items, 'cfg': cfg_data[0]["cfg_type"], 'availability': self.availability_total()}
+        self.json = {'stats': items, 'cfg': cfg_data, 'availability': self.availability_total()}
         return self.json
 
     def availability_total(self):
@@ -180,14 +181,27 @@ class Statistics:
                           })
         return items
 
-    def events(self, data_json):
+    def events_save(self, data_json):
         """ Insert in Notifications all events """
         for (k, v) in data_json.items():
+            mac_rig = v['mac'][5:].replace(':', '')  # generate rig_id
             if v['online'] == '0':
-                event = Notifications(v['nom_rig'], v['id_rig'], self.now)
+                event = Notifications(v['nom_rig'], mac_rig, self.now)
 
                 db.session.add(event)
                 db.session.commit()
+
+    def events_read(self):
+        """ Read all events in Notifications """
+        list_of_events = Notifications.query.all()
+        items = []
+        for eve in list_of_events:
+            items.append({'nom_rig': eve.nom_rig,
+                          'create_at': eve.created_date,
+                          })
+
+        self.events = items
+        return self.events
 
     def delete_old_stats(self):
         """ Delete stats after 30 days """
