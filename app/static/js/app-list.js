@@ -30,7 +30,7 @@ function stats_list() {
                         '<tr class="'+online_class+'" style="cursor:pointer" onclick="alert(\'ok\')">' +
                             '<td><strong>' + value.nom_rig +'</strong></td>' +
                             '<td>' + value.nb_gpu + ' ' + value.gpu_type + '</td>' +
-                            '<td>' + value.mine_time + '</td>' +
+                            '<td>' + value.uptime + '</td>' +
                             '<td>' + value.total_hash +' '+ value.hash_unit +'</td>' +
                             '<td>' + value.total_pw + 'W</td>' +
                         '</tr>' +

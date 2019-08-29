@@ -100,11 +100,13 @@ class Notifications(db.Model):
     nom_rig = db.Column(db.String(20))
     id_rig = db.Column(db.String(8))
     created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    date_time = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, nom_rig, id_rig, created_date):
+    def __init__(self, nom_rig, id_rig, created_date, date_time):
         self.nom_rig = nom_rig
         self.id_rig = id_rig
         self.created_date = created_date
+        self.date_time = date_time
 
 
 def init_db():

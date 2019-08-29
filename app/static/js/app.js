@@ -30,7 +30,7 @@ function events_list() {
                 $('#events').append(
                     '' +
                         '<tr class="'+online_class+'" style="cursor:pointer" onclick="alert(\'ok\')">' +
-                            '<td><strong>' + id_event +'</strong></td>' +
+                            '<td><strong>' + value.id +'</strong></td>' +
                             '<td><strong>' + value.nom_rig +'</strong></td>' +
                             '<td>' + rig_status + '</td>' +
                             '<td>' + value.create_at + '</td>' +

@@ -186,17 +186,18 @@ class Statistics:
         for (k, v) in data_json.items():
             mac_rig = v['mac'][5:].replace(':', '')  # generate rig_id
             if v['online'] == '0':
-                event = Notifications(v['nom_rig'], mac_rig, self.now)
+                event = Notifications(v['nom_rig'], mac_rig, self.now, datetime.datetime.now().timestamp())
 
                 db.session.add(event)
                 db.session.commit()
 
     def events_read(self):
         """ Read all events in Notifications """
-        list_of_events = Notifications.query.all()
+        list_of_events = Notifications.query.order_by(desc(Notifications.id)).limit(13)
         items = []
         for eve in list_of_events:
-            items.append({'nom_rig': eve.nom_rig,
+            items.append({'id': eve.id,
+                          'nom_rig': eve.nom_rig,
                           'create_at': eve.created_date,
                           })
 
@@ -207,7 +208,9 @@ class Statistics:
         """ Delete stats after 30 days """
         secondes = int(self.conf_full[0]['cfg_range']) * 60
         date = int(round(datetime.datetime.now().timestamp()))
-        StatsRigs.query.filter(StatsRigs.date_time + secondes < date).delete()  # 259200 // 30 jours
+        StatsRigs.query.filter(StatsRigs.date_time + secondes < date).delete()
+        Notifications.query.filter(Notifications.date_time + secondes < date).delete()
+
         db.session.commit()
         #stat_gpu = StatsRigs.query.filter(StatsRigs.date_time + 7200 < date).count()
         #print(secondes)
