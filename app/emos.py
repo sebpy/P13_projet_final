@@ -94,22 +94,24 @@ class Statistics:
                         db.session.commit()
                         #print('Record was successfully added')
                 else:
-                    i = 0
-                    for stat in contents:
-                        while i < int(v['nb_gpu']):
-                            gpu = str(i)
-                            stats = StatsRigs(mac_rig, i, v['model_gpu'][gpu], v['hashrate'][gpu],
-                                              v['temperature'][gpu], v['fans'][gpu], v['pw'][gpu], v['oc_mem'][gpu],
-                                              v['oc_core'][gpu], v['undervolt'][gpu], v['mem_freq'][gpu],
-                                              v['core_freq'][gpu], self.now,
-                                              datetime.datetime.now().timestamp())
+                    if v['online'] == '1':
+                        i = 0
+                        for stat in contents:
+                            while i < int(v['nb_gpu']):
+                                gpu = str(i)
+                                stats = StatsRigs(mac_rig, i, v['model_gpu'][gpu], v['hashrate'][gpu],
+                                                  v['temperature'][gpu], v['fans'][gpu], v['pw'][gpu], v['oc_mem'][gpu],
+                                                  v['oc_core'][gpu], v['undervolt'][gpu], v['mem_freq'][gpu],
+                                                  v['core_freq'][gpu], self.now,
+                                                  datetime.datetime.now().timestamp())
 
-                            db.session.add(stats)
-                            db.session.commit()
-                            #print('Record was successfully added')
-                            i += 1
-                            if i == v['nb_gpu']:
-                                i = 0
+                                db.session.add(stats)
+                                db.session.commit()
+                                #print('Record was successfully added')
+
+                                i += 1
+                                if i == v['nb_gpu']:
+                                    i = 0
 
     def update_stats_rig(self, data):
         """ Update status rigs """
