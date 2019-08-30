@@ -94,7 +94,6 @@ class Statistics:
                         db.session.commit()
                         #print('Record was successfully added')
                 else:
-
                     i = 0
                     for stat in contents:
                         while i < int(v['nb_gpu']):
@@ -186,14 +185,18 @@ class Statistics:
         for (k, v) in data_json.items():
             mac_rig = v['mac'][5:].replace(':', '')  # generate rig_id
             if v['online'] == '0':
-                event = Notifications(v['nom_rig'], mac_rig, self.now, datetime.datetime.now().timestamp())
+                off_rig = Notifications.query.filter(Notifications.id_rig == mac_rig,
+                                                     Notifications.event == 'offline').first()
+                if not off_rig:
+                    event = Notifications(v['nom_rig'], mac_rig, 'offline', self.now,
+                                          datetime.datetime.now().timestamp())
 
-                db.session.add(event)
-                db.session.commit()
+                    db.session.add(event)
+                    db.session.commit()
 
     def events_read(self):
         """ Read all events in Notifications """
-        list_of_events = Notifications.query.order_by(desc(Notifications.id)).limit(13)
+        list_of_events = Notifications.query.order_by(desc(Notifications.id)).limit(15)
         items = []
         for eve in list_of_events:
             items.append({'id': eve.id,
@@ -219,6 +222,6 @@ class Statistics:
 if __name__ == '__main__':
     st = Statistics()
     #st.delete_old_stats()
-    read = st.read_full_conf()
-    st.availability_total()
+    read = st.graph_pw()
+
 

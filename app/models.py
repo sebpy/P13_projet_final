@@ -40,8 +40,8 @@ class StatsRigs(db.Model):
     model_gpu = db.Column(db.String(200))
     temp_gpu = db.Column(db.String(8))
     fan_gpu = db.Column(db.String(8))
-    hash_gpu = db.Column(db.DECIMAL(5, 2))
-    pw_gpu = db.Column(db.DECIMAL(5, 2))
+    hash_gpu = db.Column(db.Numeric(5, 2))
+    pw_gpu = db.Column(db.Numeric(5, 2))
     oc_mem = db.Column(db.String(5))
     oc_core = db.Column(db.String(5))
     vddc = db.Column(db.String(5))
@@ -99,12 +99,14 @@ class Notifications(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nom_rig = db.Column(db.String(20))
     id_rig = db.Column(db.String(8))
+    event = db.Column(db.String(50))
     created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     date_time = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, nom_rig, id_rig, created_date, date_time):
+    def __init__(self, nom_rig, id_rig, event, created_date, date_time):
         self.nom_rig = nom_rig
         self.id_rig = id_rig
+        self.event = event
         self.created_date = created_date
         self.date_time = date_time
 

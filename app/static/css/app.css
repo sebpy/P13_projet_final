@@ -1,3 +1,7 @@
+body {
+    background-color:#F4F7FA !important;
+}
+
 .header {
   background-color: #424242;
   color: #444;
@@ -62,6 +66,7 @@
 
 .container-fluid {
     margin-top: 15px;
+    background-color: #F4F7FA;
 }
 
 .row {
@@ -180,6 +185,10 @@
   margin-bottom: 30px;
 }
 
+.hight-20 {
+    height:20px;
+}
+
 .cfg_show_block {
     border-left: 1px solid rgba(0, 0, 0, 0.125);
     padding: 10px;
@@ -212,4 +221,8 @@
 .events {
     max-height: 580px;
     overflow: hidden;
+}
+
+.nav-row {
+    height:20px;
 }
