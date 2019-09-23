@@ -102,13 +102,15 @@ class Notifications(db.Model):
     event = db.Column(db.String(50))
     created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     date_time = db.Column(db.Integer, nullable=False)
+    valid = db.Column(db.String(8))
 
-    def __init__(self, nom_rig, id_rig, event, created_date, date_time):
+    def __init__(self, nom_rig, id_rig, event, created_date, date_time, valid):
         self.nom_rig = nom_rig
         self.id_rig = id_rig
         self.event = event
         self.created_date = created_date
         self.date_time = date_time
+        self.valid = valid
 
 
 def init_db():
