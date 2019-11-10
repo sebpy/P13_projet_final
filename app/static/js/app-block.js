@@ -40,13 +40,6 @@ function stats_block() {
                 show_minetime = "hidden_block";
             }
 
-            if(parseInt(nb_rig) < 24){
-                col_style = "col-sx-3 col-md-2";
-            }
-            else {
-                col_style = "block-small";
-            }
-
             $('#row').empty();
             $.each( stats, function( key, value ) {
                 if ( value.online == "1") {
@@ -59,9 +52,9 @@ function stats_block() {
                 }
 
                 $('#row').append(
-                      '<div class="'+ col_style +'">' +
+                      '<div class="col-sx-3 col-md-2">' +
                           '<div class="'+ rig_card +' col-lg-12">' +
-                              '<span style="font-size: 15px;"><strong>'+ value.nom_rig +'</strong></span><br>' +
+                              '<strong>'+ value.nom_rig +'</strong><br>' +
                               '<span class="'+show_nbgpu+'">GPUs: <strong>'+ value.nb_gpu +' '+ value.gpu_type +'</strong><br></span>' +
                               '<span class="'+show_uptime+'">'+uptime_rig +': <strong>'+ value.uptime.substring(0,10) +'</strong><br></span>' +
                               '<span class="'+show_minetime+'">Miner up: <strong>'+ value.mine_time +'</strong><br></span>' +

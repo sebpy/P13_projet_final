@@ -1,25 +1,79 @@
-<header class="header">
-  <div class="row">
-      <div class="col-lg-6">
-        <div class="title"><a href="/index">EMOS LIVE</a></div>
-      </div>
+        <!-- Navigation Bar-->
+        <header id="topnav">
 
-      <div class="col-lg-6 menu">
-        <ul class="list-inline">
-          <li class="list-inline-item">
-            <a href="/config"><i class="fas fa-cogs"></i></a>
-          </li>
-          <!--<li class="list-inline-item"><a href="/index">
-            <i class="fas fa-heartbeat"></i></a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#">Menu 2</a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#">Menu 3</a>
-          </li>-->
-        </ul>
-      </div>
+            <!-- Topbar Start -->
+            <div class="navbar-custom">
+                <div class="container-fluid">
+                    <ul class="list-unstyled topnav-menu float-right mb-0">
+                        <li class="dropdown notification-list">
+                            <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <img src="{{ url_for('static', filename='images/users/user-1.png') }}" alt="user-image" class="rounded-circle">
+                                <span class="pro-user-name ml-1">
+                                    Admin <i class="mdi mdi-chevron-down"></i>
+                                </span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+                                <!-- item-->
+                                <div class="dropdown-header noti-title">
+                                    <h6 class="text-overflow m-0">Bienvenue!</h6>
+                                </div>
 
-  </div>
-</header>
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <i class="fe-user"></i>
+                                    <span>Mon compte</span>
+                                </a>
+                                <!-- item-->
+                                <a href="/config" class="dropdown-item notify-item">
+                                    <i class="fe-user"></i>
+                                    <span>Paramétres</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <i class="fe-log-out"></i>
+                                    <span>Déconnexion</span>
+                                </a>
+
+                            </div>
+                        </li>
+                    </ul>
+
+                    <!-- LOGO -->
+                    <div class="logo-box">
+                        <a href="/index" class="logo text-center">
+                            <span class="logo-lg">
+                                <img src="{{ url_for('static', filename='images/emos-live.png') }}" alt="" height="55" style="margin-top:8px;">
+                                <!-- <span class="logo-lg-text-light">UBold</span> -->
+                            </span>
+                            <span class="logo-sm">
+                                <!-- <span class="logo-sm-text-dark">U</span> -->
+                                <img src="{{ url_for('static', filename='images/logo-sm.png') }}" alt="" height="24">
+                            </span>
+                        </a>
+                    </div>
+
+                </div> <!-- end container-fluid-->
+            </div>
+            <!-- end Topbar -->
+
+            <div class="topbar-menu">
+                <div class="container-fluid">
+                    <div id="navigation">
+                        <!-- Navigation Menu-->
+                        <ul class="navigation-menu">
+
+                            <li class="has-submenu">
+                                <a href="/index"><i class="mdi mdi-view-dashboard"></i>Dashboard</a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <!-- end #navigation -->
+                </div>
+                <!-- end container -->
+            </div>
+            <!-- end navbar-custom -->
+        </header>
+        <!-- End Navigation Bar-->

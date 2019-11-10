@@ -1,43 +1,101 @@
 {% extends 'layouts/base.html' %}
 {% block body %}
-<!--The menu is handled with a list of the pages-->
 
-<div class="container-fluid">
-  <div class="row">
-    <!-- Stat global -->
-    <div class="col-lg-2">
-      <div class="card">
-        <div class="card-header">
-          <h5>Global</h5>
-        </div>
-        <div class="card-body">
-          <div class="table-responsive" style="overflow-y: scroll; height:415px;">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                RIG:
-                <span class="badge badge-primary badge-pill" id="tt_rig"></span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                GPUs
-                <span class="badge badge-primary badge-pill" id="tt_gpu"></span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Conso:
-                <span class="badge badge-danger badge-pill" id="tt_pw"></span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Disponibilité:
-                <span class="badge badge-pill average" id="availability"></span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Hors ligne:
-                <span class="badge badge-pill" id="hl_rig"></span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div> <!-- Stat global end-->
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="wrapper">
+            <div class="container-fluid">
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="alert alert-success alert-dismissible fade show save-conf" role="alert">
+                        {{ message }}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+
+                <div class="row mg-t-25">
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">RIGs</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-primary badge-pill" id="tt_rig"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">GPUs</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-primary badge-pill" id="tt_gpu"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Consommation (Watt)</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-danger badge-pill" id="tt_pw"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Disponibilité</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-pill average" id="availability"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Hors ligne</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-pill" id="hl_rig"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Alarmes</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> 8451 </h2>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- end col -->
+                </div>
+                <!-- end row -->
+
     {% if type == '0' %}
 
        <div class="col-lg-10">
@@ -47,67 +105,59 @@
 
     {% else %}
 
-    <!-- rig list -->
-    <div class="col-lg-5">
-          <div class="card">
-            <div class="card-header">
-              <h5>Status</h5>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive" style="overflow-y: scroll; height:415px;">
-                <table class="table table-index">
-                  <thead class="thead-light">
-                  <tr>
-                    <th>Nom rig</th>
-                    <th>Nombre Gpu</th>
-                    <th>Uptime</th>
-                    <th>Hash</th>
-                    <th>conso</th>
-                  </tr>
-                  </thead>
-                  <tbody id="rigs"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-    </div> <!-- Rig list end -->
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Status</h4>
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>Nom rig</th>
+                                        <th>Nombre Gpu</th>
+                                        <th>Uptime</th>
+                                        <th>Hash</th>
+                                        <th>conso</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="rigs"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
 
-    <!-- Event list -->
-    <div class="col-lg-5">
-          <div class="card">
-            <div class="card-header">
-              <h5>Événements</h5>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive" style="overflow-y: scroll; height:415px;">
-                  <table class="table">
-                    <thead class="thead-light">
-                      <tr>
-                      <th>#ID</th>
-                      <th>Nom rig</th>
-                      <th>Evénements</th>
-                      <th>Date</th>
-                    </tr>
-                    </thead>
-                    <tbody id="events"></tbody>
-                  </table>
-              </div>
-            </div>
-          </div>
-      </div> <!-- Event end -->
-    </div>
-    <div class="row mg-t-20">
-       <div class="col-lg-12">
-          <div class="card">
-           <div class="card-body">
-             <div class="col-lg-12 graph-hash">
-                <div id="chart_pw_total"></div>
-             </div>
-            </div>
-          </div>
-       </div>
+
+                    <div class="col-xl-6">
+                        <div class="card-box">
+                              <h4 class="header-title mt-0 mb-3">Événements
+                                  <button class="btn btn-success clear_events" data-toggle="modal" data-target="#modalValid">Aquitter</button>
+                              </h4>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead>
+                                    <tr>
+                                      <th>#ID</th>
+                                      <th>Nom rig</th>
+                                      <th>Evénements</th>
+                                      <th>Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="events"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                </div>
+                <!-- end row -->
     {% endif %}
-  </div>
-</div>
+            </div> <!-- end container -->
+        </div>
+        <!-- end wrapper -->
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
 
 {% endblock %}

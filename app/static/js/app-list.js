@@ -76,5 +76,5 @@ $( document ).ready(function() {
 });
 
 function reload_stats() {
-  launch_stats = setInterval(stats_list, 60000);
+  launch_stats = setInterval(stats_list, 30000);
 }

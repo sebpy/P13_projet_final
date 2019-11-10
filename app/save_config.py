@@ -4,7 +4,7 @@
 from flask import request
 from app.models import *
 
-""" Module sauvegarde configuration - EMOS-Live  """
+""" Save configuration - EMOS-Live  """
 
 
 class SaveConfig:
@@ -91,7 +91,7 @@ class SaveConfig:
         return self.show_mine_time
 
     def save_conf(self):
-        """ Methode save config """
+        """ Function save config """
 
         if request.method == "POST":
 

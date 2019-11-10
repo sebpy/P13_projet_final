@@ -6,6 +6,7 @@
 import json
 import requests
 from sqlalchemy.sql import func, desc
+from flask import request
 from datetime import datetime as dt
 
 from app.models import *
@@ -25,6 +26,7 @@ class Statistics:
         self.stats_gpu = ""
         self.events = ""
         self.now = datetime.datetime.now()
+        self.error = ""
 
     def read_full_conf(self):
         """ Read configuration """
@@ -185,20 +187,25 @@ class Statistics:
     def events_save(self, data_json):
         """ Insert in Notifications all events """
         for (k, v) in data_json.items():
+            event = ""
             mac_rig = v['mac'][5:].replace(':', '')  # generate rig_id
             if v['online'] == '0':
-                off_rig = Notifications.query.filter(Notifications.id_rig == mac_rig,
-                                                     Notifications.event == 'offline').first()
-                if not off_rig:
-                    event = Notifications(v['nom_rig'], mac_rig, 'offline', self.now,
-                                          datetime.datetime.now().timestamp())
+                #off_rig = Notifications.query.filter(Notifications.id_rig == mac_rig,
+                #                                     Notifications.event == 'offline').first()
+                #if not off_rig:
+                event = Notifications(v['nom_rig'], mac_rig, 'offline', self.now,
+                                      datetime.datetime.now().timestamp(), '0')
 
-                    db.session.add(event)
-                    db.session.commit()
+            elif v['online'] == '1':
+                event = Notifications(v['nom_rig'], mac_rig, 'offline', self.now,
+                                      datetime.datetime.now().timestamp(), '0')
+
+            db.session.add(event)
+            db.session.commit()
 
     def events_read(self):
         """ Read all events in Notifications """
-        list_of_events = Notifications.query.order_by(desc(Notifications.id)).limit(15)
+        list_of_events = Notifications.query.filter(Notifications.valid == 0).order_by(desc(Notifications.id)).limit(15)
         items = []
         for eve in list_of_events:
             items.append({'id': eve.id,
@@ -207,6 +214,7 @@ class Statistics:
                           })
 
         self.events = items
+        print(items)
         return self.events
 
     def delete_old_stats(self):
@@ -220,10 +228,19 @@ class Statistics:
         #stat_gpu = StatsRigs.query.filter(StatsRigs.date_time + 7200 < date).count()
         #print(secondes)
 
+    def discharge(self):
+        """ Discharge all events in list """
+
+        if request.method == "POST":
+            valid_events = {'valid': '1'}
+            db.session.query(Notifications).update(valid_events)
+            db.session.commit()
+
+        else:
+            return self.error
+
 
 if __name__ == '__main__':
     st = Statistics()
     #st.delete_old_stats()
-    read = st.graph_pw()
-
-
+    read = st.events_read()
