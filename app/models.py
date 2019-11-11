@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 import logging as lg
-import datetime, enum
+import datetime
+from werkzeug.security import generate_password_hash
+from flask_login import UserMixin
 
 from app.views import app
 # Create database connection object
@@ -113,10 +115,26 @@ class Notifications(db.Model):
         self.valid = valid
 
 
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
+    username = db.Column(db.String(1000), unique=True)
+    password = db.Column(db.String(100))
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
+    def get_id(self):
+        return self.id
+
+    #def get_auth_token(self):
+        #return make_secure_token(self.username, key='secret_key')
+
 def init_db():
     db.drop_all()
     db.create_all()
     db.session.add(ConfBlock('1', '1', '1', '1', '0', "", '0', '10080', '0'))
+    db.session.add(User('admin', 'emoslive'))
     #db.session.add(Rigs("EM-1060", "xxxxxxxx", "6", "NV", "123.2", "688", "6j22h30m", "6j22h30m"))
     db.session.commit()
     lg.warning('Database initialized!')

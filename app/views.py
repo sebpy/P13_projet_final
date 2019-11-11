@@ -1,19 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, jsonify, redirect, url_for, flash
+from flask import Flask, render_template, jsonify, redirect, url_for, flash, request, session, abort, Response
 from flask_moment import Moment
+from werkzeug.security import check_password_hash
+
+from flask_login import LoginManager, login_required, login_user, logout_user
 
 app = Flask(__name__)
 moment = Moment(app)
 app.config.from_object('config')
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 from app.emos import Statistics
+from app.models import User
 from app.save_config import SaveConfig
 
 
 @app.route('/')
 @app.route('/index')
+@login_required
 def index():
     stat = Statistics()
     read = stat.read_full_conf()
@@ -36,6 +43,7 @@ def about():
 
 
 @app.route('/config')
+@login_required
 def config():
     stat = Statistics()
     show_cfg = stat.read_full_conf()
@@ -118,3 +126,39 @@ def discharge():
     flash('Notifications acquittés avec succès.')
 
     return redirect(url_for('index'))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('/pages/login.html')
+    username = request.form['username']
+    password = request.form['password']
+    registered_user = User.query.filter_by(username=username, password=password).first()
+    if registered_user is None:
+        flash('Username or Password is invalid', 'error')
+        return redirect(url_for('login'))
+    login_user(registered_user)
+    flash('Logged in successfully')
+    return redirect(url_for('index'))
+
+
+# somewhere to logout
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash('Logout in successfully')
+    return render_template('/pages/login.html')
+
+
+# handle login failed
+@app.errorhandler(401)
+def page_not_found(e):
+    return render_template('/pages/login.html')
+
+
+# callback to reload the user object
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))

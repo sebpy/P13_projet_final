@@ -193,7 +193,13 @@ class Statistics:
                 off_rig = Notifications.query.filter(Notifications.id_rig == mac_rig,
                                                      Notifications.valid == '0').order_by(Notifications.id.desc()).first()
 
-                if off_rig.event == '1':
+                if not off_rig:
+                    self.events = Notifications(v['nom_rig'], mac_rig, '0', self.now,
+                                                datetime.datetime.now().timestamp(), '0')
+                    db.session.add(self.events)
+                    db.session.commit()
+
+                elif off_rig.event == '1':
                     self.events = Notifications(v['nom_rig'], mac_rig, '0', self.now,
                                                 datetime.datetime.now().timestamp(), '0')
 
@@ -203,8 +209,12 @@ class Statistics:
             if v['online'] == '1':
                 rig_up = Notifications.query.filter(Notifications.id_rig == mac_rig,
                                                     Notifications.valid == '0').order_by(Notifications.id.desc()).first()
-
-                if rig_up.event == '0':
+                if not rig_up:
+                    self.events = Notifications(v['nom_rig'], mac_rig, '1', self.now,
+                                                datetime.datetime.now().timestamp(), '0')
+                    db.session.add(self.events)
+                    db.session.commit()
+                elif rig_up.event == '0':
                     self.events = Notifications(v['nom_rig'], mac_rig, '1', self.now,
                                                 datetime.datetime.now().timestamp(), '0')
 

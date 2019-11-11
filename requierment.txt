@@ -3,3 +3,4 @@ request
 flask_moment
 flask_sqlalchemy
 Flask-WTF
+flask-login

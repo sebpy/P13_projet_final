@@ -1,3 +1,4 @@
+let last_tt_event = 0;
 
 function events_list() {
     $.ajax({
@@ -38,7 +39,11 @@ function events_list() {
                 );
             });
             $('#tt_events').text(total_active_event);
-            //audio.play();
+
+            if (total_active_event > last_tt_event) {
+                audio.play();
+                last_tt_event = total_active_event;
+            }
         }
    );
 };
