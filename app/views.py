@@ -25,17 +25,6 @@ def index():
     return render_template('pages/index.html', type=type)
 
 
-@app.route('/index3')
-def index3():
-    stat = Statistics()
-    read = stat.read_full_conf()
-    type = read[0]["cfg_type"]
-
-    #if read[0]['first'] == "0":
-    #    flash('Pour activer EMOS LIVE, veuillez entré votre clé privé dans la page de configuration.')
-
-    return render_template('pages/index3.html', type=type)
-
 @app.route('/error')
 def error():
     return render_template('errors/404.html')

@@ -4019,3 +4019,13 @@ div.hopscotch-bubble {
 .pd-b-25 {
     margin-bottom:25px;
 }
+
+.event-form-modal {
+    margin-bottom: 0;
+}
+
+.table-responsive {
+    overflow-y: scroll !important;
+    max-height: 379px;
+    scrollbar-color: #7c99b4 #323a46;
+}

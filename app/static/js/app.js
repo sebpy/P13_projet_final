@@ -344,3 +344,10 @@ function ($) {
 
 // Waves Effect
 Waves.init();
+
+// Hidden message after 4 sec
+window.setTimeout(function() {
+    $(".msg-ok").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove();
+    });
+}, 3000);

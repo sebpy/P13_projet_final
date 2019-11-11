@@ -1,9 +1,3 @@
-// Hidden message after 4 sec
-window.setTimeout(function() {
-    $(".save-conf").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove();
-    });
-}, 4000);
 
 function events_list() {
     $.ajax({
@@ -11,16 +5,21 @@ function events_list() {
         url: $SCRIPT_ROOT + '/_events',
         }).done(function(api_resp){
 
+            var audio = new Audio('/static/sound/notification.mp3');
             var events_json = api_resp;
             var hl_rig = parseInt(0);
             var id_event = 0;
+            var events_items = api_resp.events_items;
+            var total_active_event = api_resp.total_active_event;
 
             $('#events').empty();
-            $.each( events_json, function( key, value ) {
-                if ( value.online == "1") {
+            $.each( events_items, function( key, value ) {
+
+                if ( value.event == "1") {
                     online_class = "table-success";
                     rig_status = "En ligne";
-                } else {
+                }
+                else if ( value.event == "0") {
                     online_class = "table-danger";
                     hl_rig += parseInt(1);
                     rig_status = "Hors-ligne";
@@ -29,7 +28,7 @@ function events_list() {
                 // display table
                 $('#events').append(
                     '' +
-                        '<tr class="'+online_class+'" style="cursor:pointer" onclick="alert(\'ok\')">' +
+                        '<tr class="'+ online_class +'" style="cursor:pointer" onclick="alert(\'ok\')">' +
                             '<td><strong>' + value.id +'</strong></td>' +
                             '<td><strong>' + value.nom_rig +'</strong></td>' +
                             '<td>' + rig_status + '</td>' +
@@ -37,9 +36,9 @@ function events_list() {
                         '</tr>' +
                     ''
                 );
-
-
             });
+            $('#tt_events').text(total_active_event);
+            //audio.play();
         }
    );
 };

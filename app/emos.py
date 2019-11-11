@@ -187,34 +187,44 @@ class Statistics:
     def events_save(self, data_json):
         """ Insert in Notifications all events """
         for (k, v) in data_json.items():
-            event = ""
+
             mac_rig = v['mac'][5:].replace(':', '')  # generate rig_id
             if v['online'] == '0':
-                #off_rig = Notifications.query.filter(Notifications.id_rig == mac_rig,
-                #                                     Notifications.event == 'offline').first()
-                #if not off_rig:
-                event = Notifications(v['nom_rig'], mac_rig, 'offline', self.now,
-                                      datetime.datetime.now().timestamp(), '0')
+                off_rig = Notifications.query.filter(Notifications.id_rig == mac_rig,
+                                                     Notifications.valid == '0').order_by(Notifications.id.desc()).first()
 
-            elif v['online'] == '1':
-                event = Notifications(v['nom_rig'], mac_rig, 'offline', self.now,
-                                      datetime.datetime.now().timestamp(), '0')
+                if off_rig.event == '1':
+                    self.events = Notifications(v['nom_rig'], mac_rig, '0', self.now,
+                                                datetime.datetime.now().timestamp(), '0')
 
-            db.session.add(event)
-            db.session.commit()
+                    db.session.add(self.events)
+                    db.session.commit()
+
+            if v['online'] == '1':
+                rig_up = Notifications.query.filter(Notifications.id_rig == mac_rig,
+                                                    Notifications.valid == '0').order_by(Notifications.id.desc()).first()
+
+                if rig_up.event == '0':
+                    self.events = Notifications(v['nom_rig'], mac_rig, '1', self.now,
+                                                datetime.datetime.now().timestamp(), '0')
+
+                    db.session.add(self.events)
+                    db.session.commit()
 
     def events_read(self):
         """ Read all events in Notifications """
-        list_of_events = Notifications.query.filter(Notifications.valid == 0).order_by(desc(Notifications.id)).limit(15)
+        list_of_events = Notifications.query.filter(Notifications.valid == 0).order_by(desc(Notifications.id)).limit(20)
+        total_active_event = Notifications.query.filter(Notifications.valid == 0).count()
+
         items = []
         for eve in list_of_events:
             items.append({'id': eve.id,
                           'nom_rig': eve.nom_rig,
+                          'event': eve.event,
                           'create_at': eve.created_date,
                           })
 
-        self.events = items
-        print(items)
+        self.events = {'events_items': items, 'total_active_event': total_active_event}
         return self.events
 
     def delete_old_stats(self):
