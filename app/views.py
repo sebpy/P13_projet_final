@@ -133,9 +133,9 @@ def login():
     if request.method == 'GET':
         return render_template('/pages/login.html')
     username = request.form['username']
-    password = request.form['password']
-    registered_user = User.query.filter_by(username=username, password=password).first()
-    if registered_user is None:
+    passwd = request.form['password']
+    registered_user = User.query.filter_by(username=username).first()
+    if not check_password_hash(registered_user.password, passwd):
         flash('Username or Password is invalid', 'error')
         return redirect(url_for('login'))
     login_user(registered_user)
