@@ -115,6 +115,18 @@ class Notifications(db.Model):
         self.valid = valid
 
 
+class Availability(db.Model):
+    id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
+    availability = db.Column(db.Numeric(5, 2))
+    created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    date_time = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, availability, created_date, date_time):
+        self.availability = availability
+        self.created_date = created_date
+        self.date_time = date_time
+
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     username = db.Column(db.String(1000), unique=True)
@@ -129,6 +141,7 @@ class User(UserMixin, db.Model):
 
     #def get_auth_token(self):
         #return make_secure_token(self.username, key='secret_key')
+
 
 def init_db():
     passwd = 'emoslive'

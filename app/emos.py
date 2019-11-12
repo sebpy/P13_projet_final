@@ -131,6 +131,7 @@ class Statistics:
             rig.online = v['online']
 
             db.session.commit()
+        self.availability_save()  # save availability
 
     def read_stats(self):
         """ Read rigs statistiques """
@@ -139,6 +140,7 @@ class Statistics:
 
     def show_all_rigs_stats(self, cfg_data):
         list_of_rig = Rigs.query.all()
+        availability = Availability.query.order_by(Availability.id.desc()).first()
         items = []
         for rig in list_of_rig:
             items.append({'nom_rig': rig.nom_rig,
@@ -152,10 +154,10 @@ class Statistics:
                           'online': rig.online,
                           })
 
-        self.json = {'stats': items, 'cfg': cfg_data, 'availability': self.availability_total()}
+        self.json = {'stats': items, 'cfg': cfg_data, 'availability': str(availability.availability)}
         return self.json
 
-    def availability_total(self):
+    def availability_save(self):
         """ Calculation of the availability rate """
 
         nb_rigs = Rigs.query.count()
@@ -170,9 +172,25 @@ class Statistics:
                 availability = 0.00
             else:
                 availability = round(((real_time / total_time) * 100), 2)
-        return availability
 
-    def graph_pw(self):
+        save_availability = Availability(availability, self.now, datetime.datetime.now().timestamp())
+
+        db.session.add(save_availability)
+        db.session.commit()
+        #return availability
+
+    @staticmethod
+    def availability_total():
+        qry = db.session.query(Availability.availability, Availability.created_date)
+        items = []
+        for av in qry.all():
+            items.append({'date': str(av.created_date.replace(microsecond=0)),
+                          'availability': str(av.availability),
+                          })
+        return items
+
+    @staticmethod
+    def graph_pw():
         """ Get stats for graph pw and power """
 
         qry = db.session.query(func.sum(StatsRigs.pw_gpu).label('total_pw'), StatsRigs.created_date)

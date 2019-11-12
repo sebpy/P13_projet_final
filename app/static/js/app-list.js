@@ -55,10 +55,10 @@ function stats_list() {
                 $( '#hl_rig' ).removeClass( "badge-danger" ).addClass( "badge-success" );
             }
 
-            if(availability.toFixed(2) < 70) {
+            if(parseFloat(availability).toFixed(2) < 70) {
                 $( '.average' ).removeClass( "badge-success" ).addClass( "badge-danger" );
             }
-            else if(availability.toFixed(2) >= 70 && availability.toFixed(2) < 90) {
+            else if(parseFloat(availability).toFixed(2) >= 70 && parseFloat(availability).toFixed(2) < 90) {
                 $( '.average' ).removeClass( "badge-danger" ).addClass( "badge-warning" );
             }
             else {

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, jsonify, redirect, url_for, flash, request, session, abort, Response
+from flask import Flask, render_template, jsonify, redirect, url_for, flash, request
 from flask_moment import Moment
 from werkzeug.security import check_password_hash
 
@@ -92,12 +92,20 @@ def answer():
     return jsonify(api_resp)
 
 
-@app.route('/_graph', methods=['GET'])
-def graph():
+@app.route('/_graphpw', methods=['GET'])
+def graph_pw():
     stats = Statistics()
     stats_pw = stats.graph_pw()
 
     return jsonify(stats_pw)
+
+
+@app.route('/_availability', methods=['GET'])
+def availability():
+    stats = Statistics()
+    stats_av = stats.availability_total()
+
+    return jsonify(stats_av)
 
 
 @app.route('/_events', methods=['GET'])

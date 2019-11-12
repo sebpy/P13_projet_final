@@ -35,7 +35,7 @@
 
                     <div class="col-xl-2 col-md-4">
                         <div class="card-box">
-                            <h4 class="header-title mt-0 mb-3">GPUs</h4>
+                            <h4 class="header-title mt-0 mb-3">Hashrate</h4>
 
                             <div class="widget-box-2">
                                 <div class="widget-detail-2 text-right">
@@ -99,12 +99,12 @@
     {% if type == '0' %}
 
        <div class="col-lg-10">
-          <legend>Status</legend>
+          <h4>Status</h4>
           <div class="row" id="row" ></div>
        </div>
 
     {% else %}
-
+<!--
                 <div class="row">
                     <div class="col-xl-6">
                         <div class="card-box">
@@ -124,8 +124,28 @@
                                 </table>
                             </div>
                         </div>
-                    </div><!-- end col -->
+                    </div> --> <!-- end col -->
 
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="col-xl-12 pd-0">
+                            <div class="card-box in-tab">
+                                <h4 class="header-title mt-0 mb-3">Consommation (Watt)</h4>
+                                <div class="chart_div">
+                                    <div id="chart_pw_total"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 pd-0">
+                            <div class="card-box in-tab">
+                                <h4 class="header-title mt-0 mb-3">Disponibilité</h4>
+                                <div class="chart_div">
+                                    <div id="availability_total"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end col -->
 
                     <div class="col-xl-6">
                         <div class="card-box">

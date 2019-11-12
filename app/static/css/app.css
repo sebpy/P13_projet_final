@@ -2198,7 +2198,7 @@ Responsive Menu
   min-height: 100px; }
 
 body.authentication-bg {
-  background-image: url("../images/big/bg.jpg");
+  background-image: url("../images/bg_login.jpg");
   background-size: cover;
   background-position: center; }
 
@@ -4020,6 +4020,10 @@ div.hopscotch-bubble {
     margin-bottom:25px;
 }
 
+.pd-0 {
+    padding:0;
+}
+
 .event-form-modal {
     margin-bottom: 0;
 }
@@ -4028,4 +4032,14 @@ div.hopscotch-bubble {
     overflow-y: scroll !important;
     max-height: 379px;
     scrollbar-color: #7c99b4 #323a46;
+}
+
+.in-tab {
+    display: inline-table;
+    width:100%;
+}
+
+.chart_div {
+    max-height:146px;
+    margin-top: -14px;
 }
