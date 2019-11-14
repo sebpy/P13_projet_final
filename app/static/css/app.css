@@ -4043,3 +4043,8 @@ div.hopscotch-bubble {
     max-height:146px;
     margin-top: -14px;
 }
+
+.tab-content {
+    padding: 0!important;
+    border: none;
+}
