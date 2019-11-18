@@ -27,7 +27,7 @@ function stats_list() {
                 // display table
                 $('#rigs').append(
                     '' +
-                        '<tr class="'+online_class+'" style="cursor:pointer" onclick="alert(\'ok\')">' +
+                        '<tr class="'+online_class+'" style="cursor:pointer" onclick="javascript:location.href=\'/detail/' + value.id_rig + '\'">' +
                             '<td><strong>' + value.nom_rig +'</strong></td>' +
                             '<td>' + value.nb_gpu + ' ' + value.gpu_type + '</td>' +
                             '<td>' + value.uptime + '</td>' +

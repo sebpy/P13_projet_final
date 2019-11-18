@@ -126,7 +126,7 @@ def save_conf():
     return redirect(url_for('config'))
 
 
-@app.route("/_valid_events", methods=["GET", "POST"])
+@app.route("/_valid_events")
 def discharge():
 
     update = Statistics()
@@ -170,3 +170,19 @@ def page_not_found(e):
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
+
+@app.route('/<rig_id>', methods=["GET"])
+def detail_rig(rig_id):
+    rig_id = rig_id
+    stat = Statistics()
+    rig = stat.detail_rig(rig_id)
+
+    return jsonify(rig)
+
+
+@app.route('/detail/<rigid>', methods=["GET"])
+def detail(rigid):
+    rig_id = rigid
+    return render_template('/pages/detail.html', id=rig_id)
+

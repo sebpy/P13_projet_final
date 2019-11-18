@@ -101,8 +101,8 @@ class Statistics:
                         for stat in contents:
                             while i < int(v['nb_gpu']):
                                 gpu = str(i)
-                                stats = StatsRigs(mac_rig, i, v['model_gpu'][gpu], v['hashrate'][gpu],
-                                                  v['temperature'][gpu], v['fans'][gpu], v['pw'][gpu], v['oc_mem'][gpu],
+                                stats = StatsRigs(mac_rig, i, v['model_gpu'][gpu], v['temperature'][gpu],
+                                                  v['fans'][gpu], v['hashrate'][gpu], v['pw'][gpu], v['oc_mem'][gpu],
                                                   v['oc_core'][gpu], v['undervolt'][gpu], v['mem_freq'][gpu],
                                                   v['core_freq'][gpu], self.now,
                                                   datetime.datetime.now().timestamp())
@@ -110,6 +110,7 @@ class Statistics:
                                 db.session.add(stats)
                                 db.session.commit()
                                 #print('Record was successfully added')
+                                print(v['hashrate'][gpu])
 
                                 i += 1
                                 if i == v['nb_gpu']:
@@ -139,11 +140,13 @@ class Statistics:
         return self.stats_gpu
 
     def show_all_rigs_stats(self, cfg_data):
+        """ Show all stats by rigs """
         list_of_rig = Rigs.query.all()
         availability = Availability.query.order_by(Availability.id.desc()).first()
         items = []
         for rig in list_of_rig:
             items.append({'nom_rig': rig.nom_rig,
+                          'id_rig': rig.id_rig,
                           'nb_gpu': rig.nb_gpu,
                           'gpu_type': rig.gpu_type,
                           'total_hash': rig.total_hash,
@@ -181,6 +184,7 @@ class Statistics:
 
     @staticmethod
     def availability_total():
+        """ Return availability by date """
         qry = db.session.query(Availability.availability, Availability.created_date)
         items = []
         for av in qry.all():
@@ -277,8 +281,33 @@ class Statistics:
         else:
             return self.error
 
+    def detail_rig(self, id_rig):
+        """ Detail all stats for rig """
+        gpu_count = Rigs.query.filter(Rigs.id_rig == id_rig).first()
+        stats_rig = StatsRigs.query.filter(StatsRigs.id_rig == id_rig).order_by(desc(StatsRigs.created_date)).limit(gpu_count.nb_gpu)
+
+        items = []
+        for detail in stats_rig:
+            items.append({
+                            'id_gpu': detail.id_gpu,
+                            'model': detail.model_gpu,
+                            'temp': detail.temp_gpu,
+                            'fan': detail.fan_gpu,
+                            'hash': str(detail.hash_gpu),
+                            'pw': str(detail.pw_gpu),
+                            'oc_mem': detail.oc_mem,
+                            'oc_core': detail.oc_core,
+                            'vddc': detail.vddc,
+                            'mem_freq': detail.mem_freq,
+                            'core_freq': detail.core_freq,
+                            'date_create': detail.created_date,
+                            'date_time': detail.date_time,
+            })
+
+        return items
+
 
 if __name__ == '__main__':
     st = Statistics()
     #st.delete_old_stats()
-    read = st.events_read()
+    read = st.detail_rig('1')

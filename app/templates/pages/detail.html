@@ -1,0 +1,139 @@
+{% extends 'layouts/base.html' %}
+{% block body %}
+
+{% set active_page = "detail" %}
+
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="wrapper" id="{{ id }}">
+            <div class="container-fluid">
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="alert alert-success alert-dismissible fade show save-conf mg-t-25 msg-ok" role="alert">
+                        {{ message }}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+
+                <div class="row mg-t-25">
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Gpu</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-primary badge-pill" id="nb_gpu"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Hashrate</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-primary badge-pill" id="tt_hash"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Consommation (Watt)</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-danger badge-pill" id="tt_pw"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Uptime</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-pill average" id="uptime"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Hors ligne</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-pill" id="hl_rig"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Alarmes active</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-danger badge-pill" id="tt_events"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- end col -->
+                </div>
+                <!-- end row -->
+
+       <div class="col-lg-10">
+          <h4>Status</h4>
+          <div class="row" id="row" ></div>
+       </div>
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="col-xl-12 pd-0">
+                            <div class="card-box in-tab">
+                                <h4 class="header-title mt-0 mb-3">Status GPUs</h4>
+                                <div class="table-responsive">
+                                 <table class="table table-hover mb-0">
+                                   <thead>
+                                        <tr>
+                                        <th>GPU</th>
+                                        <th>Model</th>
+                                        <th>Hash</th>
+                                        <th>Mémoire</th>
+                                        <th>Core</th>
+                                        <th>conso</th>
+                                      </tr>
+                                   </thead>
+                                    <tbody id="rigs"></tbody>
+                                 </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end col -->
+                </div>
+                <!-- end row -->
+            </div> <!-- end container -->
+        </div>
+        <!-- end wrapper -->
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+{% endblock %}

@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <title>EMOS-LIVE</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+        <meta content="A live monitoring for EMOS" name="description" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <!-- App favicon -->
         <link rel="shortcut icon" href="assets/images/favicon.ico">
@@ -15,7 +15,7 @@
         <script type=text/javascript>
           $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
         </script>
-
+        {% set active_page = "login" %}
     </head>
 
 
@@ -25,7 +25,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-8 col-lg-6 col-xl-5">
                         <div class="text-center">
-                            <a href="index.html">
+                            <a href="/index">
                                 <span><img src="{{ url_for('static', filename='images/emos-live.png') }}" alt="" height="70" style="margin-bottom:5px;"></span>
                             </a>
                         </div>
@@ -45,23 +45,23 @@
                                   {% endif %}
                                 {% endwith %}
                                 <div class="text-center mb-4">
-                                    <h4 class="text-uppercase mt-0">Sign In</h4>
+                                    <h4 class="text-uppercase mt-0">Connexion</h4>
                                 </div>
 
                                 <form method="post" action="/login">
 
                                     <div class="form-group mb-3">
-                                        <label for="username">Username</label>
-                                        <input class="form-control" type="text" id="username" name="username" required="" placeholder="Enter your username" value="{{ request.form.username }}">
+                                        <label for="login">Login</label>
+                                        <input class="form-control" type="text" id="login" name="username" required="" placeholder="Entrez votre login" value="{{ request.form.username }}">
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="password">Password</label>
-                                        <input class="form-control" type="password" required="" id="password" name="password" placeholder="Enter your password" value="{{ request.form.password }}">
+                                        <label for="password">Mot de passe</label>
+                                        <input class="form-control" type="password" required="" id="password" name="password" placeholder="Entrez votre mot de passe" value="{{ request.form.password }}">
                                     </div>
 
                                         <div class="form-group mb-0 text-center">
-                                            <button class="btn btn-primary btn-block" type="submit"> Log In </button>
+                                            <button class="btn btn-primary btn-block" type="submit"> Connexion </button>
                                         </div>
                                 </form>
 

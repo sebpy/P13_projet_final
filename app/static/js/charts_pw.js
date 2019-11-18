@@ -13,7 +13,7 @@ chart.dataSource.incrementalParams = {
   incremental: "y",
   something: "else"
 }
-chart.dataSource.updateCurrentData = true;
+//chart.dataSource.updateCurrentData = true;
 
 chart.dateFormatter.inputDateFormat = "MM-dd-yyyy";
 
