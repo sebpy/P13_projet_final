@@ -208,8 +208,6 @@ def detail(rigid):
 def update_account():
     save = SaveConfig()
     save.account_save()
-    message = Markup('<strong>Succès!</strong><br>Paramètres enregistré avec succès.')
-    flash(message, 'success')
 
     return redirect(url_for('account'))
 

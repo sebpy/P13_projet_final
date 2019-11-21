@@ -4068,3 +4068,7 @@ div.hopscotch-bubble {
 .account {
     width: 33%;
 }
+
+.hidden_block{
+    display:none;
+}

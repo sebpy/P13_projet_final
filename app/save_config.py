@@ -166,5 +166,7 @@ class SaveConfig:
 
                 db.session.query(User).update(update_account)
                 db.session.commit()
+                message = Markup('<strong>Succès!</strong><br>Paramètres enregistré avec succès.')
+                flash(message, 'success')
 
         return self.error

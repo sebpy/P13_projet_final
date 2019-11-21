@@ -22,29 +22,27 @@
                                   {% endif %}
                                 {% endwith %}
                         <section class="row row-sm mg-b-30 cfg">
-                                <legend>Paramètres du compte</legend>
+                                <legend>Paramètres du compte (Désactivé en mode démo)</legend>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                       <label for="login">Login :</label>
-                                      <input id="login" name="login" type="text" class="form-control" value="{{ login }}" placeholder="Entrez votre login" required>
+                                      <input id="login" name="login" type="text" class="form-control" value="{{ login }}" placeholder="Entrez votre login" required disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                       <label for="passwd">Mot de passe :</label>
-                                        <input id="passwd" name="passwd" type="password" class="form-control" value="" placeholder="Entrez votre mot de passe" required>
+                                        <input id="passwd" name="passwd" type="password" class="form-control" value="" placeholder="Entrez votre mot de passe" required disabled>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
                                     <div class="form-group">
                                       <label for="repasswd">Mot de passe :</label>
-                                        <input id="repasswd" name="repasswd" type="password" class="form-control" value="" placeholder="Entrez à nouveau votre mot de passe" required>
+                                        <input id="repasswd" name="repasswd" type="password" class="form-control" value="" placeholder="Entrez à nouveau votre mot de passe" required disabled>
                                     </div>
                                 </div>
                         </section>
                         <section class="row row-sm mg-b-30">
                             <div class="col-lg-10">
-                                <input type="submit" class="btn btn-primary btn-conf" value="Enregistrer"><br>
+                                <input type="submit" class="btn btn-primary btn-conf" value="Enregistrer" disabled><br>
                             </div>
                             <div class="col-lg-2 cfg_show_block">
                             </div>
