@@ -23,7 +23,7 @@ $ pip install -r requirements.txt
 ## Cronjob
 Run the crontab -e command and add the following line:
 ```
-* * * * * python3 /home/zelix/PycharmProjects/emos-monitoring/cron.py > /dev/null 2>&1
+* * * * * python3 /home/{USERNAME}/PycharmProjects/emos-monitoring/cron.py > /dev/null 2>&1
 ```
 
 ## First connexion
