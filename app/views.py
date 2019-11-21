@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, jsonify, redirect, url_for, flash, request
+from flask import Flask, render_template, jsonify, redirect, url_for, flash, request, Markup
 from flask_moment import Moment
 from werkzeug.security import check_password_hash
 
@@ -151,11 +151,19 @@ def login():
     username = request.form['username']
     passwd = request.form['password']
     registered_user = User.query.filter_by(username=username).first()
-    if not check_password_hash(registered_user.password, passwd):
-        flash('Username or Password is invalid', 'error')
+    if not registered_user:
+        message = Markup('<strong>Erreur!</strong><br>Login ou mot de passe incorrecte')
+        flash(message, 'danger')
         return redirect(url_for('login'))
+
+    if not check_password_hash(registered_user.password, passwd):
+        message = Markup('<strong>Erreur!</strong><br>Login ou mot de passe incorrecte')
+        flash(message, 'danger')
+        return redirect(url_for('login'))
+
     login_user(registered_user)
-    flash('Logged in successfully')
+    message = Markup('<strong>Succès!</strong><br>Connexion réussis')
+    flash(message, 'success')
     return redirect(url_for('index'))
 
 
@@ -164,7 +172,8 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash('Logout in successfully')
+    message = Markup('<strong>Succès!</strong><br>Déconnecté avec succès')
+    flash(message, 'success')
     return render_template('/pages/login.html')
 
 
@@ -194,3 +203,19 @@ def detail(rigid):
     rig_id = rigid
     return render_template('/pages/detail.html', id=rig_id)
 
+
+@app.route("/_update_account", methods=["POST"])
+def update_account():
+    save = SaveConfig()
+    save.account_save()
+    message = Markup('<strong>Succès!</strong><br>Paramètres enregistré avec succès.')
+    flash(message, 'success')
+
+    return redirect(url_for('account'))
+
+
+@app.route('/account')
+def account():
+    profil = SaveConfig()
+    login = profil.account_login()
+    return render_template('pages/account.html', login=login)

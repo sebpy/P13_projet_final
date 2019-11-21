@@ -20,6 +20,7 @@ function stats_block() {
             var nb_rig = Object.keys(stats).length;
             var tt_pw = parseFloat(0);
             var tt_gpu = parseInt(0);
+            var tt_hash = parseInt(0);
             var hl_rig = parseInt(0);
             var availability = load;
 
@@ -52,8 +53,8 @@ function stats_block() {
                 }
 
                 $('#row').append(
-                      '<div class="col-sx-3 col-md-2">' +
-                          '<div class="'+ rig_card +' col-lg-12">' +
+                      '<div class="col-sx-3 col-md-2 col-block">' +
+                          '<div class="'+ rig_card +' col-lg-12" style="cursor:pointer" onclick="javascript:location.href=\'/detail/' + value.id_rig + '\'">' +
                               '<strong>'+ value.nom_rig +'</strong><br>' +
                               '<span class="'+show_nbgpu+'">GPUs: <strong>'+ value.nb_gpu +' '+ value.gpu_type +'</strong><br></span>' +
                               '<span class="'+show_uptime+'">'+uptime_rig +': <strong>'+ value.uptime.substring(0,10) +'</strong><br></span>' +
@@ -64,8 +65,9 @@ function stats_block() {
                       '</div>'
                 );
 
-                tt_pw += parseFloat(value.total_pw)
-                tt_gpu += parseInt(value.nb_gpu)
+                tt_pw += parseFloat(value.total_pw);
+                tt_gpu += parseInt(value.nb_gpu);
+                tt_hash += parseFloat(value.total_hash);
 
             });
 
@@ -74,6 +76,7 @@ function stats_block() {
             $('#tt_gpu').text(tt_gpu);
             $('#hl_rig').text(hl_rig);
             $('#availability').text(availability + '%');
+            $('#tt_hash').text(tt_hash.toFixed(2)+' '+stats[0].hash_unit);
 
             if(hl_rig > 0){
                 $( '#hl_rig' ).removeClass( "badge-success" ).addClass( "badge-danger" );
@@ -82,10 +85,10 @@ function stats_block() {
                 $( '#hl_rig' ).removeClass( "badge-danger" ).addClass( "badge-success" );
             }
 
-            if(availability.toFixed(2) < 70) {
+            if(parseFloat(availability).toFixed(2) < 70) {
                 $( '.average' ).removeClass( "badge-success" ).addClass( "badge-danger" );
             }
-            else if(availability.toFixed(2) >= 70 && availability.toFixed(2) < 90) {
+            else if(parseFloat(availability).toFixed(2) >= 70 && parseFloat(availability).toFixed(2) < 90) {
                 $( '.average' ).removeClass( "badge-danger" ).addClass( "badge-warning" );
             }
             else {

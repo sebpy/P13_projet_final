@@ -1,0 +1,59 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Compte utilisateur{% endblock %}
+{% block body %}
+    <!--The menu is handled with a list of the pages-->
+ <div class="wrapper">
+   <div class="container-fluid">
+    <!-- Liste rigs-->
+       <div class="row mg-t-25">
+           <div class="col-xl-12">
+               <div class="card-box">
+                    <form action="/_update_account" method="post">
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                                  {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-{{ category }} alert-dismissible fade show msg-ok" role="alert">
+                                          {{ message }}
+                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                    {% endfor %}
+                                  {% endif %}
+                                {% endwith %}
+                        <section class="row row-sm mg-b-30 cfg">
+                                <legend>Paramètres du compte</legend>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label for="login">Login :</label>
+                                      <input id="login" name="login" type="text" class="form-control" value="{{ login }}" placeholder="Entrez votre login" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label for="passwd">Mot de passe :</label>
+                                        <input id="passwd" name="passwd" type="password" class="form-control" value="" placeholder="Entrez votre mot de passe" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label for="repasswd">Mot de passe :</label>
+                                        <input id="repasswd" name="repasswd" type="password" class="form-control" value="" placeholder="Entrez à nouveau votre mot de passe" required>
+                                    </div>
+                                </div>
+                        </section>
+                        <section class="row row-sm mg-b-30">
+                            <div class="col-lg-10">
+                                <input type="submit" class="btn btn-primary btn-conf" value="Enregistrer"><br>
+                            </div>
+                            <div class="col-lg-2 cfg_show_block">
+                            </div>
+                        </section>
+                </form>
+               </div>
+           </div>
+       </div>
+    </div>
+ </div>
+
+{% endblock %}

@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import request
+from flask import request, flash, Markup
 from app.models import *
+from werkzeug.security import generate_password_hash
 
 """ Save configuration - EMOS-Live  """
 
@@ -19,7 +20,8 @@ class SaveConfig:
         self.emos_api_key = ""
         self.show_type = "0"
         self.show_range = ""
-        self.error = ""
+        self.error = None
+        self.login = ""
 
     def nb_gpu_chk(self):
         """"""
@@ -104,7 +106,8 @@ class SaveConfig:
             self.emos_api_key = request.form['api_key']
 
             if self.emos_api_key == "":
-                self.error = "Vous devez entrer votre clé API..."
+                message = Markup("Vous devez entrer votre clé API...")
+                self.error = flash(message, 'danger')
 
             self.show_type = request.form['type']
             self.show_range = request.form['range']
@@ -121,5 +124,47 @@ class SaveConfig:
 
             db.session.query(ConfBlock).update(update_cfg)
             db.session.commit()
+
+        return self.error
+
+    def account_login(self):
+        """ Get login name """
+        login = User.query.filter(User.id == 1).first()
+        self.login = login.username
+        return self.login
+
+    def account_save(self):
+        """ Update account """
+
+        if request.method == "POST":
+
+            self.login = request.form['login']
+            passwd = request.form['passwd']
+            passwd2 = request.form['repasswd']
+
+            if self.login == "":
+                message = Markup("<strong>Erreur!</strong><br>Vous devez entrer un login")
+                self.error = flash(message, 'danger')
+
+            elif not passwd:
+                message = Markup("<strong>Erreur!</strong><br>Vous devez entrer un mot de passe")
+                self.error = flash(message, 'danger')
+
+            elif len(passwd) < 6:
+                message = Markup("<strong>Erreur!</strong><br>Le mot de passe doit contenir 6 caractères minimum")
+                self.error = flash(message, 'danger')
+
+            elif passwd != passwd2:
+                message = Markup("<strong>Erreur!</strong><br>Les 2 mot de passe ne sont pas identique")
+                self.error = flash(message, 'danger')
+
+            else:
+
+                update_account = {'username': self.login,
+                                  'password': generate_password_hash(passwd),
+                                  }
+
+                db.session.query(User).update(update_account)
+                db.session.commit()
 
         return self.error

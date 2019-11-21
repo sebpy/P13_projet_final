@@ -4048,3 +4048,23 @@ div.hopscotch-bubble {
     padding: 0!important;
     border: none;
 }
+
+
+.rig_card_on {
+    background-color: green;
+    padding:5px;
+}
+
+.rig_card_off {
+    background-color: red;
+    padding:5px;
+}
+
+.col-block {
+    padding: 1 !important;
+    max-width: 12%;
+}
+
+.account {
+    width: 33%;
+}
