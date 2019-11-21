@@ -25,6 +25,18 @@
                 <div class="row mg-t-25">
                     <div class="col-xl-2 col-md-4">
                         <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Nom Rig</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-primary badge-pill" id="rig_name"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
                             <h4 class="header-title mt-0 mb-3">Gpu</h4>
 
                             <div class="widget-box-2">
@@ -65,19 +77,7 @@
 
                             <div class="widget-box-2">
                                 <div class="widget-detail-2 text-right">
-                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-pill average" id="uptime"></span> </h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- end col -->
-
-                    <div class="col-xl-2 col-md-4">
-                        <div class="card-box">
-                            <h4 class="header-title mt-0 mb-3">Hors ligne</h4>
-
-                            <div class="widget-box-2">
-                                <div class="widget-detail-2 text-right">
-                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-pill" id="hl_rig"></span> </h2>
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-success badge-pill" id="uptime"></span> </h2>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
 
                             <div class="widget-box-2">
                                 <div class="widget-detail-2 text-right">
-                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-danger badge-pill" id="tt_events"></span> </h2>
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-danger badge-pill" id="active_events"></span> </h2>
                                 </div>
                             </div>
                         </div>
@@ -118,11 +118,35 @@
                                         <th>Mémoire</th>
                                         <th>Core</th>
                                         <th>conso</th>
+                                        <th>Fan</th>
+                                        <th>Temp</th>
                                       </tr>
                                    </thead>
                                     <tbody id="rigs"></tbody>
                                  </table>
                                 </div>
+                            </div>
+                        </div>
+                    </div> <!-- end col -->
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="col-xl-12 pd-0">
+                            <div class="card-box in-tab">
+                                <h4 class="header-title mt-0 mb-3">Hashrate</h4>
+                                <div class="chart" id="chart_hash_rig"></div>
+                            </div>
+                        </div>
+                    </div> <!-- end col -->
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="col-xl-12 pd-0">
+                            <div class="card-box in-tab">
+                                <h4 class="header-title mt-0 mb-3">Comsommation</h4>
+                                <div class="chart" id="chart_pw_rig"></div>
                             </div>
                         </div>
                     </div> <!-- end col -->

@@ -100,6 +100,14 @@ def graph_pw():
     return jsonify(stats_pw)
 
 
+@app.route('/_graph/<id_rig>', methods=['GET'])
+def graph_rig(id_rig):
+    stats = Statistics()
+    stats_rig = stats.graph_rig(id_rig)
+
+    return jsonify(stats_rig)
+
+
 @app.route('/_availability', methods=['GET'])
 def availability():
     stats = Statistics()

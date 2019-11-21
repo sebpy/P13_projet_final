@@ -3,10 +3,13 @@ import logging as lg
 import datetime
 from werkzeug.security import generate_password_hash
 from flask_login import UserMixin
+from flask_migrate import Migrate
+
 
 from app.views import app
 # Create database connection object
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 
 class Rigs(db.Model):
@@ -40,10 +43,10 @@ class StatsRigs(db.Model):
     id_rig = db.Column(db.String(8))
     id_gpu = db.Column(db.String(2))
     model_gpu = db.Column(db.String(200))
-    temp_gpu = db.Column(db.String(8))
-    fan_gpu = db.Column(db.String(8))
-    hash_gpu = db.Column(db.Numeric(5, 2))
-    pw_gpu = db.Column(db.Numeric(5, 2))
+    temp_gpu = db.Column(db.String(8), index=True)
+    fan_gpu = db.Column(db.String(8), index=True)
+    hash_gpu = db.Column(db.Numeric(5, 2), index=True)
+    pw_gpu = db.Column(db.Numeric(5, 2), index=True)
     oc_mem = db.Column(db.String(5))
     oc_core = db.Column(db.String(5))
     vddc = db.Column(db.String(5))
@@ -80,7 +83,6 @@ class ConfBlock(db.Model):
     emos_api_key = db.Column(db.String(100), nullable=False)
     show_type = db.Column(db.Enum('0', '1'), nullable=False)
     show_range = db.Column(db.String(6), nullable=False)
-
     first = db.Column(db.Enum('0', '1'), nullable=False)
 
     def __init__(self, show_nb_gpu, show_total_hash, show_total_pw,
@@ -147,7 +149,7 @@ def init_db():
     passwd = 'emoslive'
     db.drop_all()
     db.create_all()
-    db.session.add(ConfBlock('1', '1', '1', '1', '0', "", '0', '10080', '0'))
+    db.session.add(ConfBlock('1', '1', '1', '1', '0', "", '0', '4320', '0'))
     db.session.add(User('admin', generate_password_hash(passwd)))
     #db.session.add(Rigs("EM-1060", "xxxxxxxx", "6", "NV", "123.2", "688", "6j22h30m", "6j22h30m"))
     db.session.commit()

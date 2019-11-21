@@ -110,7 +110,6 @@ class Statistics:
                                 db.session.add(stats)
                                 db.session.commit()
                                 #print('Record was successfully added')
-                                print(v['hashrate'][gpu])
 
                                 i += 1
                                 if i == v['nb_gpu']:
@@ -206,6 +205,26 @@ class Statistics:
                           })
         return items
 
+    @staticmethod
+    def graph_rig(id_rig):
+        """ Get stats for graph pw and power """
+
+        qry = db.session.query(func.sum(StatsRigs.pw_gpu).label('total_pw'),
+                               func.sum(StatsRigs.hash_gpu).label('total_hash'),
+                               func.sum(StatsRigs.fan_gpu).label('total_fan'),
+                               func.sum(StatsRigs.temp_gpu).label('total_temp'),
+                               StatsRigs.created_date)
+        qry = qry.group_by(func.strftime("%Y-%m-%d %H-%m-%s", StatsRigs.created_date))
+        items = []
+        for res in qry.filter_by(id_rig=id_rig):
+            items.append({'total_pw': str(res.total_pw),
+                          'total_hash': str(res.total_hash),
+                          #'total_fan': str(res.total_fan),
+                          #'total_temp': str(res.total_temp),
+                          'date': str(res.created_date.replace(microsecond=0)),
+                          })
+        return items
+
     def events_save(self, data_json):
         """ Insert in Notifications all events """
         for (k, v) in data_json.items():
@@ -265,6 +284,7 @@ class Statistics:
         date = int(round(datetime.datetime.now().timestamp()))
         StatsRigs.query.filter(StatsRigs.date_time + secondes < date).delete()
         Notifications.query.filter(Notifications.date_time + secondes < date).delete()
+        Availability.query.filter(Availability.date_time + secondes < date).delete()
 
         db.session.commit()
         #stat_gpu = StatsRigs.query.filter(StatsRigs.date_time + 7200 < date).count()
@@ -284,8 +304,13 @@ class Statistics:
     def detail_rig(self, id_rig):
         """ Detail all stats for rig """
         gpu_count = Rigs.query.filter(Rigs.id_rig == id_rig).first()
-        stats_rig = StatsRigs.query.filter(StatsRigs.id_rig == id_rig).order_by(desc(StatsRigs.created_date)).limit(gpu_count.nb_gpu)
+        stats_rig = StatsRigs.query.filter(StatsRigs.id_rig == id_rig).order_by(desc(StatsRigs.created_date))\
+            .limit(gpu_count.nb_gpu)
 
+        hash_unit = ""
+        uptime = ""
+        active_events = ""
+        rig_name = ""
         items = []
         for detail in stats_rig:
             items.append({
@@ -295,16 +320,20 @@ class Statistics:
                             'fan': detail.fan_gpu,
                             'hash': str(detail.hash_gpu),
                             'pw': str(detail.pw_gpu),
-                            'oc_mem': detail.oc_mem,
-                            'oc_core': detail.oc_core,
-                            'vddc': detail.vddc,
                             'mem_freq': detail.mem_freq,
                             'core_freq': detail.core_freq,
                             'date_create': detail.created_date,
                             'date_time': detail.date_time,
             })
+            rig = Rigs.query.filter_by(id_rig=detail.id_rig).first()
+            active_events = Notifications.query.filter_by(id_rig=detail.id_rig, valid=0).count()
+            rig_name = rig.nom_rig
+            hash_unit = rig.hash_unit
+            uptime = rig.uptime
 
-        return items
+        stats = {'stats_rig': items, 'hash_unit': hash_unit, 'uptime': uptime, 'rig_name': rig_name,
+                 'event': active_events}
+        return stats
 
 
 if __name__ == '__main__':

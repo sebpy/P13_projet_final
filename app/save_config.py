@@ -18,7 +18,7 @@ class SaveConfig:
         self.show_mine_time = "0"
         self.emos_api_key = ""
         self.show_type = "0"
-        self.show_range = "42300"
+        self.show_range = ""
         self.error = ""
 
     def nb_gpu_chk(self):
@@ -109,17 +109,17 @@ class SaveConfig:
             self.show_type = request.form['type']
             self.show_range = request.form['range']
 
-        update_cfg = {'show_nb_gpu': self.show_nb_gpu,
-                      'show_total_hash': self.show_hash,
-                      'show_total_pw': self.show_pw,
-                      'show_uptime': self.show_uptime,
-                      'show_mine_time': self.show_mine_time,
-                      'emos_api_key': self.emos_api_key,
-                      'show_type': self.show_type,
-                      'show_range': self.show_range,
-                      }
+            update_cfg = {'show_nb_gpu': self.show_nb_gpu,
+                          'show_total_hash': self.show_hash,
+                          'show_total_pw': self.show_pw,
+                          'show_uptime': self.show_uptime,
+                          'show_mine_time': self.show_mine_time,
+                          'emos_api_key': self.emos_api_key,
+                          'show_type': self.show_type,
+                          'show_range': self.show_range,
+                          }
 
-        db.session.query(ConfBlock).update(update_cfg)
-        db.session.commit()
+            db.session.query(ConfBlock).update(update_cfg)
+            db.session.commit()
 
         return self.error
