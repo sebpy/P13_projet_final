@@ -335,8 +335,13 @@ class Statistics:
                  'event': active_events}
         return stats
 
+    def events_list(self):
+        """ List all events """
+        list_of_events = Notifications.query.order_by(desc(Notifications.created_date)).all()
+        return list_of_events
+
 
 if __name__ == '__main__':
     st = Statistics()
     #st.delete_old_stats()
-    read = st.detail_rig('1')
+    read = st.events_list()

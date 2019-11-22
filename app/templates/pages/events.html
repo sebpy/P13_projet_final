@@ -1,0 +1,134 @@
+{% extends 'layouts/base.html' %}
+{% block body %}
+{% set active_page = "index" %}
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="wrapper">
+            <div class="container-fluid">
+                <div class="row mg-t-25">
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">RIGs</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-primary badge-pill" id="tt_rig"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Hashrate</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-primary badge-pill" id="tt_hash"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Consommation (Watt)</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-danger badge-pill" id="tt_pw"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Disponibilité</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-pill average" id="availability"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Hors ligne</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-pill" id="hl_rig"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-xl-2 col-md-4">
+                        <div class="card-box">
+                            <h4 class="header-title mt-0 mb-3">Alarmes active</h4>
+
+                            <div class="widget-box-2">
+                                <div class="widget-detail-2 text-right">
+                                    <h2 class="font-weight-normal mb-1"> <span class="badge badge-danger badge-pill" id="tt_events"></span> </h2>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- end col -->
+                </div>
+                <!-- end row -->
+
+                <div class="row mg-t-25">
+                   <div class="col-xl-12">
+                       <div class="card-box">
+                           <section class="row row-sm mg-b-30 cfg">
+                               <legend>Liste des alarmes</legend>
+                               <div class="col-xl-12">
+                                   <div class="table-responsive">
+                                       <table class="table table-hover mb-0">
+                                           <thead>
+                                           <tr>
+                                               <th>#ID</th>
+                                               <th>Nom rig</th>
+                                               <th>Evénements</th>
+                                               <th>Date</th>
+                                           </tr>
+                                           </thead>
+                                            {% for i in range(0, len) %}
+                                                {% if events[i].event == '1' %}
+                                                    <tr class="table-success">
+                                                {% elif events[i].event == '0' %}
+                                                    <tr class="table-danger">
+                                                {% endif %}
+                                                    <td><strong>{{ events[i].id }}</strong></td>
+                                                    <td><strong>{{ events[i].nom_rig }}</strong></td>
+                                                    <td>{{ events[i].event }}</td>
+                                                    <td>{{ moment(events[i].created_date).format('LLLL') }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                       </table>
+                                   </div>
+                               </div>
+                                </section>
+                       </div>
+                   </div>
+               </div>
+
+
+                </div>
+                </div>
+                <!-- end row -->
+            </div> <!-- end container -->
+        </div>
+        <!-- end wrapper -->
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+{% endblock %}

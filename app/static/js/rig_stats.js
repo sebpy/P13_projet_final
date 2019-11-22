@@ -29,30 +29,30 @@ function rig_stats() {
                             '<td>' + value.mem_freq + ' MHz</td>' +
                             '<td>' + value.core_freq + ' MHz</td>' +
                             '<td>' + value.pw + ' W</td>' +
-                            '<td><span class="badge badge-pill fan">' + value.fan + '%</span></td>' +
-                            '<td><span class="badge badge-pill temp">' + value.temp + '°</span></td>' +
+                            '<td><span class="badge badge-pill fan' + key + '">' + value.fan + '%</span></td>' +
+                            '<td><span class="badge badge-pill temp' + key + '">' + value.temp + '°</span></td>' +
                         '</tr>' +
                     ''
                 );
 
-                if(parseInt(value.fan) >= 75) {
-                    $( '.fan' ).removeClass( "badge-success" ).addClass( "badge-danger" );
+                if(parseInt(value.fan) > 75) {
+                    $( '.fan' + key ).removeClass( "badge-success" ).addClass( "badge-danger" );
                 }
-                else if(parseInt(value.fan) >= 40 && parseInt(value.fan) <= 74) {
-                    $( '.fan' ).removeClass( "badge-danger" ).addClass( "badge-warning" );
+                else if(parseInt(value.fan) > 40 && parseInt(value.fan) < 75) {
+                    $( '.fan' + key  ).removeClass( "badge-danger" ).addClass( "badge-warning" );
                 }
                 else {
-                    $( '.fan' ).removeClass( "badge-warning" ).addClass( "badge-success" );
+                    $( '.fan' + key  ).removeClass( "badge-warning" ).addClass( "badge-success" );
                 }
 
-                if(parseInt(value.temp) >= 70) {
-                    $( '.temp' ).removeClass( "badge-success" ).addClass( "badge-danger" );
+                if(parseInt(value.temp) > 70) {
+                    $( '.temp' + key  ).removeClass( "badge-success" ).addClass( "badge-danger" );
                 }
-                else if(parseInt(value.temp) >= 40 && parseInt(value.temp) <= 69) {
-                    $( '.temp' ).removeClass( "badge-danger" ).addClass( "badge-warning" );
+                else if(parseInt(value.temp) > 40 && parseInt(value.temp) < 70) {
+                    $( '.temp' + key  ).removeClass( "badge-danger" ).addClass( "badge-warning" );
                 }
                 else {
-                    $( '.temp' ).removeClass( "badge-warning" ).addClass( "badge-success" );
+                    $( '.temp' + key  ).removeClass( "badge-warning" ).addClass( "badge-success" );
                 }
 
                 tt_hash += parseFloat(value.hash)

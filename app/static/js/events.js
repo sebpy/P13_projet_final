@@ -33,7 +33,7 @@ function events_list() {
                             '<td><strong>' + value.id +'</strong></td>' +
                             '<td><strong>' + value.nom_rig +'</strong></td>' +
                             '<td>' + rig_status + '</td>' +
-                            '<td>' + value.create_at + '</td>' +
+                            '<td>' + moment(value.create_at).format('LLLL') + '</td>' +
                         '</tr>' +
                     ''
                 );

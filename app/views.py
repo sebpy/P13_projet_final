@@ -217,3 +217,10 @@ def account():
     profil = SaveConfig()
     login = profil.account_login()
     return render_template('pages/account.html', login=login)
+
+
+@app.route('/events')
+def events_list_all():
+    event = Statistics()
+    events_list = event.events_list()
+    return render_template('pages/events.html', len=len(events_list), events=events_list)
