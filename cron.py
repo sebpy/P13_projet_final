@@ -8,7 +8,7 @@ import time
 
 
 def cron():
-    #    """ Execute all commands for get stats without browser web open"""
+    #    """ Execute all commands for get stats without browser web open """
     while True:
         api_answer = Statistics()
         cfg_block = api_answer.read_full_conf()
