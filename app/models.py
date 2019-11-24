@@ -45,8 +45,8 @@ class StatsRigs(db.Model):
     model_gpu = db.Column(db.String(200))
     temp_gpu = db.Column(db.String(8), index=True)
     fan_gpu = db.Column(db.String(8), index=True)
-    hash_gpu = db.Column(db.Float(5, 2), index=True)
-    pw_gpu = db.Column(db.Float(5, 2), index=True)
+    hash_gpu = db.Column(db.Float(precision='5, 2'), index=True)
+    pw_gpu = db.Column(db.Float(precision='5, 2'), index=True)
     oc_mem = db.Column(db.String(5))
     oc_core = db.Column(db.String(5))
     vddc = db.Column(db.String(5))
@@ -119,7 +119,7 @@ class Notifications(db.Model):
 
 class Availability(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
-    availability = db.Column(db.Numeric(5, 2))
+    availability = db.Column(db.Float(precision='5, 2'))
     created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     date_time = db.Column(db.Integer, nullable=False)
 
