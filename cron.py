@@ -2,6 +2,9 @@
 
 from app.emos import Statistics
 
+from apscheduler.schedulers.blocking import BlockingScheduler
+sched = BlockingScheduler()
+
 
 def cron():
     """ Execute all commands for get stats without browser web open"""
@@ -14,6 +17,13 @@ def cron():
 
     api_answer.delete_old_stats()
 
+
+@sched.scheduled_job('interval', minutes=2)
+def timed_job():
+    cron()
+
+
+sched.start()
 
 if __name__ == "__main__":
     cron()
