@@ -288,7 +288,6 @@ class Statistics:
 
         db.session.commit()
         stat_gpu = StatsRigs.query.filter(StatsRigs.date_time).first()
-        print(stat_gpu.date_time + secondes)
 
     def discharge(self):
         """ Discharge all events in list """

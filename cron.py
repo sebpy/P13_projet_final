@@ -7,7 +7,6 @@ sched = BlockingScheduler()
 
 @sched.scheduled_job('interval', minutes=2)
 def timed_job():
-    print('Interval ok')
     api_answer = Statistics()
     cfg_block = api_answer.read_full_conf()
     api_resp = api_answer.get_status(cfg_block)
@@ -16,7 +15,6 @@ def timed_job():
     api_answer.update_stats_rig(api_resp)
 
     api_answer.delete_old_stats()
-    print('cron ok')
 
 
 if __name__ == "__main__":
