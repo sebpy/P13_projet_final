@@ -1,2 +1,2 @@
 web: gunicorn run:app
-cron: python cron.py
+clock: python cron.py
