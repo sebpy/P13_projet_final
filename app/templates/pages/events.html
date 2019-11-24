@@ -107,7 +107,11 @@
                                                 {% endif %}
                                                     <td><strong>{{ events[i].id }}</strong></td>
                                                     <td><strong>{{ events[i].nom_rig }}</strong></td>
-                                                    <td>{{ events[i].event }}</td>
+                                                    {% if events[i].event == '1' %}
+                                                        <td>En ligne</td>
+                                                    {% elif events[i].event == '0' %}
+                                                        <td>Hors ligne</td>
+                                                    {% endif %}
                                                     <td>{{ moment(events[i].created_date).format('LLLL') }}</td>
                                                 </tr>
                                             {% endfor %}

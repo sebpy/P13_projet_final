@@ -27,7 +27,7 @@ Run the crontab -e command and add the following line:
 ```
 
 ## First connexion
-Log on to the address 127.0.0.1:8080 and enter the following login and password:
+Log on to the address http://{your_ip}:8080 and enter the following login and password:
 ```
 Login: admin
 Password: emoslive

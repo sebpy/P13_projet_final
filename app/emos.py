@@ -287,8 +287,8 @@ class Statistics:
         Availability.query.filter(Availability.date_time + secondes < date).delete()
 
         db.session.commit()
-        #stat_gpu = StatsRigs.query.filter(StatsRigs.date_time + 7200 < date).count()
-        #print(secondes)
+        stat_gpu = StatsRigs.query.filter(StatsRigs.date_time).first()
+        print(stat_gpu.date_time + secondes)
 
     def discharge(self):
         """ Discharge all events in list """
