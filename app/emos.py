@@ -8,8 +8,16 @@ import requests
 from sqlalchemy.sql import func, desc
 from flask import request
 from datetime import datetime as dt
-
 from app.models import *
+
+import warnings
+from sqlalchemy.exc import SAWarning
+warnings.filterwarnings('ignore',
+                        r"^Dialect sqlite\+pysqlite does \*not\* support Decimal objects natively\, "
+                        r"and SQLAlchemy must convert from floating point - rounding errors and other "
+                        r"issues may occur\. Please consider storing Decimal numbers as strings or "
+                        r"integers on this platform for lossless storage\.$",
+                        SAWarning, r'^sqlalchemy\.sql\.type_api$')
 
 
 class Statistics:
