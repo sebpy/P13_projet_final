@@ -134,7 +134,7 @@ def save_conf():
     return redirect(url_for('config'))
 
 
-@app.route("/_valid_events")
+@app.route("/_valid_events", methods=['GET', 'POST'])
 def discharge():
 
     update = Statistics()

@@ -16,6 +16,7 @@ def cron():
     api_answer.update_stats_rig(api_resp)
 
     api_answer.delete_old_stats()
+    print('ok')
 
 
 sched.add_job(cron, "interval", minutes=2)
