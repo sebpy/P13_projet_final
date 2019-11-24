@@ -18,9 +18,5 @@ def cron():
     api_answer.delete_old_stats()
 
 
-@sched.scheduled_job('interval', minutes=2)
-def timed_job():
-    cron()
-
-
+sched.add_job(cron, "interval", minutes=2)
 sched.start()
