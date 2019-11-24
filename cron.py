@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
 from app.emos import Statistics
-from apscheduler.schedulers.blocking import BlockingScheduler
-sched = BlockingScheduler()
 
 
 def cron():
@@ -17,10 +15,5 @@ def cron():
     api_answer.delete_old_stats()
 
 
-@sched.scheduled_job('interval', minutes=2)
-def timed_job():
-    cron()
-
-
 if __name__ == "__main__":
-    timed_job()
+    cron()
