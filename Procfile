@@ -1,2 +1,2 @@
 web: gunicorn run:app
-clock: python cron.py
+init: FLASK_APP=run.py flask init_db
