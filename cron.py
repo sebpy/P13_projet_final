@@ -17,3 +17,7 @@ def timed_job():
 
     api_answer.delete_old_stats()
     print('cron ok')
+
+
+if __name__ == "__main__":
+    timed_job()
