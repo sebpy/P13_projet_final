@@ -19,5 +19,5 @@ def cron():
     print('ok')
 
 
-sched.add_job(cron, "interval", minutes=2)
+sched.add_job(cron, "interval", seconds=10)
 sched.start()
