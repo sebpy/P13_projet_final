@@ -130,7 +130,6 @@ class Statistics:
             rig.online = v['online']
 
             db.session.commit()
-            print('save ok')
         self.availability_save()  # save availability
 
     def read_stats(self):

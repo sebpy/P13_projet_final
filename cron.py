@@ -17,8 +17,7 @@ def cron():
         api_answer.list_rigs(api_resp)
         api_answer.update_stats_rig(api_resp)
         api_answer.delete_old_stats()
-        print('ok')
-        time.sleep(20)
+        time.sleep(120)
 
 
 
