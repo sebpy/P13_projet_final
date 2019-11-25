@@ -54,6 +54,7 @@ class Statistics:
         get_stats = "https://rigcenter.easy-mining-os.com/api/" + datas[0]["cfg_api_key"]
         response = requests.get(get_stats)
         result = json.loads(response.text)
+        print(result)
 
         if result != "":
             try:
@@ -130,7 +131,8 @@ class Statistics:
             rig.online = v['online']
 
             db.session.commit()
-        self.availability_save()  # save availability
+
+        #self.availability_save()  # save availability
 
     def read_stats(self):
         """ Read rigs statistiques """

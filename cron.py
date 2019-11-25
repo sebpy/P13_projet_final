@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from app import app
+from app.emos import Statistics
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 sched = BlockingScheduler()
@@ -8,7 +8,7 @@ sched = BlockingScheduler()
 
 def cron():
     """ Execute all commands for get stats without browser web open """
-    api_answer = app.Statistics()
+    api_answer = Statistics()
     cfg_block = api_answer.read_full_conf()
     api_resp = api_answer.get_status(cfg_block)
     api_answer.events_save(api_resp)
@@ -17,5 +17,5 @@ def cron():
     api_answer.delete_old_stats()
 
 
-sched.add_job(cron, "interval", seconds=120)
+sched.add_job(cron, "interval", seconds=10)
 sched.start()
