@@ -54,7 +54,6 @@ class Statistics:
         get_stats = "https://rigcenter.easy-mining-os.com/api/" + datas[0]["cfg_api_key"]
         response = requests.get(get_stats)
         result = json.loads(response.text)
-        print(result)
 
         if result != "":
             try:
