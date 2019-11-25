@@ -2,7 +2,7 @@
 
 from app.emos import Statistics
 
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 
 def cron():
@@ -17,6 +17,10 @@ def cron():
 
 
 if __name__ == '__main__':
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(cron, 'interval', seconds=3)
-    scheduler.start()
+    scheduler = BlockingScheduler()
+    scheduler.add_job(cron, 'interval', seconds=60)
+
+    try:
+        scheduler.start()
+    except (KeyboardInterrupt, SystemExit):
+        print('Error!')
