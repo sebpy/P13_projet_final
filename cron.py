@@ -25,6 +25,7 @@ if __name__ == '__main__':
         while True:
             cron()
             time.sleep(60)
+            print('wait 60 sec')
     except (KeyboardInterrupt, SystemExit):
         print('Error!')
 
