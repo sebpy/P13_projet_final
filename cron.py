@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 
-from app.emos import Statistics
-import time
+from app import app
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 sched = BlockingScheduler()
 
 
 def cron():
-    #    """ Execute all commands for get stats without browser web open """
-    api_answer = Statistics()
+    """ Execute all commands for get stats without browser web open """
+    api_answer = app.Statistics()
     cfg_block = api_answer.read_full_conf()
     api_resp = api_answer.get_status(cfg_block)
     api_answer.events_save(api_resp)
