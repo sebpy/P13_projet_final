@@ -179,7 +179,7 @@ class Statistics:
 
         db.session.add(save_availability)
         db.session.commit()
-        #return availability
+        return availability
 
     @staticmethod
     def availability_total():
@@ -287,7 +287,7 @@ class Statistics:
         Availability.query.filter(Availability.date_time + secondes < date).delete()
 
         db.session.commit()
-        stat_gpu = StatsRigs.query.filter(StatsRigs.date_time).first()
+        #stat_gpu = StatsRigs.query.filter(StatsRigs.date_time).first()
 
     def discharge(self):
         """ Discharge all events in list """

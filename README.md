@@ -9,17 +9,35 @@ It allows to display in real time the data of its mining drilling by the site ea
 - Python 3.6
 - Flask
 - Sqlite database
+- nginx
 - All the other required modules are in the requirements.txt file to install before launching the app.
 
 
 ## How to install
 
-First clone or download the project.
+# Update your local package index and then install the packages by typing:
+```
+sudo apt-get update
+sudo apt-get install python-pip python-dev nginx sqlite3
+```
+
+# Create a Python Virtual Environment
+
+Next, we’ll set up a virtual environment in order to isolate our Flask application from the other Python files on the system.
+Start by installing the virtualenv package using pip:
+```
+sudo pip install virtualenv
+```
+
+Clone or download the project.
 (VirtualEnv is recommended to install the requirements)
 ```bash
-$ cd "project/folder"
-$ pip install -r requirements.txt
+cd "P13_projet_final"
+pip install -r requirements.txt
 ```
+
+## Configuring Nginx to Proxy Requests
+
 ## Cronjob
 Run the crontab -e command and add the following line:
 ```

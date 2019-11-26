@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
 from app.emos import Statistics
-import time
-from apscheduler.schedulers.blocking import BlockingScheduler
 
 
 def cron():
@@ -17,15 +15,9 @@ def cron():
 
 
 if __name__ == '__main__':
-    #scheduler = BlockingScheduler()
-    #scheduler.add_job(cron, 'interval', seconds=60)
-    #scheduler.start()
 
     try:
-        while True:
-            cron()
-            time.sleep(60)
-            print('wait 60 sec')
-    except (KeyboardInterrupt, SystemExit):
+        cron()
+    except SystemExit:
         print('Error!')
 
