@@ -6,10 +6,10 @@ It allows to display in real time the data of its mining drilling by the site ea
 
 ## Prerequisites
 
-- Python 3.6
-- Flask
-- Sqlite database
-- nginx
+- Python 3 last
+- Flask last
+- Sqlite3 last
+- nginx last
 - All the other required modules are in the requirements.txt file to install before launching the app.
 
 
@@ -83,7 +83,7 @@ server {
 ## Cronjob
 Run the crontab -e command and add the following line:
 ```bash
-* * * * * python3 /home/{USERNAME}/emoslive/cron.py > /dev/null 2>&1
+*\2 * * * * python3 /home/{USERNAME}/emoslive/cron.py > /dev/null 2>&1
 ```
 
 ## Configure Supervisor
