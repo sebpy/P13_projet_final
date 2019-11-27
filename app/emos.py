@@ -131,7 +131,7 @@ class Statistics:
 
             db.session.commit()
 
-        #self.availability_save()  # save availability
+        self.availability_save()  # save availability
 
     def read_stats(self):
         """ Read rigs statistiques """
@@ -179,7 +179,7 @@ class Statistics:
 
         db.session.add(save_availability)
         db.session.commit()
-        return availability
+        #return availability
 
     @staticmethod
     def availability_total():

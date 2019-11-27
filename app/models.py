@@ -151,7 +151,6 @@ def init_db():
     db.create_all()
     db.session.add(ConfBlock('1', '1', '1', '1', '0', "", '0', '4320', '0'))
     db.session.add(User('admin', generate_password_hash(passwd)))
-    #db.session.add(Rigs("EM-1060", "xxxxxxxx", "6", "NV", "123.2", "688", "6j22h30m", "6j22h30m"))
     db.session.commit()
     lg.warning('Database initialized!')
 

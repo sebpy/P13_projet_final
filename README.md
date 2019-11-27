@@ -18,7 +18,7 @@ It allows to display in real time the data of its mining drilling by the site ea
 # Update your local package index and then install the packages by typing:
 ```
 sudo apt update && sudo apt upgrade
-sudo apt install python-pip python-dev nginx sqlite3 -y
+sudo apt install python3 python3-pip python3-dev nginx sqlite3 supervisor -y
 ```
 
 # Create a Python Virtual Environment
@@ -33,23 +33,95 @@ source venv/bin/activate
 ```
 
 Clone or download the project.
-(VirtualEnv is recommended to install the requirements)
+VirtualEnv is recommended to install the requirements
+(you have to use the sudo command with pip3 to install the requieremets so you do not have problems with the cron job)
 ```bash
-cd "P13_projet_final"
-pip3 install -r requirements.txt
+sudo mv P13_projet_final emoslive
+cd "emoslive"
+sudo pip3 install -r requirements.txt
 ```
 
 ## Configuring Nginx to Proxy Requests
 
+#Create a new configuration file
+```bash
+sudo nano /etc/nginx/sites-enabled/emoslive
+```
+
+Then add the informations below
+
+```bash
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        root /home/zelix25/emoslive;
+
+        server_name {raspeberry_ip};
+
+        location / {
+            try_files $uri @wsgi;
+        }
+
+        location @wsgi {
+            proxy_pass http://0.0.0.0:8080;
+            proxy_set_header   Host             $host;
+            proxy_set_header   X-Real-IP        $remote_addr;
+            proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Proto $scheme;
+        }
+
+        location ~* .(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|css|rss|atom|js|jpg|                                                                                                                                                             jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$ {
+            access_log off;
+            log_not_found off;
+            expires max;
+        }
+}
+
+```
+
 ## Cronjob
 Run the crontab -e command and add the following line:
+```bash
+* * * * * python3 /home/{USERNAME}/emoslive/cron.py > /dev/null 2>&1
 ```
-* * * * * python3 /home/{USERNAME}/PycharmProjects/emos-monitoring/cron.py > /dev/null 2>&1
+
+## Configure Supervisor
+# Create configuration file
+```bash
+sudo nano /etc/supervisor/conf.d/emoslive.conf
+``` 
+Then add the information below
+```bash
+[program:emoslive-gunicorn]
+
+command = /home/{user_name}/emoslive/venv/bin/gunicorn --bind 0.0.0.0:8080 app:app
+directory = /home/{user_name}/emoslive
+user = root
+autostart = true
+autorestart = true
+stderr_logfile = /var/log/emoslive.err.log
+stdout_logfile = /var/log/emoslive.out.log
+
+``` 
+Then you have to re-read the configuration and then load it 
+```bash
+sudo supervisorctl reread
+sudo supervisorctl reload
+```
+
+then to finish 
+```bash
+sudo supervisorctl status
+```
+You must obtain (ex.)
+```bash
+emoslive-gunicorn                RUNNING   pid 13322, uptime 0:00:10 
 ```
 
 ## First connexion
-Log on to the address http://{your_ip}:8080 and enter the following login and password:
-```
+Log on to the address http://{your_ip} and enter the following login and password:
+```bash
 Login: admin
 Password: emoslive
 ```
