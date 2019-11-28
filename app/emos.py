@@ -4,10 +4,10 @@
 """ Module utilisés par EMOS-Live  """
 
 import json
+from datetime import datetime
 import requests
 from sqlalchemy.sql import func, desc
 from flask import request
-from datetime import datetime as dt
 from app.models import *
 
 
@@ -72,12 +72,12 @@ class Statistics:
         """ Verifie si l'id du rig est deja en base de donnée et l'ajoute s'il n'existe pas """
 
         contents = Rigs.query.all()
-        for (k, v) in data.items():
-            mac_rig = v['mac'][5:].replace(':', '')  # generate rig_id
+        for (key, value) in data.items():
+            mac_rig = value['mac'][5:].replace(':', '')  # generate rig_id
             if not contents:
-                rig = Rigs(v['nom_rig'], mac_rig, v['nb_gpu'], v['type_gpu'],
-                           v['total_hash'], v['total_pw'], v['uptime'], v['mine_time'], v['hash_unit'],
-                           v['online'])
+                rig = Rigs(value['nom_rig'], mac_rig, value['nb_gpu'], value['type_gpu'],
+                           value['total_hash'], value['total_pw'], value['uptime'], value['mine_time'],
+                           value['hash_unit'], value['online'])
 
                 db.session.add(rig)
                 db.session.commit()
@@ -87,23 +87,25 @@ class Statistics:
                 idrig_exist = Rigs.query.filter(Rigs.id_rig == mac_rig).count()
                 if not idrig_exist:
                     for ruche in contents:
-                        rig = Rigs(v['nom_rig'], mac_rig, v['nb_gpu'], v['type_gpu'],
-                                   v['total_hash'], v['total_pw'], v['uptime'], v['mine_time'], v['hash_unit'],
-                                   v['online'])
+                        rig = Rigs(value['nom_rig'], mac_rig, value['nb_gpu'], value['type_gpu'],
+                                   value['total_hash'], value['total_pw'], value['uptime'], value['mine_time'],
+                                   value['hash_unit'], value['online'])
 
                         db.session.add(rig)
                         db.session.commit()
                         #print('Record was successfully added')
                 else:
-                    if v['online'] == '1':
+                    if value['online'] == '1':
                         i = 0
                         for stat in contents:
-                            while i < int(v['nb_gpu']):
+                            while i < int(value['nb_gpu']):
                                 gpu = str(i)
-                                stats = StatsRigs(mac_rig, i, v['model_gpu'][gpu], v['temperature'][gpu],
-                                                  v['fans'][gpu], v['hashrate'][gpu], v['pw'][gpu], v['oc_mem'][gpu],
-                                                  v['oc_core'][gpu], v['undervolt'][gpu], v['mem_freq'][gpu],
-                                                  v['core_freq'][gpu], self.now,
+                                stats = StatsRigs(mac_rig, i, value['model_gpu'][gpu],
+                                                  value['temperature'][gpu], value['fans'][gpu],
+                                                  value['hashrate'][gpu], value['pw'][gpu],
+                                                  value['oc_mem'][gpu], value['oc_core'][gpu],
+                                                  value['undervolt'][gpu], value['mem_freq'][gpu],
+                                                  value['core_freq'][gpu], self.now,
                                                   datetime.datetime.now().timestamp())
 
                                 db.session.add(stats)
@@ -111,23 +113,23 @@ class Statistics:
                                 #print('Record was successfully added')
 
                                 i += 1
-                                if i == v['nb_gpu']:
+                                if i == value['nb_gpu']:
                                     i = 0
 
     def update_stats_rig(self, data):
         """ Update status rigs """
-        for (k, v) in data.items():
-            mac_rig = v['mac'][5:].replace(':', '')  # generate rig_id
+        for (key, value) in data.items():
+            mac_rig = value['mac'][5:].replace(':', '')  # generate rig_id
             rig = Rigs.query.filter_by(id_rig=mac_rig).first()
-            rig.nom_rig = v['nom_rig']
-            rig.nb_gpu = v['nb_gpu']
-            rig.type_gpu = v['type_gpu']
-            rig.total_hash = v['total_hash']
-            rig.total_pw = v['total_pw']
-            rig.uptime = v['uptime']
-            rig.mine_time = v['mine_time']
-            rig.hash_unit = v['hash_unit']
-            rig.online = v['online']
+            rig.nom_rig = value['nom_rig']
+            rig.nb_gpu = value['nb_gpu']
+            rig.type_gpu = value['type_gpu']
+            rig.total_hash = value['total_hash']
+            rig.total_pw = value['total_pw']
+            rig.uptime = value['uptime']
+            rig.mine_time = value['mine_time']
+            rig.hash_unit = value['hash_unit']
+            rig.online = value['online']
 
             db.session.commit()
 
@@ -156,7 +158,8 @@ class Statistics:
                           'online': rig.online,
                           })
 
-        self.json = {'stats': items, 'cfg': cfg_data, 'availability': str(availability.availability)}
+        self.json = {'stats': items, 'cfg': cfg_data,
+                     'availability': str(availability.availability)}
         return self.json
 
     def availability_save(self):
@@ -175,7 +178,8 @@ class Statistics:
             else:
                 availability = round(((real_time / total_time) * 100), 2)
 
-        save_availability = Availability(availability, self.now, datetime.datetime.now().timestamp())
+        save_availability = Availability(availability, self.now,
+                                         datetime.datetime.now().timestamp())
 
         db.session.add(save_availability)
         db.session.commit()
@@ -232,7 +236,8 @@ class Statistics:
             mac_rig = v['mac'][5:].replace(':', '')  # generate rig_id
             if v['online'] == '0':
                 off_rig = Notifications.query.filter(Notifications.id_rig == mac_rig,
-                                                     Notifications.valid == '0').order_by(Notifications.id.desc()).first()
+                                                     Notifications.valid == '0')\
+                                                    .order_by(Notifications.id.desc()).first()
 
                 if not off_rig:
                     self.events = Notifications(v['nom_rig'], mac_rig, '0', self.now,
@@ -249,7 +254,8 @@ class Statistics:
 
             if v['online'] == '1':
                 rig_up = Notifications.query.filter(Notifications.id_rig == mac_rig,
-                                                    Notifications.valid == '0').order_by(Notifications.id.desc()).first()
+                                                    Notifications.valid == '0')\
+                                                    .order_by(Notifications.id.desc()).first()
                 if not rig_up:
                     self.events = Notifications(v['nom_rig'], mac_rig, '1', self.now,
                                                 datetime.datetime.now().timestamp(), '0')
@@ -264,7 +270,8 @@ class Statistics:
 
     def events_read(self):
         """ Read all events in Notifications """
-        list_of_events = Notifications.query.filter(Notifications.valid == 0).order_by(desc(Notifications.id)).limit(20)
+        list_of_events = Notifications.query.filter(Notifications.valid == 0)\
+            .order_by(desc(Notifications.id)).limit(20)
         total_active_event = Notifications.query.filter(Notifications.valid == 0).count()
 
         items = []
@@ -303,7 +310,8 @@ class Statistics:
     def detail_rig(self, id_rig):
         """ Detail all stats for rig """
         gpu_count = Rigs.query.filter(Rigs.id_rig == id_rig).first()
-        stats_rig = StatsRigs.query.filter(StatsRigs.id_rig == id_rig).order_by(desc(StatsRigs.created_date))\
+        stats_rig = StatsRigs.query.filter(StatsRigs.id_rig == id_rig)\
+            .order_by(desc(StatsRigs.created_date))\
             .limit(gpu_count.nb_gpu)
 
         hash_unit = ""
@@ -313,16 +321,16 @@ class Statistics:
         items = []
         for detail in stats_rig:
             items.append({
-                            'id_gpu': detail.id_gpu,
-                            'model': detail.model_gpu,
-                            'temp': detail.temp_gpu,
-                            'fan': detail.fan_gpu,
-                            'hash': str(detail.hash_gpu),
-                            'pw': str(detail.pw_gpu),
-                            'mem_freq': detail.mem_freq,
-                            'core_freq': detail.core_freq,
-                            'date_create': detail.created_date,
-                            'date_time': detail.date_time,
+                'id_gpu': detail.id_gpu,
+                'model': detail.model_gpu,
+                'temp': detail.temp_gpu,
+                'fan': detail.fan_gpu,
+                'hash': str(detail.hash_gpu),
+                'pw': str(detail.pw_gpu),
+                'mem_freq': detail.mem_freq,
+                'core_freq': detail.core_freq,
+                'date_create': detail.created_date,
+                'date_time': detail.date_time,
             })
             rig = Rigs.query.filter_by(id_rig=detail.id_rig).first()
             active_events = Notifications.query.filter_by(id_rig=detail.id_rig, valid=0).count()

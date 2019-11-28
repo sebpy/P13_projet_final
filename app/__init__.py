@@ -1,3 +1,6 @@
+import os
+from flask import Flask
+
 from app.views import app
 from app import models
 

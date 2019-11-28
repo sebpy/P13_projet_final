@@ -152,12 +152,12 @@ def login():
     passwd = request.form['password']
     registered_user = User.query.filter_by(username=username).first()
     if not registered_user:
-        message = Markup('<strong>Erreur!</strong><br>Login ou mot de passe incorrecte')
+        message = Markup('<strong>Erreur!</strong><br>Login ou mot de passe incorrect')
         flash(message, 'danger')
         return redirect(url_for('login'))
 
     if not check_password_hash(registered_user.password, passwd):
-        message = Markup('<strong>Erreur!</strong><br>Login ou mot de passe incorrecte')
+        message = Markup('<strong>Erreur!</strong><br>Login ou mot de passe incorrect')
         flash(message, 'danger')
         return redirect(url_for('login'))
 
