@@ -6,14 +6,10 @@
         {{ moment.include_moment() }}
         {{ moment.locale(auto_detect=True) }}
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
-        <meta content="Coderthemes" name="author" />
+        <meta content="EMOS-Live - Monitoring your rig" name="description" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <!-- App favicon -->
-        <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-
-        <!--Morris Chart-->
-        <link rel="stylesheet" href="{{ url_for('static', filename='libs/morris-js/morris.css') }}" />
+        <link href="{{ url_for('static', filename='images/favicon.ico') }}" rel="shortcut icon" />
 
         <!-- App css -->
         <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />

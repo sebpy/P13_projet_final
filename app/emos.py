@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Module utilisés par EMOS-Live  """
+""" Module used by EMOS-Live """
 
 import json
 from datetime import datetime
@@ -12,7 +12,7 @@ from app.models import *
 
 
 class Statistics:
-    """ Class pour récupérer les éléments de l'api EMOS """
+    """ Class to retrieve EMOS API items """
 
     def __init__(self):
         self.get_stats = ""
@@ -23,7 +23,7 @@ class Statistics:
         self.show_nbgpu = "1"
         self.valid_json = ""
         self.stats_gpu = ""
-        self.events = ""
+        self.events = "0"
         self.now = datetime.datetime.now()
         self.error = ""
 
@@ -49,7 +49,7 @@ class Statistics:
         return self.conf_full
 
     def get_status(self, datas):
-        """ Récupére les statistique de l'api EMOS """
+        """ Retrieve EMOS API statistics """
 
         get_stats = "https://rigcenter.easy-mining-os.com/api/" + datas[0]["cfg_api_key"]
         response = requests.get(get_stats)
@@ -69,7 +69,7 @@ class Statistics:
             return 'Pas de rigs existant'
 
     def list_rigs(self, data):
-        """ Verifie si l'id du rig est deja en base de donnée et l'ajoute s'il n'existe pas """
+        """ Check if the rig ID is already in the database and add it if it does not exist """
 
         contents = Rigs.query.all()
         for (key, value) in data.items():
@@ -144,6 +144,11 @@ class Statistics:
         """ Show all stats by rigs """
         list_of_rig = Rigs.query.all()
         availability = Availability.query.order_by(Availability.id.desc()).first()
+
+        if not availability:
+            availability = 0.00
+        else:
+            availability = availability.availability
         items = []
         for rig in list_of_rig:
             items.append({'nom_rig': rig.nom_rig,
@@ -159,7 +164,7 @@ class Statistics:
                           })
 
         self.json = {'stats': items, 'cfg': cfg_data,
-                     'availability': str(availability.availability)}
+                     'availability': str(availability)}
         return self.json
 
     def availability_save(self):

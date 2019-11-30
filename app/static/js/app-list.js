@@ -45,7 +45,12 @@ function stats_list() {
 
             $('#tt_rig').text(nb_rig);
             $('#tt_pw').text(tt_pw.toFixed(2) + 'W');
-            $('#tt_hash').text(tt_hash.toFixed(2)+' '+stats[0].hash_unit);
+            if (!$(stats).length){
+                $('#tt_hash').text(0.00);
+            } else {
+                $('#tt_hash').text(tt_hash.toFixed(2)+' '+stats[0].hash_unit);
+            }
+
             $('#hl_rig').text(hl_rig);
             $('#availability').text(availability + '%');
 
