@@ -50,7 +50,6 @@ function stats_list() {
             } else {
                 $('#tt_hash').text(tt_hash.toFixed(2)+' '+stats[0].hash_unit);
             }
-
             $('#hl_rig').text(hl_rig);
             $('#availability').text(availability + '%');
 

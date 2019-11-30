@@ -76,7 +76,11 @@ function stats_block() {
             $('#tt_gpu').text(tt_gpu);
             $('#hl_rig').text(hl_rig);
             $('#availability').text(availability + '%');
-            $('#tt_hash').text(tt_hash.toFixed(2)+' '+stats[0].hash_unit);
+            if (!$(stats).length){
+                $('#tt_hash').text(0.00);
+            } else {
+                $('#tt_hash').text(tt_hash.toFixed(2)+' '+stats[0].hash_unit);
+            }
 
             if(hl_rig > 0){
                 $( '#hl_rig' ).removeClass( "badge-success" ).addClass( "badge-danger" );
