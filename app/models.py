@@ -95,7 +95,6 @@ class ConfBlock(db.Model):
         self.emos_api_key = emos_api_key
         self.show_type = show_type
         self.show_range = show_range
-
         self.first = first  # First connexion => Config page
 
 

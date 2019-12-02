@@ -1,7 +1,9 @@
 import os
 import unittest
+import requests
 
 from app.models import *
+from app import *
 
 TEST_DB = 'test.db'
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
@@ -10,7 +12,7 @@ BASEDIR = os.path.abspath(os.path.dirname(__file__))
 class BasicTests(unittest.TestCase):
 
     ############################
-    #### setup and teardown ####
+    #### setup ####
     ############################
 
     # executed prior to each test
@@ -41,11 +43,7 @@ class BasicTests(unittest.TestCase):
             follow_redirects=True
         )
 
-    def test_main_page(self):
-        response = self.app.get('/', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
-
-    def test_valid_login(self):
+    def test_account_login(self):
         response = self.login('admin', 'emoslive')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Connexion', response.data)

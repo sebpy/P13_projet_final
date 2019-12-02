@@ -24,7 +24,7 @@ class SaveConfig:
         self.login = ""
 
     def nb_gpu_chk(self):
-        """"""
+        """ Check value nb_gpu """
 
         nb_gpu = False
         if request.form.get("nbgpu"):
@@ -38,7 +38,7 @@ class SaveConfig:
         return self.show_nb_gpu
 
     def hash_chk(self):
-        """"""
+        """ Check value total_hash """
 
         total_hash = False
         if request.form.get("hashtotal"):
@@ -51,7 +51,7 @@ class SaveConfig:
         return self.show_hash
 
     def pw_chk(self):
-        """"""
+        """ Check value total_pw """
 
         total_pw = False
         if request.form.get("pwtotal"):
@@ -65,7 +65,7 @@ class SaveConfig:
         return self.show_pw
 
     def uptime_chk(self):
-        """"""
+        """ Check value uptime """
 
         uptime = False
         if request.form.get("uptime"):
@@ -79,7 +79,7 @@ class SaveConfig:
         return self.show_uptime
 
     def mine_time_chk(self):
-        """"""
+        """ Check value mine_time """
 
         mine_time = False
         if request.form.get("minetime"):

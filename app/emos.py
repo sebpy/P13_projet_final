@@ -45,7 +45,6 @@ class Statistics:
                           })
 
         self.conf_full = items
-
         return self.conf_full
 
     def get_status(self, datas):
@@ -175,13 +174,13 @@ class Statistics:
             availability = 0.00
 
         else:
-            minutes = int(self.conf_full[0]['cfg_range'])  # 30 day
+            minutes = int(self.conf_full[0]['cfg_range'])  # 3, 5 or 7 days
             total_time = (minutes * nb_rigs)  # total minutes for 100%
             real_time = round(StatsRigs.query.count() / nb_rigs, 2)  # total minutes in db
             if not real_time:
                 availability = 0.00
             else:
-                availability = round(((real_time / total_time) * 100), 2)
+                availability = round(((real_time / total_time) * 200), 2)
 
         save_availability = Availability(availability, self.now,
                                          datetime.datetime.now().timestamp())
@@ -356,4 +355,4 @@ class Statistics:
 if __name__ == '__main__':
     st = Statistics()
     #st.delete_old_stats()
-    read = st.events_list()
+    read = st.availability_save
