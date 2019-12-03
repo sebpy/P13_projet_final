@@ -5,6 +5,8 @@
 
 import json
 from datetime import datetime
+from unittest import skip
+
 import requests
 from sqlalchemy.sql import func, desc
 from flask import request
@@ -290,7 +292,7 @@ class Statistics:
         return self.events
 
     def delete_old_stats(self):
-        """ Delete stats after 30 days """
+        """ Delete stats after xx days """
         secondes = int(self.conf_full[0]['cfg_range']) * 60
         date = int(round(datetime.datetime.now().timestamp()))
         StatsRigs.query.filter(StatsRigs.date_time + secondes < date).delete()
@@ -302,7 +304,6 @@ class Statistics:
 
     def discharge(self):
         """ Discharge all events in list """
-
         if request.method == "POST":
             valid_events = {'valid': '1'}
             db.session.query(Notifications).update(valid_events)
@@ -344,6 +345,7 @@ class Statistics:
 
         stats = {'stats_rig': items, 'hash_unit': hash_unit, 'uptime': uptime, 'rig_name': rig_name,
                  'event': active_events}
+        print(stats)
         return stats
 
     def events_list(self):
