@@ -182,10 +182,12 @@ class Statistics:
             if not real_time:
                 availability = 0.00
             else:
-                availability = round(((real_time / total_time) * 200), 2)
+                availability = round(((real_time / total_time) * 100), 2)
 
         save_availability = Availability(availability, self.now,
                                          datetime.datetime.now().timestamp())
+
+        print(availability)
 
         db.session.add(save_availability)
         db.session.commit()
