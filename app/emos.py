@@ -345,7 +345,6 @@ class Statistics:
 
         stats = {'stats_rig': items, 'hash_unit': hash_unit, 'uptime': uptime, 'rig_name': rig_name,
                  'event': active_events}
-        print(stats)
         return stats
 
     def events_list(self):

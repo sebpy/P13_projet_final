@@ -55,7 +55,7 @@ server {
         listen 80 default_server;
         listen [::]:80 default_server;
 
-        root /home/zelix25/emoslive;
+        root /home/{current_user}/emoslive;
 
         server_name {raspeberry_ip};
 

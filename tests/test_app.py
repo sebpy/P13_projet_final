@@ -1,11 +1,11 @@
 import os
 import unittest
+from functools import wraps
+from flask import redirect, url_for
 import request
+import json
 
-from app import *
-from app.models import db, User, ConfBlock, Rigs
 from app.emos import Statistics as st
-
 from app.models import *
 from app import *
 
@@ -26,11 +26,27 @@ class BasicTests(unittest.TestCase):
         app.config['DEBUG'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
                                                 os.path.join(BASEDIR, TEST_DB)
-        self.app = app.test_client()
+        self.ctx = app.app_context()
+        self.ctx.push()
+
         db.drop_all()
         db.create_all()
+        self.app = app.test_client()
+
+        self.app.testing = True
+        app.login_manager.init_app(app)
+
         self.db_conf = "[{'cfg_nb_gpu': '1', 'cfg_total_hash': '1', 'cfg_total_pw': '1', 'cfg_uptime': '1', " \
                        "'cfg_mine_time': '0', 'cfg_api_key': '', 'cfg_type': '0', 'cfg_range': '4320', 'first': '0'}]"
+
+    def login_required(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not app.config.get('LOGIN_DISABLED', False) and g.user is None:
+                return redirect(url_for('accounts_app.login', next=request.url))
+            return f(*args, **kwargs)
+
+        return decorated_function
 
     def test_main_page(self):
         response = self.app.get('/', follow_redirects=True)
@@ -57,10 +73,27 @@ class BasicTests(unittest.TestCase):
         return
 
     def insert_rig(self):
-        rig = Rigs(nom_rig='1070', id_rig='2c5c6b6', nb_gpu='6', gpu_type='NV',
-                   total_hash='180.4', total_pw='623.2', uptime='', mine_time='',
+        rig = Rigs(nom_rig='1070', id_rig='2c5c6b6', nb_gpu='0', gpu_type='NV',
+                   total_hash='180.4', total_pw='623.2', uptime='23j 07h 42m', mine_time='23j 07h 42m',
                    hash_unit='Mh/s', online='1')
         db.session.add(rig)
+        db.session.commit()
+        return
+
+    def insert_Stat_rig(self):
+        rig = StatsRigs(id_rig='2c5c6b6', id_gpu='0', model_gpu='GeForce GTX 1060 6GB  (6078 MiB, 120.00 W)',
+                        temp_gpu='65', fan_gpu='53', hash_gpu='22.38', pw_gpu='89.77',
+                        oc_mem='', oc_core='1', vddc='0', mem_freq='4201', core_freq='1835',
+                        created_date=datetime.datetime.now(), date_time=datetime.datetime.now().timestamp())
+
+        db.session.add(rig)
+        db.session.commit()
+        return
+
+    def insert_availability(self):
+        av = Availability(availability='10.00', created_date=datetime.datetime.now(),
+                          date_time=datetime.datetime.now().timestamp())
+        db.session.add(av)
         db.session.commit()
         return
 
@@ -101,7 +134,7 @@ class BasicTests(unittest.TestCase):
 
         list = st.show_all_rigs_stats(self, str(self.db_conf))
 
-        real_conf = "{'stats': [{'nom_rig': '1070', 'id_rig': '2c5c6b6', 'nb_gpu': 6, 'gpu_type': 'NV', " \
+        real_conf = "{'stats': [{'nom_rig': '1070', 'id_rig': '2c5c6b6', 'nb_gpu': 1, 'gpu_type': 'NV', " \
                     "'total_hash': '180.4', 'total_pw': '623.2', 'uptime': '', 'mine_time': '', " \
                     "'hash_unit': 'Mh/s', 'online': '1'}], 'cfg': \"{'cfg_nb_gpu': '1', 'cfg_total_hash': '1', " \
                     "'cfg_total_pw': '1', 'cfg_uptime': '1', 'cfg_mine_time': '0', 'cfg_api_key': '', " \
@@ -123,30 +156,67 @@ class BasicTests(unittest.TestCase):
         rv = self.app.get('/config')
         self.assertEqual(rv.status, '200 OK')
 
-    def test_events_read(self):
-        self.events_save()
-        event = st.events_read(self)
-        real_event = "{'events_items': [{'id': 1, 'nom_rig': '1070', 'event': '1', " \
-                     "'create_at': '", datetime.datetime.now(), "'}], 'total_active_event': 1}"
-        rv = self.app.get('/_events')
-        #assert str(event) == str(real_event)
-        self.assertEqual(rv.status, '200 OK')
-
     def test_events_list(self):
         self.events_save()
         st.events_list(self)
         rv = self.app.get('/_events')
         self.assertEqual(rv.status, '200 OK')
 
-    @app.route('/login', methods=['GET', 'POST'])
     def test_discharge(self):
-        self.login('admin', 'emoslive')
         self.events_save()
-        self.app.get('/login', follow_redirects=True)
-        event = len(st.events_list(self))
-        st.discharge(self)
-        self.app.post('/_valid_events')
-        clean_event = len(st.events_list(self))
+        len(st.events_list(self))
+
+        login_successful = self.login('admin', 'emoslive')
+        self.assertTrue(login_successful)
+
+        sent = {'valid': '1'}
+        resp = self.app.post('/_valid_events', data=json.dumps(sent), content_type='application/json',
+                             follow_redirects=True)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_graphpw(self):
+        login_successful = self.login('admin', 'emoslive')
+        self.assertTrue(login_successful)
+        resp = self.app.get('/_graphpw')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_graph_rig(self):
+        login_successful = self.login('admin', 'emoslive')
+        self.assertTrue(login_successful)
+        resp = self.app.get('/_graph/2c5c6b6')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_detail_rig(self):
+        self.insert_Stat_rig()
+        self.insert_rig()
+        login_successful = self.login('admin', 'emoslive')
+        self.assertTrue(login_successful)
+        resp = self.app.get('/2c5c6b6')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_avaibility(self):
+        self.insert_rig()
+        self.insert_availability()
+        login_successful = self.login('admin', 'emoslive')
+        self.assertTrue(login_successful)
+        resp = self.app.get('/_availability')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_update_account(self):
+        self.insert_Stat_rig()
+        self.insert_rig()
+        login_successful = self.login('admin', 'emoslive')
+        self.assertTrue(login_successful)
+        sent = {'username': 'admin', 'password': 'pbkdf2:sha256:150000$S0v8fxQS$eea7ce957fd67f75f31ddb076e3f8e'
+                                                 '0badff8889fa15f76ee53302d0c88bf147'}
+        resp = self.app.post('/_update_account', data=sent, content_type='application/json')
+        #self.assertEqual(resp.status_code, 200)
+
+    def test_account(self):
+        login_successful = self.login('admin', 'emoslive')
+        self.assertTrue(login_successful)
+        resp = self.app.get('/account', follow_redirects=True)
+        self.assertEqual(resp.status_code, 200)
 
 
 if __name__ == "__main__":

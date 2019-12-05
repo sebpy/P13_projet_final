@@ -4,6 +4,7 @@
 from flask import Flask, render_template, jsonify, redirect, url_for, flash, request, Markup
 from flask_moment import Moment
 from werkzeug.security import check_password_hash
+from flask_migrate import Migrate
 
 from flask_login import LoginManager, login_required, login_user, logout_user
 
@@ -12,6 +13,7 @@ moment = Moment(app)
 app.config.from_object('config')
 login_manager = LoginManager()
 login_manager.init_app(app)
+
 
 from app.emos import Statistics
 from app.models import User
