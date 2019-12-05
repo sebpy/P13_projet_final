@@ -26,6 +26,7 @@ sudo apt install python3 python3-pip python3-dev nginx sqlite3 supervisor -y
 Next, we’ll set up a virtual environment in order to isolate our Flask application from the other Python files on the system.
 Start by installing the virtualenv package using pip:
 ```
+git clone https://github.com/sebpy/P13_projet_final.git
 pip3 install virtualenv
 cd "P13_projet_final"
 virtualenv venv
@@ -38,7 +39,8 @@ VirtualEnv is recommended to install the requirements
 ```bash
 sudo mv P13_projet_final emoslive
 cd "emoslive"
-sudo pip3 install -r requirements.txt
+pip3 install -r requirements.txt (for current user)
+sudo pip3 install -r requirements.txt (for cron)
 ```
 
 ## Configuring Nginx to Proxy Requests
@@ -71,7 +73,7 @@ server {
             proxy_set_header   X-Forwarded-Proto $scheme;
         }
 
-        location ~* .(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|css|rss|atom|js|jpg|                                                                                                                                                             jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$ {
+        location ~* .(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|css|rss|atom|js|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$ {
             access_log off;
             log_not_found off;
             expires max;
@@ -79,7 +81,11 @@ server {
 }
 
 ```
-
+```bash
+sudo rm /etc/nginx/sites-enabled/default
+sudo ln -s /etc/nginx/sites-available/emoslive /etc/nginx/sites-enabled/emoslive
+sudo service nginx restart
+```
 ## Cronjob
 Run the crontab -e command and add the following line:
 ```bash
@@ -119,6 +125,12 @@ You must obtain (ex.)
 emoslive-gunicorn                RUNNING   pid 13322, uptime 0:00:10 
 ```
 
+# Last action
+for show static files
+```bash
+cp -R /home/{USERNAME}/emoslive/app/static /home/{USERNAME}/emoslive/static
+```
+
 ## First connexion
 Log on to the address http://{your_ip} and enter the following login and password:
 ```bash
@@ -131,3 +143,5 @@ Click on the button with login at the top right then select parameter.
 Enter your EMOS API key in the "API Key" field and save
 
 Wait a few seconds and your rig information will appear.
+
+If you want to extend notifications in the browser, enable automatic sound playback.
