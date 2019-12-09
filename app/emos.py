@@ -177,8 +177,11 @@ class Statistics:
 
         else:
             minutes = int(self.conf_full[0]['cfg_range'])  # 3, 5 or 7 days
-            total_time = (minutes * nb_rigs)  # total minutes for 100%
-            real_time = round(StatsRigs.query.count() / nb_rigs, 2)  # total minutes in db
+            total_time = (minutes * 32)  # total minutes for 100%
+            real_time = round(StatsRigs.query.count(), 2)  # total minutes in db
+            sta = StatsRigs.query.count()
+            print(sta)
+            print(total_time)
             if not real_time:
                 availability = 0.00
             else:

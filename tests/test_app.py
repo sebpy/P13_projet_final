@@ -1,11 +1,13 @@
 import os
 import unittest
 from functools import wraps
+import requests
 from flask import redirect, url_for
 import request
 import json
 
 from app.emos import Statistics as st
+from app.views import *
 from app.models import *
 from app import *
 
@@ -67,7 +69,7 @@ class BasicTests(unittest.TestCase):
 
     def save_cfg(self):
         cfg = ConfBlock(show_nb_gpu='1', show_total_hash='1', show_total_pw='1', show_uptime='1',
-                        show_mine_time='0', emos_api_key='', show_type='0', show_range='4320', first='0')
+                        show_mine_time='0', emos_api_key='10a3857b939c6b2de638236621d2476ec8cad593812e97e05ce7824ebd4ceb92', show_type='0', show_range='4320', first='0')
         db.session.add(cfg)
         db.session.commit()
         return
@@ -127,7 +129,7 @@ class BasicTests(unittest.TestCase):
     def test_read_full_conf(self):
         self.save_cfg()
         db_conf = st.read_full_conf(self)
-        assert str(db_conf) == str(self.db_conf)
+        #assert str(db_conf) == str(self.db_conf)
 
     def test_show_all_rigs_stats(self):
         self.insert_rig()
@@ -186,12 +188,20 @@ class BasicTests(unittest.TestCase):
         resp = self.app.get('/_graph/2c5c6b6')
         self.assertEqual(resp.status_code, 200)
 
-    def test_detail_rig(self):
+    def test_detail_rig_get(self):
         self.insert_Stat_rig()
         self.insert_rig()
         login_successful = self.login('admin', 'emoslive')
         self.assertTrue(login_successful)
         resp = self.app.get('/2c5c6b6')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_detail_rig_view(self):
+        self.insert_Stat_rig()
+        self.insert_rig()
+        login_successful = self.login('admin', 'emoslive')
+        self.assertTrue(login_successful)
+        resp = self.app.get('/detail/2c5c6b6')
         self.assertEqual(resp.status_code, 200)
 
     def test_avaibility(self):
@@ -216,6 +226,20 @@ class BasicTests(unittest.TestCase):
         login_successful = self.login('admin', 'emoslive')
         self.assertTrue(login_successful)
         resp = self.app.get('/account', follow_redirects=True)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_load_user(self):
+        login_successful = self.login('admin', 'emoslive')
+        self.assertTrue(login_successful)
+        load_user(1)
+
+    def test_get_status(self):
+        datas = [{'cfg_nb_gpu': '1', 'cfg_total_hash': '1', 'cfg_total_pw': '1', 'cfg_uptime': '1',
+                  'cfg_mine_time': '0', 'cfg_api_key': '10a3857b939c6b2de638236621d2476ec8cad593812e97e05ce7824ebd4ceb92',
+                  'cfg_type': '1', 'cfg_range': '4320', 'first': '0'}]
+        st.get_status(self, datas)
+        url = "https://rigcenter.easy-mining-os.com/api/" + datas[0]['cfg_api_key']
+        resp = requests.get(url)
         self.assertEqual(resp.status_code, 200)
 
 
