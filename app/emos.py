@@ -180,8 +180,7 @@ class Statistics:
             total_time = (minutes * 32)  # total minutes for 100%
             real_time = round(StatsRigs.query.count(), 2)  # total minutes in db
             sta = StatsRigs.query.count()
-            print(sta)
-            print(total_time)
+
             if not real_time:
                 availability = 0.00
             else:
@@ -189,8 +188,6 @@ class Statistics:
 
         save_availability = Availability(availability, self.now,
                                          datetime.datetime.now().timestamp())
-
-        print(availability)
 
         db.session.add(save_availability)
         db.session.commit()

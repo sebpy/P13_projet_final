@@ -34,6 +34,7 @@ class BasicTests(unittest.TestCase):
         db.drop_all()
         db.create_all()
         self.app = app.test_client()
+        self.now = datetime.datetime.now()
 
         self.app.testing = True
         app.login_manager.init_app(app)
@@ -128,8 +129,8 @@ class BasicTests(unittest.TestCase):
 
     def test_read_full_conf(self):
         self.save_cfg()
-        db_conf = st.read_full_conf(self)
-        #assert str(db_conf) == str(self.db_conf)
+        conf = st.read_full_conf(self)
+        self.assertEqual(conf[0]['cfg_nb_gpu'], '1')
 
     def test_show_all_rigs_stats(self):
         self.insert_rig()
@@ -241,6 +242,23 @@ class BasicTests(unittest.TestCase):
         url = "https://rigcenter.easy-mining-os.com/api/" + datas[0]['cfg_api_key']
         resp = requests.get(url)
         self.assertEqual(resp.status_code, 200)
+
+    def test_list_rig(self):
+        datas = {'0': {'nom_rig': 'EM-1061', 'type_gpu': 'NV', 'nb_gpu': '1', 'mac': 'ec:a8:6b:c2:41:6d',
+                       'ip': '192.168.10.10', 'miner': 'Phoenix-miner (Ethash)', 'mine_time': '6j 22h 17m',
+                       'hash_unit': 'Mh/s', 'uptime': '29j 08h 52m',
+                       'model_gpu': {'0': 'GeForce GTX 1060 6GB  (6078 MiB, 120.00 W)'},
+                       'hashrate': {'0': 22.38}, 'temperature': {'0': '65'},
+                       'fans': {'0': '54'}, 'pw': {'0': 89.78}, 'oc_mem': {'0': '800'},
+                       'oc_core': {'0': '0'}, 'undervolt': {'0': ''}, 'mem_freq': {'0': '4201'},
+                       'core_freq': {'0': '1835'}, 'total_hash': '22.38', 'total_pw': '89.78',
+                       'cpu': '0.15 0.20 0.25', 'ram': '3,7G 587M 1,3G', 'hdd': '855M 7,3G',
+                       'version_emos': '1.14', 'online': '1'}}
+
+        st.list_rigs(self, datas)
+        list = st.show_all_rigs_stats(self, str(self.db_conf))
+        self.assertEqual(list['stats'][0]['nom_rig'], 'EM-1061')
+        st.list_rigs(self, datas)
 
 
 if __name__ == "__main__":

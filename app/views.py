@@ -215,6 +215,7 @@ def update_account():
 
 
 @app.route('/account')
+@login_required
 def account():
     profil = SaveConfig()
     login = profil.account_login()
