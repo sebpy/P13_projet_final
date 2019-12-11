@@ -134,7 +134,7 @@ class Statistics:
 
             db.session.commit()
 
-        self.availability_save()  # save availability
+        #self.availability_save()  # save availability
 
     def read_stats(self):
         """ Read rigs statistiques """
