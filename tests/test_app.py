@@ -98,7 +98,7 @@ class BasicTests(unittest.TestCase):
         return
 
     def insert_rig(self):
-        rig = Rigs(nom_rig='1070', id_rig='62c5c6b6', nb_gpu='0', gpu_type='NV',
+        rig = Rigs(nom_rig='1070', id_rig='62c5c6b6', nb_gpu='1', gpu_type='NV',
                    total_hash='180.4', total_pw='623.2', uptime='23j 07h 42m', mine_time='23j 07h 42m',
                    hash_unit='Mh/s', online='1')
         db.session.add(rig)
@@ -297,7 +297,14 @@ class BasicTests(unittest.TestCase):
 
         st.availability_save(self)
         total = st.availability_total()
-        self.assertEqual(total[0]['availability'], '0.00')
+        self.assertEqual(total[0]['availability'], '0.02')
+
+    def test_save_conf(self):
+        self.insert_user()
+        self.save_cfg()
+        login_successful = self.login('admin', 'emoslive')
+        self.app.post('/_save_conf')
+        self.assertTrue(login_successful)
 
     def test_events_save(self):
         datas_offline = {'0': {'nom_rig': 'EM-1061', 'type_gpu': 'NV', 'nb_gpu': '1', 'mac': 'ec:a8:62:c5:c6:b6',
@@ -339,12 +346,6 @@ class BasicTests(unittest.TestCase):
         self.app.post('/_update_account', data=sent, content_type='application/json')
         resp = self.app.get('/account')
         self.assertIn(b'admin', resp.data)
-
-    def test_save_conf(self):
-        self.insert_user()
-        self.save_cfg()
-        login_successful = self.login('admin', 'emoslive')
-        self.assertTrue(login_successful)
 
 
 if __name__ == "__main__":

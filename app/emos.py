@@ -171,16 +171,19 @@ class Statistics:
     def availability_save(self):
         """ Calculation of the availability rate """
 
+        gpu_count = 0
         nb_rigs = Rigs.query.count()
+        nb_gpu = db.session.query(func.sum(Rigs.nb_gpu).label('gpu_count'))
+        for a in nb_gpu.all():
+            gpu_count = a.gpu_count
+
         if not nb_rigs:
             availability = 0.00
 
         else:
             minutes = int(self.conf_full[0]['cfg_range'])  # 3, 5 or 7 days
-            total_time = (minutes * 32)  # total minutes for 100%
-            real_time = round(StatsRigs.query.count(), 2)  # total minutes in db
-            sta = StatsRigs.query.count()
-
+            total_time = minutes  # total minutes for 100%
+            real_time = round(StatsRigs.query.count() / gpu_count, 2)  # total minutes in db
             if not real_time:
                 availability = 0.00
             else:
