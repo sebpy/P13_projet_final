@@ -171,6 +171,7 @@ class Statistics:
     def availability_save(self):
         """ Calculation of the availability rate """
 
+        gpu_count = 0
         nb_rigs = Rigs.query.count()
         nb_gpu = db.session.query(func.sum(Rigs.nb_gpu).label('gpu_count'))
         for a in nb_gpu.all():
