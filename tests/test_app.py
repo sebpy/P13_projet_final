@@ -299,6 +299,13 @@ class BasicTests(unittest.TestCase):
         total = st.availability_total()
         self.assertEqual(total[0]['availability'], '0.02')
 
+    def test_save_conf(self):
+        self.insert_user()
+        self.save_cfg()
+        login_successful = self.login('admin', 'emoslive')
+        self.app.post('/_save_conf')
+        self.assertTrue(login_successful)
+
     def test_events_save(self):
         datas_offline = {'0': {'nom_rig': 'EM-1061', 'type_gpu': 'NV', 'nb_gpu': '1', 'mac': 'ec:a8:62:c5:c6:b6',
                        'ip': '192.168.10.10', 'miner': 'Phoenix-miner (Ethash)', 'mine_time': '6j 22h 17m',
@@ -339,27 +346,6 @@ class BasicTests(unittest.TestCase):
         self.app.post('/_update_account', data=sent, content_type='application/json')
         resp = self.app.get('/account')
         self.assertIn(b'admin', resp.data)
-
-    def test_save_conf(self):
-        self.insert_user()
-        self.save_cfg()
-        login_successful = self.login('admin', 'emoslive')
-        self.assertTrue(login_successful)
-
-    def test_save_config(self):
-        self.insert_user()
-        self.save_cfg()
-
-        rv = self.app.post('/_save_conf', json={
-               'show_nb_gpu': '1', 'show_total_hash': '1', 'show_total_pw': '1', 'show_mine_time': '1',
-                'emos_api_key': '',
-                'show_type': '1',
-                'show_range': '7200'
-        })
-        print(rv)
-        #print(aa)
-        #cfg = st.read_full_conf(self)
-        #self.assertEqual(cfg[0]['cfg_api_key'], '')
 
 
 if __name__ == "__main__":
