@@ -121,7 +121,7 @@ class SaveConfig:
                           'show_type': self.show_type,
                           'show_range': self.show_range,
                           }
-
+            print(update_cfg)
             db.session.query(ConfBlock).update(update_cfg)
             db.session.commit()
 

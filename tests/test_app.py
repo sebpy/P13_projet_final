@@ -346,6 +346,21 @@ class BasicTests(unittest.TestCase):
         login_successful = self.login('admin', 'emoslive')
         self.assertTrue(login_successful)
 
+    def test_save_config(self):
+        self.insert_user()
+        self.save_cfg()
+
+        rv = self.app.post('/_save_conf', json={
+               'show_nb_gpu': '1', 'show_total_hash': '1', 'show_total_pw': '1', 'show_mine_time': '1',
+                'emos_api_key': '',
+                'show_type': '1',
+                'show_range': '7200'
+        })
+        print(rv)
+        #print(aa)
+        #cfg = st.read_full_conf(self)
+        #self.assertEqual(cfg[0]['cfg_api_key'], '')
+
 
 if __name__ == "__main__":
     unittest.main()
